@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  test_id: 1
+  texto: MyText
+  orden: 1
+  invalidar: false
+
+two:
+  test_id: 1
+  texto: MyText
+  orden: 1
+  invalidar: false

@@ -1,0 +1,121 @@
+<% if ((session["usuario"])&&(!session["usuario"].administrador)) %>
+
+<h1 align="center">Evaluación del test psicológico <%= @prueba.nombre.to_s %></h1>
+<br />
+
+<% form_for(@evaluacion) do |f| %>
+  <%= f.error_messages %>
+  
+  <p>
+    <%= f.hidden_field :usuario_id, :value => session['usuario'].id %>
+    Usuario: <%= session["usuario"].nombre %>
+    <%= f.hidden_field :prueba_id, :value => @numero_prueba %>
+  </p>
+  <p>
+    Instrucciones: <%= @prueba.instrucciones %>
+  </p>
+
+  <br />
+
+  <h1>Preguntas </h1>
+
+  <% @preguntas.each do |pregunta| %>
+    <p><%= pregunta.orden %>. <%= pregunta.texto %></p>
+    <table>
+      <% pregunta.alternativas.each do |alternativa| %>
+      <tr>
+        <td>
+          <%= select 'pregunta'+pregunta.id.to_s, 'alternativa'+alternativa.id.to_s, [ "0", "1", "2", "3", "4", "5"] %>
+        </td>
+        <td>
+          <%= alternativa.texto %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  <% end %>
+  <p>
+    Si se le proporcionó un código tag, ingréselo aqui:
+    <%= f.text_field :tag_codigo %>
+  </p>
+  <p>
+    <%= f.submit 'Obtener los resultados' , :name => 'boton' %>
+  </p>
+
+  <br />
+    <%= link_to 'Regresar', :controller => :main, :action => :principal %>
+<% end %>
+
+  <script type="text/javascript">
+  window.onload = function()
+  {
+    <% @preguntas.each do |pregunta| %>
+        <% pregunta.alternativas.each do |alternativa| %>
+          document.getElementById("pregunta<%= pregunta.id.to_s %>_alternativa<%= alternativa.id.to_s %>").onchange=function()
+          {
+              noceros = 0;
+              valor1 = document.getElementById("pregunta<%= pregunta.id.to_s %>_alternativa<%= pregunta.alternativas[0].id.to_s %>").value;
+              if (valor1 != "0")
+              {
+                noceros = noceros + 1;
+              };
+              valor2 = document.getElementById("pregunta<%= pregunta.id.to_s %>_alternativa<%= pregunta.alternativas[1].id.to_s %>").value;
+              if (valor2 != "0")
+              {
+                noceros = noceros + 1;
+              };
+              valor3 = document.getElementById("pregunta<%= pregunta.id.to_s %>_alternativa<%= pregunta.alternativas[2].id.to_s %>").value;
+              if (valor3 != "0")
+              {
+                noceros = noceros + 1;
+              };
+              valor4 = document.getElementById("pregunta<%= pregunta.id.to_s %>_alternativa<%= pregunta.alternativas[3].id.to_s %>").value;
+              if (valor4 != "0")
+              {
+                noceros = noceros + 1;
+              };
+              
+              suma = parseInt(valor1) + parseInt(valor2) + parseInt(valor3) + parseInt(valor4);
+              if ((suma > "5" ) || (noceros == "3") || (noceros == "4") || ((noceros == "2") && (suma != "5")) )
+              {
+                alert("Se deben asignar cinco puntos entre una ó dos alternativas.");
+                this.value = "0";
+              };
+          };
+        <% end %>
+    <% end %>
+    // Validacion antes del submit
+    
+    document.getElementById("evaluacion_submit").onclick=function()
+    {
+        var bandera = false;
+        var sumav = 0;
+        var cerosv = 0;
+        <% @preguntas.each do |pregunta| %>
+            sumav = 0;
+            cerosv = 0;
+            <% pregunta.alternativas.each do |alternativa| %>
+                sumav = sumav + parseInt(document.getElementById('pregunta<%= pregunta.id.to_s %>_alternativa<%= alternativa.id.to_s %>').value);
+                if (document.getElementById('pregunta<%= pregunta.id.to_s %>_alternativa<%= alternativa.id.to_s %>').value == '0')
+                  cerosv = cerosv + 1;
+            <% end %>
+            if (sumav != 5)
+              bandera = true;
+            if (cerosv < 2)
+              bandera = true;
+        <% end %>
+          if (bandera)
+            alert("Error: Para cada pregunta se deben distribuir cinco puntos entre un máximo de dos alternativas.");
+          else
+            document.forms[0].submit();
+
+        return false;
+    };
+
+
+  };
+</script>
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

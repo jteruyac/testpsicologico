@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  persona_id: 1
+  test_id: 1
+  fecha: 2009-06-17 17:49:32
+  puntaje_logico: 1
+  puntaje_formal: 1
+  puntaje_emotivo: 1
+  puntaje_intuitivo: 1
+  tipo_dominante: MyString
+
+two:
+  persona_id: 1
+  test_id: 1
+  fecha: 2009-06-17 17:49:32
+  puntaje_logico: 1
+  puntaje_formal: 1
+  puntaje_emotivo: 1
+  puntaje_intuitivo: 1
+  tipo_dominante: MyString

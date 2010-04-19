@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Compromise
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20081103
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>UPC - Software - Sistema de Autoevaluación Psicológica</title>
+<%= stylesheet_link_tag 'style' %>
+</head>
+<body>
+	<div id="header">
+		<div id="logo">
+			<h1><%= link_to 'Sistema de Autoevaluación Psicológica', :controller => :main, :action => :login %></h1>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="menu">
+		<ul>
+			<li class="first"><%= link_to 'Home', :controller => :main, :action => :login %></li>
+                        <% if (!session["usuario"].nil?) %>
+                        <li><%= link_to "Salir", :controller => 'main', :action => 'logout'%></li>
+                        <% end %>
+		</ul>
+	</div>
+	<!-- end #menu -->
+<div id="wrapper">
+<div class="btm">
+	<div id="page">
+		<div id="content">
+                        <div class="post">
+                          <%= yield %>
+			</div>
+		</div>
+		<!-- end #content -->
+		<div id="sidebar">
+			<ul>
+                                <li>
+                                    <% if (session["usuario"].nil?) %>
+                                    <ul>
+                                      <li> <%= link_to "Registrarse", :controller => 'usuarios', :action => 'new'%> </li>
+                                      <li> <%= link_to "Ingresar al sistema", :controller => 'main', :action => 'login'%> </li>
+                                    </ul>
+                                    <% else %>
+                                        <% if (session["usuario"].administrador) %>
+                                          <h2>Bienvenido, <%= session["usuario"].nombre %></h2>
+                                          <br />
+                                          <ul>
+                                            <li> <%= link_to "Usuarios Registrados", :controller => 'usuarios', :action => 'index'%> </li>
+                                            <li> <%= link_to "Instituciones Registradas", :controller => 'institucions', :action => 'index'%> </li>
+                                            <li> <%= link_to "Carreras Registradas", :controller => 'carreras', :action => 'index'%> </li>
+                                            <li> <%= link_to "Test Psicológicos", :controller => 'main', :action => 'tablero'%> </li>
+                                            <li> <%= link_to "Reportes", :controller => 'reportes', :action => 'panel' %> </li>
+                                            <li> <%= link_to "Salir", :controller => 'main', :action => 'logout'%> </li>
+                                          </ul>
+                                        <% end %>
+                                        <% if (!session["usuario"].administrador) %>
+                                          <h2>Bienvenido, <%= session["usuario"].nombre %></h2>
+                                          <br />
+                                          <ul>
+                                            <li> <%= link_to "Tests", :controller => 'main', :action => 'principal'%> </li>
+
+                                            <li> <%= link_to "Salir", :controller => 'main', :action => 'logout'%> </li>
+                                          </ul>
+
+                                        <% end %>
+                                    <% end %>
+                               </li>
+			</ul>
+		</div>
+		<!-- end #sidebar -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+</div>
+</div>
+	<div id="footer">
+          <p>&copy; 2009 product by <%= link_to 'Java Software Factory', 'http://computacion.upc.edu.pe/jfactory/' %> - Sistema de Autoevaluación Psicológica</p>
+	</div>
+	<!-- end #footer -->
+</body>
+</html>

@@ -1,0 +1,80 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<%= stylesheet_link_tag 'blue/style.css' %>
+<%= javascript_include_tag 'frameworks/jquery-1.3.2.min.js' %>
+<%= javascript_include_tag 'frameworks/jquery.tablesorter.min.js' %>
+
+<h1 align="center">Reporte de dominancias</h1>
+<br />
+<h3>TestPsicológico: <%= @prueba.nombre %></h3>
+<h3>Personas incluidas en la muestra: <%= @cant_usuarios %></h3>
+<br />
+<h3 align="center"><label>Filtros Utilizados</label></h3>
+<div id="div_filtros">
+  <% if @filtros.length != 0 %>
+  <table align="center" border="5">
+    <tr>
+      <th>Filtro</th>
+      <th>Valor</th>
+    </tr>
+    <% @filtros.each do |filter_element| %>
+    <tr>
+        <td><%= filter_element[:campo] %></td>
+        <td><%= filter_element[:valor] %></td>
+    </tr>
+    <% end %>
+  </table>
+  <% else %>
+<center>No se utilizaron filtros en este reporte.</center>
+  <% end %>
+</div>
+<br />
+<% if (@cant_usuarios > 0) %>
+<table id="myTable" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Lógico</th>
+      <th>Formal</th>
+      <th>Emotivo</th>
+      <th>Intuitivo</th>
+      <th>Realista</th>
+      <th>Idealista</th>
+      <th>Cognitivo</th>
+      <th>Instintivo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @lista_hashes.each do |item| %>
+    <tr>
+      <td><%= item[:nombre] %></td>
+      <td><%= item[:evaluacion].puntaje_logico %> </td>
+      <td><%= item[:evaluacion].puntaje_formal %> </td>
+      <td><%= item[:evaluacion].puntaje_emotivo %> </td>
+      <td><%= item[:evaluacion].puntaje_intuitivo %> </td>
+      <td><%= item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_formal %> </td>
+      <td><%= item[:evaluacion].puntaje_emotivo + item[:evaluacion].puntaje_intuitivo %> </td>
+      <td><%= item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_intuitivo %> </td>
+      <td><%= item[:evaluacion].puntaje_formal + item[:evaluacion].puntaje_emotivo %> </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script type="text/javascript">
+  $(document).ready(function()     {         $("#myTable").tablesorter();     } );
+</script>
+
+<% else %>
+<center><label>No se encontraron evaluaciones que coincidan con los parámetros de búsqueda</label></center>
+<% end %>
+
+<br />
+<center><% if (@cant_usuarios > 0) %><%= link_to 'Exportar a Excel', :controller => :reportes, :action => :dominanciaxls, :clv => @code %><% end %> <%= link_to 'Generar otro reporte', :controller => :reportes, :action => :panel %></center>
+<br />
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

@@ -1,0 +1,29 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<h1 align="center">Carreras Registradas</h1>
+<br />
+<table align="center">
+  <tr>
+    <th>Nombre</th>
+  </tr>
+
+<% @carreras.each do |carrera| %>
+  <tr>
+    <td><%=h carrera.nombre %></td>
+    <td><%= link_to 'Eliminar', carrera, :confirm => '¿Esta seguro de eliminar la carrera?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<center>
+    <%= link_to 'Ingresar una carrera', new_carrera_path %>
+</center>
+
+<br />
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

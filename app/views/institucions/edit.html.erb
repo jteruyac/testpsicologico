@@ -1,0 +1,37 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
+
+<h1 align="center">Editar institución</h1>
+<br />
+<% form_for(@institucion, :html => {:id => "edit_institucion_form" }) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nombre %><br />
+    <%= f.text_field :nombre %>
+  </p>
+  <p>
+    <%= f.label :tipo %><br />
+    <%= f.select(:tipo,[ "Colegio", "Universidad", "Empresa", "Otro"]) %>
+  </p>
+  <p>
+    <%= f.submit 'Guardar' %>
+  </p>
+<% end %>
+
+  <script type="text/javascript">
+    var frmvalidator  = new Validator("edit_institucion_form");
+
+    frmvalidator.addValidation("institucion[nombre]","req","Por favor ingrese el nombre de la institución");
+    frmvalidator.addValidation("institucion[nombre]","alphanumeric_space","El nombre solo permite valores alfanuméricos");
+    frmvalidator.addValidation("institucion[tipo]","req","Por favor seleccione el tipo de institución");
+
+  </script>
+
+<%= link_to 'Listado de Instituciones', institucions_path %>
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

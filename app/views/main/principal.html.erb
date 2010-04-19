@@ -1,0 +1,46 @@
+<% if ((session["usuario"])&&(!session["usuario"].administrador)) %>
+
+<%= stylesheet_link_tag 'sexyalertbox.css' %>
+<%= javascript_include_tag 'frameworks/mootools-1.2-core.js' %>
+<%= javascript_include_tag 'frameworks/mootools-1.2-more.js' %>
+<%= javascript_include_tag 'frameworks/sexyalertbox.v1.2.moo.js' %>
+
+<h1 align="center"> Tests Psicológicos Disponibles: <%=@pruebas.nitems %> </h1>
+<br />
+<% contador = 0 %>
+Seleccione un test psicológico para ver su historial de resultados.
+<br />
+  <% @pruebas.each do |prueba| %>
+  <% contador += 1 %>
+    
+      <p>
+             <h3> <%= contador.to_s %>. <a href="#" onclick="var bloque = new Fx.Slide('div_prueba_<%= prueba.id.to_s %>');bloque.toggle();return false;"><%= prueba.nombre %></a> (<%= link_to  "Rendir", :controller => "evaluacions", :action => "new", :prueba => prueba.id %>) </h3>
+      </p>
+      <div id='div_prueba_<%= prueba.id.to_s %>' >
+        <%
+          evaluaciones = prueba.evaluacions.find(:all, :conditions => 'usuario_id ='+ session['usuario'].id.to_s)
+        %>
+          <% if evaluaciones == [] %>
+            Este test no ha sido rendido aún.
+          <% else %>
+            <ul>
+              <% evaluaciones.each do |evl| %>
+              <li>
+                <%=  evl.fecha.strftime("%d/%m/%Y") %> (<%= link_to  "Ver", :controller => "evaluacions", :action => "resultado", :evaluacion => evl.id %>)
+              </li>
+              <% end %>
+            </ul>
+            <br />
+          <% end %>
+      </div>
+      <script type="text/javascript">
+          var bloque = new Fx.Slide('div_prueba_<%= prueba.id.to_s %>');
+          bloque.hide();
+      </script>
+    
+  <% end %>
+
+  <br />
+<%else%>
+<%= render :partial => "unauthorized" %>
+<%end%>

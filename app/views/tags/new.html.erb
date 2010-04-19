@@ -1,0 +1,53 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
+
+<h1 align="center">Registro de tags</h1>
+<br />
+<% form_for(@tag, :html => {:id => "new_tag_form" }) do |f| %>
+  
+
+  <p>
+    <%= f.label :nombre %> <%= f.hidden_field :institucion_id %><br />
+    <%= f.text_field :nombre %>
+  </p>
+  <p>
+    <%= f.label "Código" %><br />
+    <%= f.text_field :codigo %>
+  </p>
+  <p>
+    <%= f.submit 'Crear', :name => 'sender' %>
+  </p>
+<% end %>
+
+  <%= link_to 'Lista de tags', :controller => :tags, :action => :index, :institucion => @tag.institucion_id %>
+
+  <script type="text/javascript">
+    var frmvalidator  = new Validator("new_tag_form");
+
+    frmvalidator.addValidation("tag[nombre]","req","Por favor ingrese el nombre de la institución");
+    frmvalidator.addValidation("tag[nombre]","alphanumeric_space","El nombre solo permite valores alfabéticos");
+    frmvalidator.addValidation("tag[nombre]","maxlen=50","El nombre tiene una longitud máxima de 50 caracteres");
+    frmvalidator.addValidation("tag[codigo]","req","Por ingrese el código de la institución");
+    frmvalidator.addValidation("tag[codigo]","alphanumeric","El código solo permite valores alfanuméricos");
+    frmvalidator.addValidation("tag[codigo]","maxlen=12","El código tiene una longitud máxima de 12 caracteres");
+
+    window.onload = function()
+    {
+      <% if flash[:notice] == 'Error 0' %>
+        alert('Error en los datos ingresados');
+      <% end %>
+      <% if flash[:notice] == 'Error 5' %>
+        alert('El nombre ingresado ya está siendo utilizado');
+      <% end %>
+      <% if flash[:notice] == 'Error 10' %>
+        alert('El código ingresado ya está siendo utilizado');
+      <% end %>
+    }
+
+  </script>
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

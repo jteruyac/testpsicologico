@@ -1,0 +1,220 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<%= stylesheet_link_tag 'sexyalertbox.css' %>
+<%= javascript_include_tag 'frameworks/mootools-1.2-core.js' %>
+<%= javascript_include_tag 'frameworks/mootools-1.2-more.js' %>
+<%= javascript_include_tag 'frameworks/sexyalertbox.v1.2.moo.js' %>
+<%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
+
+<script type="text/javascript">
+  window.onload = function()
+  {
+    document.getElementById("linkNP").onclick=function()
+    {
+      <% @pregunta = Pregunta.new %>
+      Sexy.alert('<h1>Crear Pregunta</h1>'
+      + '<% form_for(@pregunta, :html => {:id => "new_pregunta_form" }) do |f| %> '
+      + '<p> <%= f.label 'Pregunta' %><br /> <%= f.text_area :texto, :rows => 10 %> <%= hidden_field :pantalla, :id, :value => "Editar" %> <%= f.hidden_field :prueba_id, :value => @prueba.id %></p> '
+      + '<p> <%= f.submit "Crear" , :name => "sender" %></p>'
+      + '<% end %>');
+
+      //Se da "Cancelar" como texto al boton OK
+      document.getElementById('BoxAlertBtnOk').value = "Salir";
+
+      //Validación para la creación de las preguntas
+      document.getElementById("pregunta_submit").onclick=function()
+      {
+        if (document.getElementById("pregunta_texto").value=="")
+          alert("Error: No se ha ingresado la pregunta.");
+        else
+          {
+            submit();
+          }
+        return false;
+      };
+    };
+  };
+</script>
+
+<%#Formulario%>
+<% num_pregunta_falla = 0 %>
+
+<h2>Modificar Test Psicológico</h2>
+<%= button_to 'Modificar Test',:controller => :pruebas, :action => 'orquestar_update' %>
+
+<br />
+<h3><label onclick="var bloque = new Fx.Slide('informacion_basica');bloque.toggle();return false;">Datos Básicos >> </label></h3>
+<div id="informacion_basica">
+<% form_for :prueba ,@prueba, :html => {:id => "edit_prueba_form" }, :url => {:controller => :pruebas, :action => :update_basics } do |f| %>
+  <%= f.error_messages %>
+      <p>
+        <%= f.label :nombre %><br />
+        <%= f.text_field :nombre %>
+      </p>
+      <p>
+        <%= f.label :autor %><br />
+        <%= f.text_field :autor %>
+      </p>
+      <p>
+        <%= f.label 'Descripción' %><br />
+        <%= f.text_area :descripcion , :rows => 4, :cols => 50 %>
+      </p>
+      <p>
+        <%= f.label :instrucciones %><br />
+        <%= f.text_area :instrucciones , :rows => 4, :cols => 50 %>
+      </p>
+      <p>
+        <%= f.submit 'Guardar Datos Básicos' %>
+      </p>
+      <br />
+<% end %>
+</div>
+<br />
+<script type="text/javascript">
+    var frmvalidator  = new Validator("edit_prueba_form");
+    frmvalidator.addValidation("prueba[nombre]","req","Por favor ingrese el nombre del test psicológico");
+    frmvalidator.addValidation("prueba[nombre]","alphabetic_space","El nombre solo permite valores alfabéticos");
+    frmvalidator.addValidation("prueba[autor]","req","Por favor ingrese el nombre del autor del test psicológico");
+    frmvalidator.addValidation("prueba[autor]","alphabetic_space","El nombre del autor solo permite valores alfabéticos");
+    frmvalidator.addValidation("prueba[descripcion]","req","Por favor ingrese una descripción para el test psicológico");
+    frmvalidator.addValidation("prueba[descripcion]","alphanumeric_space","La descripción solo permite valores alfanuméricos");
+    frmvalidator.addValidation("prueba[instrucciones]","req","Por favor ingrese instrucciones para rendir el test");
+    frmvalidator.addValidation("prueba[instrucciones]","alphanumeric_space","Las instrucciones solo permiten valores alfanuméricos");
+
+    var myDiv = new Fx.Slide('informacion_basica');
+    myDiv.hide();
+</script>
+<%# Fin Formulario%>
+
+
+  <%# Rasgos%>
+
+<h3><label onclick="var bloque = new Fx.Slide('tabla_rasgos');bloque.toggle();return false;">Lista de Rasgos >> </label></h3>
+
+  <table border=1 cellspacing=0 cellpadding=2 bordercolor="000000" id="tabla_rasgos">
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+    </tr>
+
+  <% @rasgos.each do |rasgo| %>
+    <tr>
+      <td> <%=h rasgo.rasgo.nombre %> </td>
+      <td> <%=h rasgo.rasgo.descripcion %> </td>
+    </tr>
+  <% end %>
+  </table>
+
+  <script type="text/javascript">
+              var myTable = new Fx.Slide('tabla_rasgos');
+              myTable.hide();
+  </script>
+<%# Fin Rasgos%>
+  <br />
+
+<%# Preguntas%>
+
+  <h3>Preguntas >> </h3>
+  <% bloques_indice = 0 %>
+  <% @preguntas.each do |pregunta| %>
+    <% if pregunta.eliminar_luego == false %>
+    <p>
+      <% bloques_indice = bloques_indice + 1 %>
+      <%= bloques_indice %>. <a href="#" id="link_pregunta<%= pregunta.identificador_pregunta.to_s %>" onclick="var bloque = new Fx.Slide('alternativas_pregunta<%= pregunta.identificador_pregunta.to_s %>');bloque.toggle();return false;"><b><%= pregunta.pregunta.texto %></b></a>
+      (<%= link_to 'Eliminar', :controller => "preguntas", :action => "eliminar_edit", :id => pregunta.identificador_pregunta, :prueba => @prueba.id %>)
+    </p>
+    <%
+    if (flash[:notice] == pregunta.identificador_pregunta.to_s)
+      num_pregunta_falla = bloques_indice
+    end
+    %>
+    <table id="alternativas_pregunta<%= pregunta.identificador_pregunta.to_s %>" >
+      <tr>
+        <th>Rasgo</th>
+        <th>Texto</th>
+      </tr>
+    <% pregunta.alternativas.each do |alternativa| %>
+
+      <%#prueba%>
+      <tr>
+        
+        <% form_for :alternativa, alternativa.alternativa, :html => {:id => "new_alternativa_form_"+pregunta.identificador_pregunta.to_s+'_'+alternativa.identificador_alternativa.to_s }, :url => {:controller => "alternativas", :action => "update_edit" } do |f| %>
+        <td>
+          <%= hidden_field :identidad, :id, :value => alternativa.identificador_alternativa %>
+          <%= hidden_field :prueba_psico, :ide, :value => @prueba.id %>
+          <% if pregunta.pregunta_nueva == false %>
+
+          <%#= f.collection_select(:rasgo_id, @rasgos_AR, :id, :nombre, options = {:prompt => "Select un rasgo"}, :class =>"Rasgo", :disabled => true) %>
+            <%= f.collection_select(:rasgo_id, @rasgos, :identificador_rasgo, :nombre, options = {:prompt => "Select un rasgo"}, :class =>"RasgoItem", :disabled => true) %>
+            
+          <% elsif pregunta.pregunta_nueva == true %>
+            <%= f.collection_select(:rasgo_id, @rasgos, :identificador_rasgo, :nombre, options = {:prompt => "Select un rasgo"}, :class =>"RasgoItem") %>
+          <% end %>
+        </td>
+        <td>
+          <%= f.hidden_field :pregunta_id %>
+          <%= f.text_field :texto %>
+        </td>
+        <td>
+          <%= f.submit 'Guardar', :name => 'altersender'+alternativa.alternativa.pregunta_id.to_s+'_'+alternativa.identificador_alternativa.to_s %>
+        </td>
+        <%end%>
+      </tr>
+      <%#prueba%>
+
+    <% end %>
+    </table> <%# Aqui termina el slider%>
+  <% end %>
+  <% end %>
+  <br />
+
+  <a href="#" id="linkNP" name="add_pregunta">Añadir pregunta</a>
+
+  <br />
+  <br />
+  <%= link_to "Lista de test psicológicos", :controller => 'main', :action => 'tablero'%>
+
+<%# Fin Preguntas%>
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>
+
+  <script type="text/javascript">
+
+    <% @preguntas.each do |pregunta| %>
+      <% if pregunta.eliminar_luego == false %>
+        <% pregunta.alternativas.each do |alternativa| %>
+            var frmval  = new Validator("new_alternativa_form_"+<%=  pregunta.identificador_pregunta.to_s %>+'_'+<%= alternativa.identificador_alternativa.to_s %>);
+            
+            frmval.addValidation("alternativa[texto]","req","Por favor ingrese el texto de la alternativa");
+            //frmval.addValidation("alternativa[texto]","alphanumeric_space","El texto solo permite valores alfanuméricos");
+
+        <% end %>
+      <% end %>
+    <% end %>
+
+
+    <% if flash[:notice] == '-1' %>
+      alert('Error en los datos básicos del test.');
+    <% else %>
+      <% if flash[:notice] == '-2' %>
+        alert('El test no tiene preguntas.');
+      <% else %>
+        <% if ((not flash[:notice] == '-99') && (num_pregunta_falla.to_s != '0') && (flash[:notice])) %>
+          alert('Error en la pregunta '+<%= num_pregunta_falla.to_s %>+'.');
+        <% end %>
+      <% end %>
+    <% end %>
+
+
+  <% if flash[:pregunta_creada] == 'si' %>
+    document.getElementById('linkNP').focus();
+  <% end %>
+
+
+  <% if (flash[:alternat_updt_altid]) %>
+      document.getElementsByName('altersender<%=flash[:alternat_updt_preid]%>_<%=flash[:alternat_updt_altid]%>')[0].focus();
+  <% end %>
+
+  </script>

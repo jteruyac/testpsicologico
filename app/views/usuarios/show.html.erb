@@ -1,0 +1,78 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador)) %>
+<p>
+  <h1><%=h @usuario.nombre %></h1>
+</p>
+<p>
+  <b>Usuario:</b>
+  <%=h @usuario.usuario %>
+</p>
+<p>
+  <b>Fecha de Nacimiento:</b>
+  <%=h @usuario.fecha_nacimiento.strftime("%d/%m/%Y") %>
+</p>
+<p>
+  <b>Sexo:</b>
+  <%=h @usuario.sexo %>
+</p>
+<p>
+  <b>Ubicación:</b>
+  <%=h @usuario.ubicacion_macro %> - <%=h @usuario.ubicacion_micro %>
+</p>
+<p>
+  <b>Colegio:</b>
+  <%=h @usuario.nombre_colegio %> (<%=h @usuario.tipo_colegio %>)
+</p>
+<p>
+  <b>Realizó estudios universitarios:</b>
+  <% if @usuario.consulta_universidad %>
+    <%= 'Sí' %>
+    <% flag_u = true %>
+  <% else %>
+    <%= 'No' %>
+    <% flag_u = false %>
+  <% end %>
+</p>
+
+<% if flag_u %>
+<p>
+  <b>Universidad:</b>
+  <%=h @usuario.nombre_universidad %> - Ingresó en <%=h @usuario.anio_ingreso_universidad %>
+</p>
+<p>
+  <b>Carrera:</b>
+<% if @usuario.carrera %>
+  <% if @usuario.carrera.nombre == "Psicología" %>
+    <%=h @usuario.carrera.nombre %> - <%=h @usuario.nombre_especialidad %>
+  <% else %>
+    <%=h @usuario.carrera.nombre %>
+  <% end %>
+<% else %>
+    <%= 'Otra carrera' %>
+<% end %>
+</p>
+<p>
+  <b>Egresado:</b>
+  <% if @usuario.consulta_egresado %>
+    <%= 'En el año '+@usuario.anio_egreso_universidad.to_s %>
+  <% else %>
+    <%= 'No' %>
+  <% end %>
+</p>
+<% end %>
+<p>
+  <b>Institución:</b>
+  <% if @usuario.institucion %>
+    <%=h @usuario.institucion.nombre %>
+  <% else %>
+    <%= 'Ninguna' %>
+  <% end %>
+</p>
+
+<%= link_to 'Lista de usuarios', usuarios_path %>
+
+
+<br />
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

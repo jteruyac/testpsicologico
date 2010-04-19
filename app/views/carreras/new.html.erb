@@ -1,0 +1,39 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
+
+<h1 align="center">Registro de carreras universitarias</h1>
+<br />
+<% form_for(@carrera, :html => {:id => "new_carrera_form" }) do |f| %>
+
+  <p>
+    <%= f.label :nombre %><br />
+    <%= f.text_field :nombre %>
+  </p>
+  <p>
+    <%= f.submit 'Crear' %>
+  </p>
+<% end %>
+
+  <script type="text/javascript">
+    var frmvalidator  = new Validator("new_carrera_form");
+
+    frmvalidator.addValidation("carrera[nombre]","req","Por favor ingrese el nombre de la carrera");
+    frmvalidator.addValidation("carrera[nombre]","alphabetic_space","El nombre solo permite valores alfabéticos");
+    frmvalidator.addValidation("carrera[nombre]","maxlen=50","El nombre tiene una longitud máxima de 50 caracteres");
+
+    window.onload = function()
+    {
+      <% if flash[:notice] == 'Error 10' %>
+        alert('El nombre ingresado ya está siendo utilizado');
+      <% end %>
+    }
+    
+  </script>
+
+<%= link_to 'Listado de carreras', carreras_path %>
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

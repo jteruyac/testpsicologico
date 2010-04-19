@@ -1,0 +1,41 @@
+<% if (false) %>
+
+<h1>Lista de prueba psicológicos</h1>
+
+<table>
+  <tr>
+    <th>Nombre</th>
+    <th>Descripción</th>
+    <th>Instrucciones</th>
+    <th>Autor</th>
+    <th>Version</th>
+    <th>Numero preguntas</th>
+    <th>Publicar</th>
+    <th>Invalidar</th>
+  </tr>
+
+<% @pruebas.each do |prueba| %>
+  <tr>
+    <td><%=h prueba.nombre %></td>
+    <td><%=h prueba.descripcion %></td>
+    <td><%=h prueba.instrucciones %></td>
+    <td><%=h prueba.autor %></td>
+    <td><%=h prueba.version %></td>
+    <td><%=h prueba.numero_preguntas %></td>
+    <td><%=h prueba.publicar %></td>
+    <td><%=h prueba.invalidar %></td>
+    <td><%= link_to 'Mostrar', prueba %></td>
+    <td><%= link_to 'Editar', edit_prueba_path(prueba) %></td>
+    <td><%= link_to 'Eliminar', prueba, :confirm => '¿Estas seguro?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New prueba', new_prueba_path %>
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

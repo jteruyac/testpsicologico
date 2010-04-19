@@ -1,0 +1,27 @@
+<% if (!session["usuario"]) %>
+
+<h1 align="center">Ingreso</h1>
+
+<div align="center">
+<% form_for :datos, :url => { :action => "autenticar" } do |f| %>
+  <p>
+    <%= f.label :usuario %><br />
+    <%= f.text_field :usuario %>
+  </p>
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.submit "Ingresar" %>
+  </p>
+  <p>
+    <%=flash[:notice] %>
+  </p>
+<% end %>
+
+</div>
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

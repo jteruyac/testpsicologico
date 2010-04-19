@@ -1,0 +1,311 @@
+<% if (false) %>
+
+<%= javascript_include_tag 'frameworks/mootools-1.2-core.js' %>
+<%= javascript_include_tag 'frameworks/mootools-1.2-more.js' %>
+
+<h1>Actualización de datos</h1>
+
+<% form_for(@usuario) do |f| %>
+  <%= f.error_messages %>
+  <h4><%= @usuario.nombre %>  (Usuario: <%= @usuario.usuario %>)</h4>
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label :fecha_nacimiento %><br />
+    <%= f.date_select :fecha_nacimiento %>
+  </p>
+  <p>
+    <%= f.label :sexo %><br />
+    <%= f.select(:sexo, [ "Masculino", "Femenino" ]) %>
+  </p>
+  <p>
+    <%= f.label 'Lugar al que pertenece:' %><br />
+    <%= f.select(:ubicacion_macro, [ "Lima", "Departamento", "Extranjero"]) %>
+  </p>
+  <p>
+    <%= f.label 'Especificar ubicación:' %><br />
+    <%= f.select(:ubicacion_micro, []) %>
+  </p>
+  <p>
+    <%= f.label 'Culminó sus estudios escolares en un colegio: ' %><br />
+    <%= f.select(:tipo_colegio, [ "Estatal", "Privado" ]) %>
+  </p>
+  <p>
+    <%= f.label 'Nombre de tu colegio:' %><br />
+    <%= f.text_field :nombre_colegio %>
+  </p>
+  <p>
+    <%= f.label 'Selecciona la institución que más te identifique:' %><br />
+    <%= f.collection_select(:institucion_id ,@institucions, :id, :nombre, options = {:prompt => "Seleccione una institución"}, :class =>"institucion") %>
+  </p>
+  <p>
+    <%= f.label 'He ido a la universidad (Egresados y Estudiantes)' %><br />
+    <%= f.check_box :consulta_universidad %>
+  </p>
+  <div id ="div_universidad">
+  <p>
+    <%= f.label 'Nombre de la universidad:' %><br />
+    <%= f.text_field :nombre_universidad %>
+  </p>
+  <p>
+    <%= f.label 'Egresado de la universidad' %><br />
+    <%= f.check_box :consulta_egresado %>
+  </p>
+  <p>
+    <%= f.label 'Año de ingreso a la universidad:' %><br />
+    <%= f.text_field :anio_ingreso_universidad %>
+  </p>
+  <p id ="div_egresado">
+    <%= f.label 'Año de egreso de la universidad:' %><br />
+    <%= f.text_field :anio_egreso_universidad %>
+  </p>
+  <p>
+    <%= f.label 'Carrera:' %><br />
+    <%= f.select(:nombre_carrera, [ "Administración y Agronegocios",
+                                    "Administración y Finanzas",
+                                    "Administración y Marketing",
+                                    "Administración y Negocios Internacionales",
+                                    "Administración y Recursos Humanos",
+                                    "Arquitectura",
+                                    "Comunicación Audiovisual y Medios Interactivos",
+                                    "Comunicación e Imagen Empresarial",
+                                    "Comunicación y Marketing",
+                                    "Comunicación y Periodismo",
+                                    "Comunicación y Publicidad",
+                                    "Contabilidad y Administración",
+                                    "Derecho",
+                                    "Hoteleria y Administración",
+                                    "Economía y Finanzas",
+                                    "Economía y Negocios Internacionales",
+                                    "Economía y Políticas Públicas",
+                                    "Escuela de Música",
+                                    "Ingeniería Civil",
+                                    "Ingeniería Electrónica",
+                                    "Ingeniería Industrial",
+                                    "Ingeniería de Sistemas de Información",
+                                    "Ingeniería de Software",
+                                    "Ingeniería de Telecomunicaciones y Redes",
+                                    "Medicina",
+                                    "Nutricion y Dietética",
+                                    "Odontología",
+                                    "Psicología",
+                                    "Terapia Física",
+                                    "Turismo y Administración",
+                                    "Otra"]) %>
+  </p>
+  <p id ="div_especialidad">
+    <%= f.label 'Especialidad:' %><br />
+    <%= f.select(:nombre_especialidad, [ "Organizacional", "Clínica", "Educacional" ]) %>
+  </p>
+  <br />
+  </div>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>
+<br />
+
+
+
+<script type="text/javascript">
+
+    function cambio_ubicacion_micro()
+    {
+      var ubicacion_micro_select = document.getElementById("usuario_ubicacion_micro");
+      var ubicacion_macro_select = document.getElementById("usuario_ubicacion_macro");
+      while(ubicacion_micro_select.length>0)
+      {
+        ubicacion_micro_select.remove(0);
+      }
+
+      if (ubicacion_macro_select.value == "Lima")
+      {
+        //Lima
+        datos = ["Cercado de Lima",
+                 "Ate",
+                 "Barranco",
+                 "Breña",
+                 "Comas",
+                 "Chorrillos",
+                 "El Agustino",
+                 "Jesús María",
+                 "La Molina",
+                 "La Victoria",
+                 "Lince",
+                 "Magdalena del Mar",
+                 "Miraflores",
+                 "Pueblo Libre",
+                 "Puente Piedra",
+                 "Rimac",
+                 "San Isidro",
+                 "Independencia",
+                 "San Juan de Miraflores",
+                 "San Luis",
+                 "San Martin de Porres",
+                 "San Miguel",
+                 "Santiago de Surco",
+                 "Surquillo",
+                 "Villa María del Triunfo",
+                 "San Juan de Lurigancho",
+                 "Santa Rosa",
+                 "Los Olivos",
+                 "San Borja",
+                 "Villa El Savador",
+                 "Santa Anita",
+                 "Cercado Callao",
+                 "Bellavista",
+                 "Carmen de la Legua",
+                 "La Perla",
+                 "La Punta",
+                 "Ventanilla"];
+        llenacombo('usuario_ubicacion_micro',datos);
+      }
+      else
+        {
+          if (ubicacion_macro_select.value == "Departamento")
+            {
+             //Departamento
+             datos = ["Amazonas",
+                      "Ancash",
+                      "Apurímac",
+                      "Arequipa",
+                      "Ayacucho",
+                      "Cajamarca",
+                      "Cusco",
+                      "Huancavelica",
+                      "Huánuco",
+                      "Ica",
+                      "Junín",
+                      "La Libertad",
+                      "Lambayeque",
+                      "Loreto",
+                      "Madre de Dios",
+                      "Moquegua",
+                      "Pasco",
+                      "Piura",
+                      "Puno",
+                      "San Martin",
+                      "Tacna",
+                      "Tumbes",
+                      "Ucayali"];
+            llenacombo('usuario_ubicacion_micro',datos);
+            }
+            else
+            {
+              //Extranjero
+              datos = [ "Perú",
+                        "Brasil",
+                        "Bolivia",
+                        "Ecuador"];
+              llenacombo('usuario_ubicacion_micro',datos);
+            }
+        }
+
+    }
+    function llenacombo(nombre, datos)
+    {
+        var ubicacion_micro_select = document.getElementById(nombre);
+        contador = 0;
+        while (contador < datos.length)
+        {
+          var elOptNew = document.createElement('option');
+          elOptNew.text = datos[contador];
+          elOptNew.value = datos[contador];
+          try
+          {
+            ubicacion_micro_select.add(elOptNew, null); // standards compliant; doesn't work in IE
+          }
+          catch(ex)
+          {
+            ubicacion_micro_select.add(elOptNew); // IE only
+          }
+          contador = contador + 1;
+        }
+    }
+
+    window.onload = function()
+    {
+      alert('Aqui ta');
+
+      alert('Aqui ta');
+    }
+
+// slides
+
+    function slider_universidad()
+    {
+      var element = new Fx.Slide('div_universidad');
+      if (document.getElementById("usuario_consulta_universidad").checked)
+        {
+          element.show();
+          document.getElementById("div_universidad").style.visibility = "visible";
+        }
+        else
+        {
+            element.hide();
+            document.getElementById("div_universidad").style.visibility = "hidden";
+        }
+
+    }
+
+    function slider_egresado()
+    {
+    var element = new Fx.Slide('div_egresado');
+    if (document.getElementById("usuario_consulta_egresado").checked)
+      {
+        element.show();
+        document.getElementById("div_egresado").style.visibility = "visible";
+      }
+      else
+        {
+          element.hide();
+          document.getElementById("div_egresado").style.visibility = "hidden";
+        }
+
+     slider_universidad();
+     }
+
+
+     function slider_especialidad()
+    {
+    var element = new Fx.Slide('div_especialidad');
+    if (document.getElementById("usuario_nombre_carrera").value == "Psicología")
+      {
+        element.show();
+        document.getElementById("div_especialidad").style.visibility = "visible";
+      }
+      else
+        {
+          element.hide();
+          document.getElementById("div_especialidad").style.visibility = "hidden";
+        }
+
+      slider_universidad();
+     }
+
+
+
+     window.onload = function()
+    {
+      document.getElementById("usuario_ubicacion_macro").onchange = cambio_ubicacion_micro;
+
+      document.getElementById("usuario_nombre_carrera").onchange = slider_especialidad;
+      document.getElementById("usuario_consulta_universidad").onclick = slider_universidad;
+      document.getElementById("usuario_consulta_egresado").onclick = slider_egresado;
+    }
+
+     cambio_ubicacion_micro();
+
+     slider_universidad();
+     slider_egresado();
+     slider_especialidad();
+
+  </script>
+
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

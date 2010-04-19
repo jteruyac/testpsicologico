@@ -1,0 +1,51 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+<div>
+  <center>
+    <h1>
+      <b>Test <%=h @prueba.nombre %> (Versión <%=h @prueba.version %>)</b>
+    </h1>
+  </center>
+<br />
+<p>
+  <b>Autor:</b> <%=h @prueba.autor %>.
+</p>
+
+<p>
+  <b>Descripción:</b>
+  <%=h @prueba.descripcion %>
+</p>
+
+<p>
+  <b>Instrucciones:</b>
+  <%=h @prueba.instrucciones %>
+</p>
+
+</div>
+
+<h3>Preguntas (#<%=h @prueba.numero_preguntas %>)</h3>
+  <br />
+  <% @preguntas.each do |pregunta| %>
+    <p><%= pregunta.orden %>. <%= pregunta.texto %></p>
+    <table border="0px;">
+      <% pregunta.alternativas.each do |alternativa| %>
+      <tr>
+        <td>
+          (<%= alternativa.rasgo.nombre %>)
+        </td>
+        <td>
+          <%= alternativa.texto %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+    <br />
+  <% end %>
+
+
+<br />
+<%= link_to "Lista de test psicológicos", :controller => 'main', :action => 'tablero'%>
+
+
+<% else %>
+<%= render :partial => "main/unauthorized" %>
+<% end %>

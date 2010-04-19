@@ -1,0 +1,43 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador)) %>
+
+<h1 align="center">Lista de usuarios</h1>
+<br />
+<table align="center">
+  <tr>
+    <th>Nombre</th>
+    <th>Fecha nacimiento</th>
+    <th>Sexo</th>
+    <th>Institución</th>
+    <th>Carrera</th>
+  </tr>
+
+<% @usuarios.each do |usuario| %>
+  <tr>
+    <td><%=h usuario.nombre %></td>
+    <td><%=h usuario.fecha_nacimiento.strftime('%d/%m/%Y') %></td>
+    <td><%=h usuario.sexo %></td>
+    <% if usuario.institucion %>
+      <td><%=h usuario.institucion.nombre %></td>
+    <% else %>
+      <td>Ninguna</td>
+    <% end %>
+    <% if usuario.carrera %>
+    <td><%=h usuario.carrera.nombre %></td>
+    <% else %>
+      <% if usuario.consulta_universidad %>
+        <td>Otra carrera</td>
+      <% else %>
+        <td>Ninguna</td>
+      <% end %>
+    <% end %>
+    <td><%= link_to 'Detalles', usuario %></td>
+    <td><%= link_to 'Eliminar', usuario, :confirm => '¿Confirma la eliminación?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

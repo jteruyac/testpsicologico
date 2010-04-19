@@ -1,0 +1,146 @@
+#
+# An unexpected error has been detected by Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x04926001, pid=3248, tid=996
+#
+# Java VM: Java HotSpot(TM) Client VM (11.0-b15 mixed mode, sharing windows-x86)
+# Problematic frame:
+# C  0x04926001
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x01a39400):  JavaThread "Finalizer" daemon [_thread_in_native, id=996, stack(0x03e80000,0x03f80000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x04926001
+
+Registers:
+EAX=0x04926001, EBX=0x28575088, ECX=0x01a39514, EDX=0x28575460
+ESP=0x03f7f83c, EBP=0x03f7f870, ESI=0x28575088, EDI=0x01a39400
+EIP=0x04926001, EFLAGS=0x00010283
+
+Top of Stack: (sp=0x03f7f83c)
+0x03f7f83c:   01b09d11 01a39514 03f7f878 00163c00
+0x03f7f84c:   00000000 03f7f850 00000000 03f7f884
+0x03f7f85c:   28575460 00000000 28575088 00000000
+0x03f7f86c:   03f7f880 03f7f8a8 01b02da1 285753e8
+0x03f7f87c:   01b08189 00163c00 00000000 03f7f888
+0x03f7f88c:   28573235 03f7f8b0 28575460 00000000
+0x03f7f89c:   28573258 03f7f880 03f7f8b0 03f7f8d0
+0x03f7f8ac:   01b002ca 07df1350 00b10284 03f7f92c 
+
+Instructions: (pc=0x04926001)
+0x04925ff1:   
+[error occurred during error reporting (printing registers, top of stack, instructions near pc), id 0xc0000005]
+
+Stack: [0x03e80000,0x03f80000],  sp=0x03f7f83c,  free space=1022k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  0x04926001
+j  com.sun.jna.Memory.finalize()V+13
+v  ~StubRoutines::call_stub
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  com.sun.jna.Memory.free(J)V+0
+j  com.sun.jna.Memory.finalize()V+13
+v  ~StubRoutines::call_stub
+j  java.lang.ref.Finalizer.invokeFinalizeMethod(Ljava/lang/Object;)V+0
+j  java.lang.ref.Finalizer.runFinalizer()V+45
+j  java.lang.ref.Finalizer.access$100(Ljava/lang/ref/Finalizer;)V+1
+j  java.lang.ref.Finalizer$FinalizerThread.run()V+11
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00b19400 JavaThread "DestroyJavaVM" [_thread_blocked, id=288, stack(0x01900000,0x01a00000)]
+  0x01a5fc00 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=3408, stack(0x041d0000,0x042d0000)]
+  0x01a4b400 JavaThread "CompilerThread0" daemon [_thread_in_native, id=2596, stack(0x04180000,0x041d0000)]
+  0x01a4a400 JavaThread "Attach Listener" daemon [_thread_blocked, id=296, stack(0x04080000,0x04180000)]
+  0x01a3fc00 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=3812, stack(0x03f80000,0x04080000)]
+=>0x01a39400 JavaThread "Finalizer" daemon [_thread_in_native, id=996, stack(0x03e80000,0x03f80000)]
+  0x01a34800 JavaThread "Reference Handler" daemon [_thread_blocked, id=3420, stack(0x03d80000,0x03e80000)]
+
+Other Threads:
+  0x01a33400 VMThread [stack: 0x03d30000,0x03d80000] [id=2276]
+  0x01a69c00 WatcherThread [stack: 0x042d0000,0x04320000] [id=3860]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 2880K, used 664K [0x07b50000, 0x07e70000, 0x0a2b0000)
+  eden space 2560K,  20% used [0x07b50000, 0x07bd4398, 0x07dd0000)
+  from space 320K,  42% used [0x07dd0000, 0x07df1ff8, 0x07e20000)
+  to   space 320K,   0% used [0x07e20000, 0x07e20000, 0x07e70000)
+ tenured generation   total 38176K, used 24857K [0x0a2b0000, 0x0c7f8000, 0x27b50000)
+   the space 38176K,  65% used [0x0a2b0000, 0x0baf6660, 0x0baf6800, 0x0c7f8000)
+ compacting perm gen  total 15872K, used 15767K [0x27b50000, 0x28ad0000, 0x2bb50000)
+   the space 15872K,  99% used [0x27b50000, 0x28ab5d48, 0x28ab5e00, 0x28ad0000)
+    ro space 8192K,  67% used [0x2bb50000, 0x2c0b2f00, 0x2c0b3000, 0x2c350000)
+    rw space 12288K,  53% used [0x2c350000, 0x2c9c0180, 0x2c9c0200, 0x2cf50000)
+
+Dynamic libraries:
+0x00400000 - 0x00424000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\java.exe
+0x771d0000 - 0x7730c000 	C:\Windows\SYSTEM32\ntdll.dll
+0x762d0000 - 0x763a4000 	C:\Windows\system32\kernel32.dll
+0x753a0000 - 0x753e8000 	C:\Windows\system32\KERNELBASE.dll
+0x77320000 - 0x773c0000 	C:\Windows\system32\ADVAPI32.dll
+0x75780000 - 0x7582c000 	C:\Windows\system32\msvcrt.dll
+0x75900000 - 0x75919000 	C:\Windows\SYSTEM32\sechost.dll
+0x756d0000 - 0x75772000 	C:\Windows\system32\RPCRT4.dll
+0x7c340000 - 0x7c396000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\msvcr71.dll
+0x6d8b0000 - 0x6db06000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\client\jvm.dll
+0x763b0000 - 0x76479000 	C:\Windows\system32\USER32.dll
+0x76280000 - 0x762ce000 	C:\Windows\system32\GDI32.dll
+0x77310000 - 0x7731a000 	C:\Windows\system32\LPK.dll
+0x75da0000 - 0x75e3d000 	C:\Windows\system32\USP10.dll
+0x702f0000 - 0x70322000 	C:\Windows\system32\WINMM.dll
+0x75620000 - 0x7563f000 	C:\Windows\system32\IMM32.DLL
+0x75920000 - 0x759ec000 	C:\Windows\system32\MSCTF.dll
+0x75250000 - 0x7529b000 	C:\Windows\system32\apphelp.dll
+0x6d330000 - 0x6d338000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\hpi.dll
+0x759f0000 - 0x759f5000 	C:\Windows\system32\PSAPI.DLL
+0x6d860000 - 0x6d86c000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\verify.dll
+0x6d3d0000 - 0x6d3ef000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\java.dll
+0x6d8a0000 - 0x6d8af000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\zip.dll
+0x6d610000 - 0x6d619000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\management.dll
+0x6d6c0000 - 0x6d6d3000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\net.dll
+0x773c0000 - 0x773f5000 	C:\Windows\system32\WS2_32.dll
+0x75e40000 - 0x75e46000 	C:\Windows\system32\NSI.dll
+0x74d60000 - 0x74d9c000 	C:\Windows\system32\mswsock.dll
+0x74d50000 - 0x74d56000 	C:\Windows\System32\wship6.dll
+0x6d6e0000 - 0x6d6e9000 	C:\Program Files\Java\jdk1.6.0_10\jre\bin\nio.dll
+
+VM Arguments:
+jvm_args: -Xverify:none -da -Xmx512m -Xss1024k -Djruby.base=D:\DiscoD\jruby-1.3.0 -Djruby.home=D:\DiscoD\jruby-1.3.0 -Djruby.lib=D:\DiscoD\jruby-1.3.0\lib -Djruby.shell=cmd.exe -Djruby.script=jruby.bat 
+java_command: org.jruby.Main script\generate scaffold --skip tag nombre:string codigo:string institucion_id:integer
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.6.0_10\jre
+PATH=C:\Program Files\ImageMagick-6.5.3-Q8;;C:\Program Files\MySQL\MySQL Server 5.1\bin;C:\Program Files\Git\cmd;C:\Program Files\CollabNet Subversion;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\Wbem;C:\Windows;C:\Windows\system32;c:\ruby\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Java\jdk1.6.0_10\bin
+USERNAME=Julio
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 15 Stepping 13, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows NT 6.1 Build 7100 
+
+CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 15 stepping 13, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3
+
+Memory: 4k page, physical 2097151k(1832648k free), swap 4194303k(4194303k free)
+
+vm_info: Java HotSpot(TM) Client VM (11.0-b15) for windows-x86 JRE (1.6.0_10-b33), built on Sep 26 2008 01:00:43 by "java_re" with MS VC++ 7.1
+
+time: Tue Oct 20 15:47:50 2009
+elapsed time: 10 seconds
+

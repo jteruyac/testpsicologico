@@ -1,0 +1,43 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
+
+<h1>Registro de instituciones</h1>
+<br />
+<% form_for(@institucion, :html => {:id => "new_institucion_form" }) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nombre %><br />
+    <%= f.text_field :nombre %>
+  </p>
+  <p>
+    <%= f.label :tipo %><br />
+    <%= f.select(:tipo,[ "Colegio", "Universidad", "Empresa", "Otro"]) %>
+  </p>
+  <p>
+    <%= f.submit 'Crear' %>
+  </p>
+<% end %>
+
+  <%= link_to 'Listado de Instituciones', institucions_path %>
+  <script type="text/javascript">
+    var frmvalidator  = new Validator("new_institucion_form");
+
+    frmvalidator.addValidation("institucion[nombre]","req","Por favor ingrese el nombre de la institución");
+    frmvalidator.addValidation("institucion[nombre]","alphanumeric_space","El nombre solo permite valores alfanuméricos");
+    frmvalidator.addValidation("institucion[nombre]","maxlen=50","El nombre tiene una longitud máxima de 50 caracteres");
+    frmvalidator.addValidation("institucion[tipo]","req","Por favor seleccione el tipo de institución");
+
+    window.onload = function()
+    {
+      <% if flash[:notice] == 'Error 10' %>
+        alert('El nombre ingresado ya está siendo utilizado');
+      <% end %>
+    }
+  </script>
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

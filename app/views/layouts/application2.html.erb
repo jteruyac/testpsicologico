@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Sistema de Autoevaluación Psicológica</title>
+  <%= stylesheet_link_tag 'layout' %>
+</head>
+<body>
+<div id="container">
+    <div id="banner">
+      Sistema de Autoevaluación Psicológica
+    </div>
+    <div id="nav">
+      <% if (session["usuario"].nil?) %>
+      <ul>
+        <li> <%= link_to "Registrarse", :controller => 'usuarios', :action => 'new'%> </li>
+        <li> <%= link_to "Ingresar al sistema", :controller => 'main', :action => 'login'%> </li>
+      </ul>
+      <% else %>
+          <% if (session["usuario"].administrador) %>
+            <center>Bienvenido, <%= session["usuario"].nombre %></center>
+            <ul>
+              <li> <%= link_to "Usuarios Registrados", :controller => 'usuarios', :action => 'index'%> </li>
+              <li> <%= link_to "Instituciones Registradas", :controller => 'institucions', :action => 'index'%> </li>
+              <li> <%= link_to "Carreras Registradas", :controller => 'carreras', :action => 'index'%> </li>
+              <li> <%= link_to "Test Psicológicos", :controller => 'main', :action => 'tablero'%> </li>
+              <li> <%= link_to "Reportes", :controller => 'reportes', :action => 'panel' %> </li>
+              <li> <%= link_to "Salir", :controller => 'main', :action => 'logout'%> </li>
+            </ul>
+          <% end %>
+          <% if (!session["usuario"].administrador) %>
+            <center>Bienvenido, <%= session["usuario"].nombre %></center>
+            <ul>
+              <li> <%= link_to "Tests", :controller => 'main', :action => 'principal'%> </li>
+              
+              <li> <%= link_to "Salir", :controller => 'main', :action => 'logout'%> </li>
+            </ul>
+
+          <% end %>
+      <% end %>
+    </div>
+    <div id="content">
+      <%= yield %>
+    </div>
+    <div id="footer">
+        &copy; 2009 product by <%= link_to 'Java Software Factory', 'http://computacion.upc.edu.pe/jfactory/' %> Proyecto Autoevaluación Psicológica
+    </div>
+</div>
+    
+</body>
+</html>

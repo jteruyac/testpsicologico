@@ -1,0 +1,39 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<h1 align="center">Instituciones Registradas</h1>
+<br />
+
+<% if @institucions.length != 0 %>
+<table align="center">
+  <tr>
+    <th>Nombre</th>
+    <th>Tipo</th>
+  </tr>
+
+<% @institucions.each do |institucion| %>
+  <tr>
+    <td><%=h institucion.nombre %></td>
+    <td><%=h institucion.tipo %></td>
+    <td><%= link_to 'Tags', :controller => :tags, :action => :index, :institucion => institucion.id.to_s %></td>
+    <td><%= link_to 'Editar', edit_institucion_path(institucion) %></td>
+    <td><%= link_to 'Eliminar', institucion, :confirm => '¿Está seguro?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<% else %>
+    <center>La lista de instituciones está vacía.</center>
+    <br />
+<% end %>
+
+
+<br />
+<center>
+  <%= link_to 'Nueva institución', new_institucion_path %>
+</center>
+
+<br />
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

@@ -1,0 +1,106 @@
+  # set the filename sent to the user with __filename variable
+  # this is optional, if you don't set it, the name will be like products.xls
+
+  __filename = "Reporte de promedios.xls"
+
+
+  bold = Spreadsheet::Format.new(:weight => :bold)
+  title_format = Spreadsheet::Format.new(:color => :blue, :weight => :bold, :size => 18)
+  # :horizontal_align => :right
+
+  # we get 'xls' variable which is a Workbook object
+  # then we can create some worksheet to work with, with create_worksheet method
+
+  sheet1 = xls.create_worksheet
+
+  # fill the [0, 0] cell
+
+  sheet1[0, 0] = "Reporte de promedios"
+  sheet1.row(0).set_format(0, title_format)
+  sheet1[1, 0] = "Test Psicológico: " + @prueba.nombre
+  sheet1[2, 0] = "Personas incluídas en la muestra: " + @cant_usuarios.to_s
+
+  # Worksheet#row will return a Row object. We can modify it just like an Array.
+  # this code will return the second row and fill the cells.
+
+  sheet1[4, 0] = "Filtros Utilizados"
+  sheet1.row(4).default_format = bold
+  row_indx = 0
+
+  if (@filtros.length != 0)
+    sheet1.row(5).concat ["Filtro", "Valor"]
+    row_indx = 6
+    @filtros.each do |filter_element|
+        sheet1.row(row_indx).concat [filter_element[:campo], filter_element[:valor]]
+        row_indx = row_indx + 1
+    end
+
+  else
+    sheet1[5, 0] = "No se utilizaron filtros en este reporte"
+    row_indx = 6
+  end
+
+  row_indx = row_indx + 1
+
+  # Aqui recien va el reporte
+  sheet1[row_indx, 0] = "Promedio General"
+  sheet1.row(row_indx).default_format = bold
+  row_indx = row_indx + 1
+  sheet1.row(row_indx).concat ['Lógico', 'Formal', 'Emotivo', 'Intuitivo']
+  row_indx = row_indx + 1
+  sheet1.row(row_indx).concat [@totales[:logico], @totales[:formal], @totales[:emotivo], @totales[:intuitivo]]
+  row_indx = row_indx + 1
+
+  row_indx = row_indx + 1
+
+  # Aqui recien va el reporte
+  sheet1[row_indx, 0] = "Número de Personas por Estilo Dominante"
+  sheet1.row(row_indx).default_format = bold
+  row_indx = row_indx + 1
+  sheet1.row(row_indx).concat ['Lógico', 'Formal', 'Emotivo', 'Intuitivo', 'Lógico - Formal', 'Lógico - Emotivo', 'Lógico - Intuitivo', 'Formal - Emotivo', 'Formal - Intuitivo', 'Emotivo - Intuitivo', 'Lógico - Formal - Emotivo', 'Lógico - Formal - Intuitivo', 'Lógico - Emotivo - Intuitivo',  'Formal - Emotivo - Intuitivo', 'Lógico - Formal - Emotivo - Intuitivo' ]
+  row_indx = row_indx + 1
+  sheet1.row(row_indx).concat [@totales[:logico], @totales[:formal], @totales[:emotivo], @totales[:intuitivo]]
+  row_indx = row_indx + 1
+
+  row_indx = row_indx + 1
+
+  # Aqui recien va el reporte
+  sheet1[row_indx, 0] = "Número de Personas por Par Dominante"
+  sheet1.row(row_indx).default_format = bold
+  row_indx = row_indx + 1
+  sheet1.row(row_indx).concat ['Realista', 'Idealista', 'Cognitivo', 'Instintivo', 'Realista - Idealista', 'Realista - Cognitivo', 'Realista - Instintivo', 'Idealista - Cognitivo', 'Idealista - Instintivo', 'Cognitivo - Instintivo', 'Realista - Idealista - Cognitivo', 'Realista - Idealista - Instintivo', 'Realista - Cognitivo - Instintivo',  'Idealista - Cognitivo - Instintivo', 'Realista - Idealista - Cognitivo - Instintivo' ]
+  row_indx = row_indx + 1
+  sheet1.row(row_indx).concat [@totales[:logico], @totales[:formal], @totales[:emotivo], @totales[:intuitivo]]
+  row_indx = row_indx + 1
+
+  row_indx = row_indx + 1
+
+  sheet1[row_indx, 0] = "Promedio por pregunta"
+  sheet1.row(row_indx).default_format = bold
+  row_indx = row_indx + 1
+  @lista_hashes.each do |item_preg|
+    sheet1[row_indx, 0] = item_preg[:orden].to_s + '. ' + item_preg[:pregunta]
+    row_indx = row_indx + 1
+    sheet1[row_indx, 1] = "Estilo"
+    sheet1[row_indx, 2] = "Puntaje"
+    sheet1[row_indx, 3] = "Alternativa"
+    sheet1.row(row_indx).default_format = bold
+    row_indx = row_indx + 1
+    sheet1[row_indx, 1] = "Lógico"
+    sheet1[row_indx, 2] = item_preg[:logico]
+    sheet1[row_indx, 3] = item_preg[:txtL]
+    row_indx = row_indx + 1
+    sheet1[row_indx, 1] = "Formal"
+    sheet1[row_indx, 2] = item_preg[:formal]
+    sheet1[row_indx, 3] = item_preg[:txtF]
+    row_indx = row_indx + 1
+    sheet1[row_indx, 1] = "Emotivo"
+    sheet1[row_indx, 2] = item_preg[:emotivo]
+    sheet1[row_indx, 3] = item_preg[:txtE]
+    row_indx = row_indx + 1
+    sheet1[row_indx, 1] = "Intuitivo"
+    sheet1[row_indx, 2] = item_preg[:intuitivo]
+    sheet1[row_indx, 3] = item_preg[:txtI]
+    row_indx = row_indx + 1
+  end
+

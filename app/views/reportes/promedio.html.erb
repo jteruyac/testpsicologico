@@ -1,0 +1,160 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<%= javascript_include_tag 'swfobject.js' %>
+
+<h1 align="center">Reporte de promedios</h1>
+<br />
+<h3>Test <%= @prueba.nombre %></h3>
+<h3>Personas incluidas en la muestra: <%= @cant_usuarios %></h3>
+<br />
+<h3 align="center"><label>Filtros Utilizados</label></h3>
+<div id="div_filtros">
+  <% if @filtros.length != 0 %>
+  <table align="center" border="5">
+    <tr>
+      <th>Filtro</th>
+      <th>Valor</th>
+    </tr>
+    <% @filtros.each do |filter_element| %>
+    <tr>
+        <td><%= filter_element[:campo] %></td>
+        <td><%= filter_element[:valor] %></td>
+    </tr>
+    <% end %>
+  </table>
+  <% else %>
+  <center>No se utilizaron filtros en este reporte.</center>
+  <% end %>
+</div>
+<br />
+<% if (@cant_usuarios > 0) %>
+<h3 align="center">Promedio General</h3>
+<table align="center">
+  <tr>
+    <th>Lógico</th>
+    <th>Formal</th>
+    <th>Emotivo</th>
+    <th>Intuitivo</th>
+  </tr>
+  <tr>
+    <td><%= @totales[:logico] %></td>
+    <td><%= @totales[:formal] %></td>
+    <td><%= @totales[:emotivo] %></td>
+    <td><%= @totales[:intuitivo] %></td>
+  </tr>
+</table>
+<br />
+<center>
+<%= @graph %>
+</center>
+<center><%= link_to 'Exportar gráfico', 'http://chart.apis.google.com/chart?chs=500x500&chxt=y,x&chxp=0,0,10,20,30,40,50,60,70,80,90,100&chd=t:'+@p1.to_s+','+@p2.to_s+','+@p3.to_s+','+@p4.to_s+','+@p5.to_s+','+@p6.to_s+','+@p7.to_s+','+@p8.to_s+','+@p1.to_s+'&chtt=Perfil+de+Cerebro+Multidominante&chxs=0,000000,12,1|1,000000,12,1&chxr=0,0.0,100.0&chxl=1:| |Intuitivo| |Emotivo| |Formal| |Logico&cht=r&chm=f'+@p2.to_s+',CCCC00,0,1,10|f'+@p4.to_s+',FF0000,0,3,10|f'+@p6.to_s+',008811,0,5,10|f'+@p8.to_s+',0000FF,0,7,10|r,D8D8D880,0,0.23,0|r,D7DF0180,0,0.46,0.23|r,FF800080,0,0.77,0.46|r,DF010180,0,1,0.77&chls=2&chdl=[0-23]: Rechazo (Gris)|]23-46]: Uso (Amarillo)|]46-77]: Preferencia (Naranja)|]77-100]: Visible Preferencia (Rojo)&chco=848484&chdlp=b', :popup => true %></center>
+<br />
+<h3 align="center">Número de Personas por Estilo Dominante</h3>
+<table align="center">
+  <tr>
+    <th><label title="<%= "Lógico" %>">Lo</label></th>
+    <th><label title="<%= "Formal" %>">Fo</label></th>
+    <th><label title="<%= "Emotivo" %>">Em</label></th>
+    <th><label title="<%= "Intuitivo" %>">In</label></th>
+    <th><label title="<%= "Lógico - Formal" %>">Lo-Fo</label></th>
+    <th><label title="<%= "Lógico - Emotivo" %>">Lo-Em</label></th>
+    <th><label title="<%= "Lógico - Intuitivo" %>">Lo-In</label></th>
+    <th><label title="<%= "Formal - Emotivo" %>">Fo-Em</label></th>
+    <th><label title="<%= "Formal - Intuitivo" %>">Fo-In</label></th>
+    <th><label title="<%= "Emotivo - Intuitivo" %>">Em-In</label></th>
+    <th><label title="<%= "Lógico - Formal - Emotivo" %>">Lo-Fo-Em</label></th>
+    <th><label title="<%= "Lógico - Formal - Intuitivo" %>">Lo-Fo-In</label></th>
+    <th><label title="<%= "Lógico - Emotivo - Intuitivo" %>">Lo-Em-In</label></th>
+    <th><label title="<%= "Formal - Emotivo - Intuitivo" %>">Fo-Em-In</label></th>
+    <th><label title="<%= "Lógico - Formal - Emotivo - Intuitivo" %>">Lo-Fo-Em-In</label></th>
+  </tr>
+  <tr>
+    <td><%= @conteo_diagnosticos[0].to_s %></td>
+    <td><%= @conteo_diagnosticos[1].to_s %></td>
+    <td><%= @conteo_diagnosticos[2].to_s %></td>
+    <td><%= @conteo_diagnosticos[3].to_s %></td>
+    <td><%= @conteo_diagnosticos[4].to_s %></td>
+    <td><%= @conteo_diagnosticos[5].to_s %></td>
+    <td><%= @conteo_diagnosticos[6].to_s %></td>
+    <td><%= @conteo_diagnosticos[7].to_s %></td>
+    <td><%= @conteo_diagnosticos[8].to_s %></td>
+    <td><%= @conteo_diagnosticos[9].to_s %></td>
+    <td><%= @conteo_diagnosticos[10].to_s %></td>
+    <td><%= @conteo_diagnosticos[11].to_s %></td>
+    <td><%= @conteo_diagnosticos[12].to_s %></td>
+    <td><%= @conteo_diagnosticos[13].to_s %></td>
+    <td><%= @conteo_diagnosticos[14].to_s %></td>
+  </tr>
+</table>
+<br />
+<h3 align="center">Número de Personas por Par Dominante</h3>
+<table align="center">
+  <tr>
+    <th><label title="<%= "Realista" %>">Re </label></th>
+    <th><label title="<%= "Idealista" %>">Id </label></th>
+    <th><label title="<%= "Cognitivo" %>">Co </label></th>
+    <th><label title="<%= "Instintivo" %>">In </label></th>
+    <th><label title="<%= "Realista - Idealista" %>">Re-Id</label></th>
+    <th><label title="<%= "Realista - Cognitivo" %>">Re-Co</label></th>
+    <th><label title="<%= "Realista - Instintivo" %>">Re-In</label></th>
+    <th><label title="<%= "Idealista - Cognitivo" %>">Id-Co</label></th>
+    <th><label title="<%= "Idealista - Instintivo" %>">Id-In</label></th>
+    <th><label title="<%= "Cognitivo - Instintivo" %>">Co-In</label></th>
+    <th><label title="<%= "Realista - Idealista - Cognitivo" %>">Re-Id-Co</label></th>
+    <th><label title="<%= "Realista - Idealista - Instintivo" %>">Re-Id-In</label></th>
+    <th><label title="<%= "Realista - Cognitivo - Instintivo" %>">Re-Co-In</label></th>
+    <th><label title="<%= "Idealista - Cognitivo - Instintivo" %>">Id-Co-In</label></th>
+    <th><label title="<%= "Realista - Idealista - Cognitivo - Instintivo" %>">Re-Id-Co-In</label></th>
+  </tr>
+
+  <tr>
+    <td><%= @conteo_diagnosticos_par[0].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[1].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[2].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[3].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[4].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[5].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[6].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[7].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[8].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[9].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[10].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[11].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[12].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[13].to_s %></td>
+    <td><%= @conteo_diagnosticos_par[14].to_s %></td>
+  </tr>
+</table>
+<br />
+<h3 align="center">Promedio por Pregunta</h3>
+<table align="center">
+  <tr>
+    <th>Pregunta</th>
+    <th>Lógico</th>
+    <th>Formal</th>
+    <th>Emotivo</th>
+    <th>Intuitivo</th>
+  </tr>
+  <%  @lista_hashes.each do |itCo| %>
+  <tr>
+    <td><%= itCo[:orden] %>. <%= itCo[:pregunta] %>   </td>
+    <td><label title="<%= itCo[:txtL] %>"><%= itCo[:logico] %></label></td>
+    <td><label title="<%= itCo[:txtF] %>"><%= itCo[:formal] %></label></td>
+    <td><label title="<%= itCo[:txtE] %>"><%= itCo[:emotivo] %></label></td>
+    <td><label title="<%= itCo[:txtI] %>"><%= itCo[:intuitivo] %></label></td>
+  </tr>
+  <% end %>
+</table>
+
+<% else %>
+<center><label>No se encontraron evaluaciones que coincidan con los parámetros de búsqueda</label></center>
+<% end %>
+
+
+<br />
+<center><% if (@cant_usuarios > 0) %><%= link_to 'Exportar a Excel', :controller => :reportes, :action => :promediosxls, :clv => @code %><% end %> <%= link_to 'Generar otro reporte', :controller => :reportes, :action => :panel %></center>
+<br />
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

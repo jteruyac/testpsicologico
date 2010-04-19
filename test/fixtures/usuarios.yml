@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  nombre: MyString
+  fecha_nacimiento: 2009-06-17 16:08:43
+  sexo: MyString
+  nivel_educacion: MyString
+  ocupacion: MyString
+  administrador: false
+
+two:
+  nombre: MyString
+  fecha_nacimiento: 2009-06-17 16:08:43
+  sexo: MyString
+  nivel_educacion: MyString
+  ocupacion: MyString
+  administrador: false

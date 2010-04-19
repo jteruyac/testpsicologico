@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  evaluacion_id: 1
+  pregunta_id: 1
+  puntaje: 1
+
+two:
+  evaluacion_id: 1
+  pregunta_id: 1
+  puntaje: 1

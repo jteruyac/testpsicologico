@@ -1,0 +1,46 @@
+  # set the filename sent to the user with __filename variable
+  # this is optional, if you don't set it, the name will be like products.xls
+
+  __filename = "Perfil de la dominancia cerebral de Herrmann.xls"
+
+
+  bold = Spreadsheet::Format.new(:weight => :bold)
+  title_format = Spreadsheet::Format.new(:color => :blue, :weight => :bold, :size => 18)
+  # :horizontal_align => :right
+
+  # we get 'xls' variable which is a Workbook object
+  # then we can create some worksheet to work with, with create_worksheet method
+
+  sheet1 = xls.create_worksheet
+
+  # fill the [0, 0] cell
+
+  sheet1[0, 0] = "Perfil de la dominancia cerebral de Herrmann"
+  sheet1.row(0).set_format(0, title_format)
+  sheet1[1, 0] = "Test Psicológico: " + @prueba_nombre
+  sheet1[2, 0] = "Para: " + session["usuario"].nombre
+
+  sheet1[4, 0] = "Puntajes Obtenidos"
+  sheet1.row(4).default_format = bold
+
+  sheet1.row(6).concat ["Nombre", "Fórmula", "Descripción", "Puntaje"]
+  sheet1.row(7).concat ["Estilo Lógico", "A", "Izquierdo Inferior", @puntaje_logico ]
+  sheet1.row(8).concat ["Estilo Formal", "B", "Derecho Inferior", @puntaje_formal ]
+  sheet1.row(9).concat ["Estilo Emotivo", "C", "Derecho Superior", @puntaje_emotivo ]
+  sheet1.row(10).concat ["Estilo Intuitivo", "D", "Izquierdo Superior", @puntaje_intuitivo ]
+
+  sheet1[12,0] = "El tipo dominante es el estilo:" + @diagnostico
+  sheet1[13,0] = "Recomendaciones:" + @recomendacion_diagnostico
+
+
+  sheet1[15, 0] = "Análisis de Pares"
+  sheet1.row(15).default_format = bold
+
+  sheet1.row(17).concat ["Nombre", "Fórmula", "Descripción", "Puntaje"]
+  sheet1.row(18).concat ["Estilo Realista", "A", "Izquierdo Inferior", @puntaje_logico ]
+  sheet1.row(19).concat ["Estilo Idealista", "B", "Derecho Inferior", @puntaje_formal ]
+  sheet1.row(20).concat ["Estilo Cognitivo", "C", "Derecho Superior", @puntaje_emotivo ]
+  sheet1.row(21).concat ["Estilo Instintivo", "D", "Izquierdo Superior", @puntaje_intuitivo ]
+
+  sheet1[23,0] = "El par dominante es el estilo: " + @diagnostico_par
+  sheet1[24,0] = "Recomendaciones:" + @recomendacion_diagnostico

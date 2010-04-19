@@ -1,0 +1,55 @@
+  # set the filename sent to the user with __filename variable
+  # this is optional, if you don't set it, the name will be like products.xls
+
+  __filename = "Reporte de dominancias.xls"
+  bold = Spreadsheet::Format.new(:weight => :bold)
+  title_format = Spreadsheet::Format.new(:color => :blue, :weight => :bold, :size => 18)
+
+  # we get 'xls' variable which is a Workbook object
+  # then we can create some worksheet to work with, with create_worksheet method
+
+  sheet1 = xls.create_worksheet
+
+  # fill the [0, 0] cell
+
+  sheet1[0, 0] = "Reporte de dominancias"
+  sheet1.row(0).set_format(0, title_format)
+  sheet1[1, 0] = "Test Psicológico: " + @prueba.nombre
+  sheet1[2, 0] = "Personas incluídas en la muestra: " + @cant_usuarios.to_s
+
+  # Worksheet#row will return a Row object. We can modify it just like an Array.
+  # this code will return the second row and fill the cells.
+
+  sheet1[4, 0] = "Filtros Utilizados"
+  sheet1.row(4).default_format = bold
+  row_indx = 0
+
+  if (@filtros.length != 0)
+    sheet1.row(5).concat ["Filtro", "Valor"]
+    row_indx = 6
+    @filtros.each do |filter_element|
+        sheet1.row(row_indx).concat [filter_element[:campo], filter_element[:valor]]
+        row_indx = row_indx + 1
+    end
+
+  else
+    sheet1[5, 0] = "No se utilizaron filtros en este reporte"
+    row_indx = 6
+  end
+
+  row_indx = row_indx + 1
+
+  # Aqui recien va el reporte
+  if (@cant_usuarios > 0)
+    sheet1.row(row_indx).concat ['Nombre', 'Lógico', 'Formal', 'Emotivo', 'Intuitivo', 'Realista', 'Idealista', 'Cognitivo', 'Instintivo']
+    row_indx = row_indx + 1
+    @lista_hashes.each do |item|
+        pt_realista = item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_formal
+        pt_idealista = item[:evaluacion].puntaje_emotivo + item[:evaluacion].puntaje_intuitivo
+        pt_cognitivo = item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_intuitivo
+        pt_instintivo = item[:evaluacion].puntaje_formal + item[:evaluacion].puntaje_emotivo
+
+        sheet1.row(row_indx).concat [item[:nombre], item[:evaluacion].puntaje_logico, item[:evaluacion].puntaje_formal, item[:evaluacion].puntaje_emotivo, item[:evaluacion].puntaje_intuitivo, pt_realista, pt_idealista, pt_cognitivo, pt_instintivo]
+        row_indx = row_indx + 1
+    end
+  end

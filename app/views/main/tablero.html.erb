@@ -1,0 +1,24 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador)) %>
+
+<h1 align="center">Test Psicológicos Disponibles </h1>
+
+<br />
+<% contador = 0 %>
+
+  <% @pruebas.each do |prueba| %>
+
+    <% contador += 1 %>
+
+    <p>
+        <%=contador.to_s %>. <%= prueba.nombre %>
+        <%= link_to "Mostrar", :controller => :pruebas, :action => :show, :id => prueba.id %> <%= link_to "Eliminar", prueba, :method => :delete, :confirm => '¿Esta seguro de eliminar definitivamente el test psicológico seleccionado?' %> <%= link_to "Modificar", :controller => :pruebas, :action => :edit, :id => prueba.id  %>
+    </p>
+  <% end %>
+
+
+<%= link_to 'Crear un Test psicológico', new_prueba_path %>
+<br />
+
+<%else%>
+<%= render :partial => "unauthorized" %>
+<%end%>

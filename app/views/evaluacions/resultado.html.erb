@@ -1,0 +1,119 @@
+<% if ((session["usuario"])&&(!session["usuario"].administrador)&&(@prueba)&&(session["usuario"].id == @usrid)) %>
+
+<%= stylesheet_link_tag 'blue/style.css' %>
+<%= javascript_include_tag 'frameworks/jquery-1.3.2.min.js' %>
+<%= javascript_include_tag 'frameworks/jquery.tablesorter.min.js' %>
+
+<%= javascript_include_tag 'swfobject.js' %>
+<h1 align="center">Perfil de la dominancia cerebral de Herrmann</h1>
+<br />
+<h3 align="center"> Test Psicológico: <%= @prueba.nombre %> </h3>
+<h4 align="center"> Para: <%= session["usuario"].nombre %></h4>
+
+<center>
+<%= @graph %>
+</center>
+<center>
+<%= link_to 'Exportar gráfico', 'http://chart.apis.google.com/chart?chs=500x500&chxt=y,x&chxp=0,0,10,20,30,40,50,60,70,80,90,100&chd=t:'+@p1.to_s+','+@puntaje_intuitivo.to_s+','+@p3.to_s+','+@puntaje_emotivo.to_s+','+@p5.to_s+','+@puntaje_formal.to_s+','+@p7.to_s+','+@puntaje_logico.to_s+','+@p1.to_s+'&chtt=Perfil+de+Cerebro+Multidominante&chxs=0,000000,12,1|1,000000,12,1&chxr=0,0.0,100.0&chxl=1:| |Intuitivo| |Emotivo| |Formal| |Logico&cht=r&chm=f'+@puntaje_intuitivo.to_s+',CCCC00,0,1,10|f'+@puntaje_emotivo.to_s+',FF0000,0,3,10|f'+@puntaje_formal.to_s+',006600,0,5,10|f'+@puntaje_logico.to_s+',0000FF,0,7,10|r,D8D8D880,0,0.23,0|r,D7DF0180,0,0.46,0.23|r,FF800080,0,0.77,0.46|r,DF010180,0,1,0.77&chls=2&chdl=[0-23]: Rechazo (Gris)|]23-46]: Uso (Amarillo)|]46-77]: Preferencia (Naranja)|]77-100]: Visible Preferencia (Rojo)&chco=848484&chdlp=b', :popup => true %>
+</center>
+<h3 align="center"> Puntajes Obtenidos:</h3>
+<br />
+<table id="Styles" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Fórmula</th>
+    <th>Descripción</th>
+    <th>Puntaje</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>Estilo Lógico </td>
+    <td>A </td>
+    <td>Izquierdo Inferior </td>
+    <td><%= @puntaje_logico %></td>
+  </tr>
+  <tr>
+    <td>Estilo Formal </td>
+    <td>B </td>
+    <td>Derecho Inferior </td>
+    <td><%= @puntaje_formal %></td>
+  </tr>
+  <tr>
+    <td>Estilo Emotivo </td>
+    <td>C </td>
+    <td>Derecho Superior </td>
+    <td><%= @puntaje_emotivo %></td>
+  </tr>
+  <tr>
+    <td>Estilo Intuitivo </td>
+    <td>D </td>
+    <td>Izquierdo Superior </td>
+    <td><%= @puntaje_intuitivo %></td>
+  </tr>
+  </tbody>
+</table>
+<br />
+
+  El tipo dominante es el estilo: <%= @diagnostico %>
+
+<p>
+  <%= @recomendacion_diagnostico %>
+</p>
+<br />
+<h3 align="center"> Análisis de Pares:</h3>
+<table id="parStyles" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Fórmula</th>
+    <th>Descripción</th>
+    <th>Puntaje</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>Estilo de Pensamiento REALISTA </td>
+    <td>A + B </td>
+    <td>Hemisferio Izquierdo </td>
+    <td><%= @puntaje_realista %></td>
+  </tr>
+  <tr>
+    <td>Estilo de Pensamiento IDEALISTA </td>
+    <td>C + D </td>
+    <td>Hemisferio Derecho </td>
+    <td><%= @puntaje_idealista %></td>
+  </tr>
+  <tr>
+    <td>Estilo de Pensamiento COGNITIVO </td>
+    <td>A + D </td>
+    <td>Cerebral </td>
+    <td><%= @puntaje_cognitivo %></td>
+  </tr>
+  <tr>
+    <td>Estilo de Pensamiento INSTINTIVO </td>
+    <td>B + C </td>
+    <td>Límbico </td>
+    <td><%= @puntaje_instintivo %></td>
+  </tr>
+  </tbody>
+</table>
+<br />
+
+  El par dominante es el estilo: <%= @diagnostico_par %>
+
+<p>
+  <%= @recomendacion_diagnostico_par %>
+</p>
+<br />
+<center>
+    <%= link_to 'Exportar a Excel', :controller => :evaluacions, :action => :resultadoxls, :clv => @code %> <%= link_to 'Regresar', :controller => :main, :action => :principal %>
+</center>
+
+<script type="text/javascript">
+  $(document).ready(function()     {    $("Styles").tablesorter();   $("parStyles").tablesorter();   } );
+</script>
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

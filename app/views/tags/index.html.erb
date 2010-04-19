@@ -1,0 +1,42 @@
+<% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+
+<h1 align="center">
+  <%= @institucion.nombre %>
+</h1>
+<h2 align="center">
+  Lista de Tags
+</h2>
+<br />
+<% if @tags.length != 0 %>
+    <table align="center">
+      <tr>
+        <th>Nombre</th>
+        <th>Código</th>
+      </tr>
+
+    <% @tags.each do |tag| %>
+      <tr>
+        <td><%=h tag.nombre %></td>
+        <td><%=h tag.codigo %></td>
+        <td><%= link_to 'Eliminar', tag, :confirm => '¿Estas seguro?', :method => :delete %></td>
+      </tr>
+    <% end %>
+    </table>
+
+<% else %>
+    <center>La lista de tags está vacía.</center>
+    <br />
+<% end %>
+
+<br />
+<center>
+  <%= link_to 'Nuevo tag', :controller => :tags, :action => :new, :institucion => @institucion.id  %> |
+  <%= link_to 'Lista de Instituciones', :controller => :institucions, :action => :index  %>
+</center>
+
+<br />
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>

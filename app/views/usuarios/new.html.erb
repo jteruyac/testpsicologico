@@ -1,0 +1,539 @@
+<% if (session["usuario"].nil?) %>
+
+<%= javascript_include_tag 'frameworks/mootools-1.2-core.js' %>
+<%= javascript_include_tag 'frameworks/mootools-1.2-more.js' %>
+<%= javascript_include_tag 'date/datepicker.js' %>
+<%= stylesheet_link_tag 'date/datepicker_dashboard.css' %>
+
+<%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
+
+<h1 align="center">Registro de usuarios</h1>
+<br />
+<h4>Bienvenido. Por favor ingresa tus datos:</h4>
+
+<% form_for(@usuario, :html => {:id => "new_usuario_form" }) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label 'Nombre completo:' %><br />
+    <%= f.text_field :nombre %>
+  </p>
+  <p>
+    <%= f.label :usuario %><br />
+    <%= f.text_field :usuario %>
+  </p>
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label :fecha_nacimiento %><br />
+    <%= f.text_field :fecha_nacimiento, :class => 'date nacimiento' %>
+  </p>
+  <p>
+    <%= f.label :sexo %><br />
+    <%= f.select(:sexo, [ "Masculino", "Femenino" ]) %>
+  </p>
+  <p>
+    <%= f.label 'Lugar al que pertenece:' %><br />
+    <%= f.select(:ubicacion_macro, [ "Lima", "Departamento", "Extranjero"]) %>
+  </p>
+  <p>
+    <%= f.label 'Especificar ubicación:' %><br />
+    <%= f.select(:ubicacion_micro, []) %>
+  </p>
+  <p>
+    <%= f.label 'Culminó sus estudios escolares en un colegio: ' %><br />
+    <%= f.select(:tipo_colegio, [ "Estatal", "Privado" ]) %>
+  </p>
+  <p>
+    <%= f.label 'Nombre de tu colegio:' %><br />
+    <%= f.text_field :nombre_colegio %>
+  </p>
+  <p>
+    <%= f.label 'Selecciona la institución que más te identifique:' %><br />
+    <%= f.collection_select(:institucion_id ,@institucions, :id, :nombre, options = {:prompt => "Ninguna"}, :class =>"institucion") %>
+  </p>
+  <p>
+    <%= f.label 'He ido a la universidad (Egresados y Estudiantes)' %><br />
+    <%= f.check_box :consulta_universidad %>
+  </p>
+  <div id ="div_universidad">
+  <p>
+    <%= f.label 'Nombre de la universidad:' %><br />
+    <%= f.text_field :nombre_universidad %>
+  </p>
+  <p>
+    <%= f.label 'Egresado de la universidad' %><br />
+    <%= f.check_box :consulta_egresado %>
+  </p>
+  <p>
+    <%= f.label 'Año de ingreso a la universidad:' %><br />
+    <%= f.text_field :anio_ingreso_universidad %>
+  </p>
+  <p id ="div_egresado">
+    <%= f.label 'Año de egreso de la universidad:' %><br />
+    <%= f.text_field :anio_egreso_universidad %>
+  </p>
+  <p>
+    <%= f.label 'Carrera:' %><br />
+    <%= f.collection_select(:carrera_id ,@carreras, :id, :nombre, options = {:prompt => "Otra opción"}, :class =>"carrera") %>
+  </p>
+  <p id ="div_especialidad">
+    <%= f.label 'Especialidad:' %><br />
+    <%= f.select(:nombre_especialidad, ["Otra opción", "Organizacional", "Clínica", "Educacional" ]) %>
+    <br />
+  </p>
+  <br />
+  </div>
+
+  <p>
+    <%= f.submit 'Crear' %>
+  </p>
+<% end %>
+<br />
+
+  <script type="text/javascript">
+    var frmvalidator  = new Validator("new_usuario_form");
+
+    function cambiar_validacion()
+    {
+        frmvalidator.clearAllValidations();
+        
+        frmvalidator.addValidation("usuario[nombre]","req","Por favor ingrese su nombre completo");
+        frmvalidator.addValidation("usuario[nombre]","alphabetic_space","El nombre solo permite valores alfabéticos");
+        frmvalidator.addValidation("usuario[usuario]","req","Por favor ingrese un usuario");
+        frmvalidator.addValidation("usuario[usuario]","alphanumeric","El usuario solo permite valores alfanuméricos");
+        frmvalidator.addValidation("usuario[password]","req","Por favor ingrese un password");
+        frmvalidator.addValidation("usuario[sexo]","req","Por favor elija su sexo");
+        frmvalidator.addValidation("usuario[ubicacion_macro]","req","Por favor elija su ubicación");
+        frmvalidator.addValidation("usuario[ubicacion_micro]","req","Por favor elija su ubicación específica");
+        frmvalidator.addValidation("usuario[tipo_colegio]","req","Por favor indique el tipo de colegio en el que culminó sus estudios escolares");
+        frmvalidator.addValidation("usuario[nombre_colegio]","req","Por favor ingrese el nombre del colegio en el que culminó sus estudios escolares");
+        frmvalidator.addValidation("usuario[nombre_colegio]","alphanumeric_space","El nombre del colegio solo permite valores alfanuméricos");
+        
+
+        if (document.getElementById("usuario_consulta_universidad").checked)
+        {
+            var currentTime = new Date();
+            var year = currentTime.getFullYear()+1;
+            year = year + '';
+
+            frmvalidator.addValidation("usuario[nombre_universidad]","req","Por favor ingrese el nombre de la universidad en la que estudia/estudió");
+            frmvalidator.addValidation("usuario[anio_ingreso_universidad]","req","Por favor ingrese su año de ingreso a la universidad");
+            frmvalidator.addValidation("usuario[anio_ingreso_universidad]","num","El año de ingreso solo permite valores numéricos");
+            frmvalidator.addValidation("usuario[anio_ingreso_universidad]","greaterthan=1900","El año de ingreso se encuentra fuera del rango de años permitidos");
+            frmvalidator.addValidation("usuario[anio_ingreso_universidad]","lessthan="+year,"El año de ingreso se encuentra fuera del rango de años permitidos");
+            
+
+            if (document.getElementById("usuario_consulta_egresado").checked)
+            {
+                frmvalidator.addValidation("usuario[anio_egreso_universidad]","req","Por favor ingrese su año de egreso de la universidad");
+                frmvalidator.addValidation("usuario[anio_egreso_universidad]","num","El año de egreso solo permite valores numéricos");
+                frmvalidator.addValidation("usuario[anio_egreso_universidad]","greaterthan=1950","El año de egreso se encuentra fuera del rango de años permitidos");
+                frmvalidator.addValidation("usuario[anio_egreso_universidad]","lessthan="+year,"El año de egreso se encuentra fuera del rango de años permitidos");
+                
+            }
+        }
+    }
+  </script>
+
+
+<script type="text/javascript">
+
+    function cambio_ubicacion_micro()
+    {
+      var ubicacion_micro_select = document.getElementById("usuario_ubicacion_micro");
+      var ubicacion_macro_select = document.getElementById("usuario_ubicacion_macro");
+      while(ubicacion_micro_select.length>0)
+      {
+        ubicacion_micro_select.remove(0);
+      }
+      
+      if (ubicacion_macro_select.value == "Lima")
+      {
+        //Lima
+        datos = ["Cercado de Lima",
+                 "Ate",
+                 "Barranco",
+                 "Breña",
+                 "Comas",
+                 "Chorrillos",
+                 "El Agustino",
+                 "Jesús María",
+                 "La Molina",
+                 "La Victoria",
+                 "Lince",
+                 "Magdalena del Mar",
+                 "Miraflores",
+                 "Pueblo Libre",
+                 "Puente Piedra",
+                 "Rimac",
+                 "San Isidro",
+                 "Independencia",
+                 "San Juan de Miraflores",
+                 "San Luis",
+                 "San Martin de Porres",
+                 "San Miguel",
+                 "Santiago de Surco",
+                 "Surquillo",
+                 "Villa María del Triunfo",
+                 "San Juan de Lurigancho",
+                 "Santa Rosa",
+                 "Los Olivos",
+                 "San Borja",
+                 "Villa El Savador",
+                 "Santa Anita",
+                 "Cercado Callao",
+                 "Bellavista",
+                 "Carmen de la Legua",
+                 "La Perla",
+                 "La Punta",
+                 "Ventanilla"];
+        llenacombo('usuario_ubicacion_micro',datos);
+      }
+      else
+        {
+          if (ubicacion_macro_select.value == "Departamento")
+            {
+             //Departamento
+             datos = ["Amazonas",
+                      "Ancash",
+                      "Apurímac",
+                      "Arequipa",
+                      "Ayacucho",
+                      "Cajamarca",
+                      "Cusco",
+                      "Huancavelica",
+                      "Huánuco",
+                      "Ica",
+                      "Junín",
+                      "La Libertad",
+                      "Lambayeque",
+                      "Loreto",
+                      "Madre de Dios",
+                      "Moquegua",
+                      "Pasco",
+                      "Piura",
+                      "Puno",
+                      "San Martin",
+                      "Tacna",
+                      "Tumbes",
+                      "Ucayali"];
+            llenacombo('usuario_ubicacion_micro',datos);
+            }
+            else
+            {
+              //Extranjero
+              datos = [ "Afganistán",
+                        "Albania",
+                        "Alemania",
+                        "Andorra",
+                        "Angola",
+                        "Antigua y Barbuda",
+                        "Arabia Saudita",
+                        "Argelia",
+                        "Argentina",
+                        "Armenia",
+                        "Australia",
+                        "Austria",
+                        "Azerbaiyán",
+                        "Bahamas",
+                        "Bahrein",
+                        "Bangladesh",
+                        "Barbados",
+                        "Belarús",
+                        "Bélgica",
+                        "Belice",
+                        "Benin",
+                        "Bhután",
+                        "Bolivia",
+                        "Bosnia y Herzegovina",
+                        "Botswana",
+                        "Brasil",
+                        "Brunei Darussalam",
+                        "Bulgaria",
+                        "Burkina Faso",
+                        "Burundi",
+                        "Cabo Verde",
+                        "Camboya",
+                        "Camerún",
+                        "Canadá",
+                        "Chad",
+                        "Chile",
+                        "China",
+                        "Chipre",
+                        "Colombia",
+                        "Comoras",
+                        "Congo",
+                        "Costa Rica",
+                        "Côte d'Ivoire",
+                        "Croacia",
+                        "Cuba",
+                        "Dinamarca",
+                        "Djibouti",
+                        "Dominica",
+                        "Ecuador",
+                        "Egipto",
+                        "El Salvador",
+                        "Emiratos Árabes Unidos",
+                        "Eritrea",
+                        "Eslovaquia",
+                        "Eslovenia",
+                        "España",
+                        "Estados Unidos de América",
+                        "Estonia",
+                        "Etiopía",
+                        "Ex República Yugoslava de Macedonia",
+                        "Federación de Rusia",
+                        "Fiji",
+                        "Filipinas",
+                        "Finlandia",
+                        "Francia",
+                        "Gabón",
+                        "Gambia",
+                        "Georgia",
+                        "Ghana",
+                        "Granada",
+                        "Grecia",
+                        "Guatemala",
+                        "Guinea",
+                        "Guinea Bissau",
+                        "Guinea Ecuatorial",
+                        "Guyana",
+                        "Haití",
+                        "Honduras",
+                        "Hungría",
+                        "India",
+                        "Indonesia",
+                        "Irán (República Islámica de)",
+                        "Iraq",
+                        "Irlanda",
+                        "Islandia",
+                        "Islas Marshall",
+                        "Islas Salomón",
+                        "Israel",
+                        "Italia",
+                        "Jamahiriya Árabe Libia",
+                        "Jamaica",
+                        "Japón",
+                        "Jordania",
+                        "Kazajstán",
+                        "Kenya",
+                        "Kirguistán",
+                        "Kiribati",
+                        "Kuwait",
+                        "Lesotho",
+                        "Letonia",
+                        "Liberia",
+                        "Líbano",
+                        "Liechtenstein",
+                        "Lituania",
+                        "Luxemburgo",
+                        "Madagascar",
+                        "Malasia",
+                        "Malawi",
+                        "Maldivas",
+                        "Mali",
+                        "Malta",
+                        "Marruecos",
+                        "Mauricio",
+                        "Mauritania",
+                        "México",
+                        "Micronesia (Estados Federados de)",
+                        "Mónaco",
+                        "Mongolia",
+                        "Montenegro",
+                        "Mozambique",
+                        "Myanmar",
+                        "Namibia",
+                        "Nauru",
+                        "Nepal",
+                        "Nicaragua",
+                        "Niger",
+                        "Nigeria",
+                        "Noruega",
+                        "Nueva Zelandia",
+                        "Omán",
+                        "Países Bajos",
+                        "Pakistán",
+                        "Palau",
+                        "Panamá",
+                        "Papua Nueva Guinea",
+                        "Paraguay",
+                        "Polonia",
+                        "Portugal",
+                        "Qatar",
+                        "Reino Unido de Gran Bretaña e Irlanda del Norte",
+                        "República Árabe Siria",
+                        "República Centroafricana",
+                        "República Checa",
+                        "República de Corea",
+                        "República de Moldova",
+                        "República Democrática del Congo",
+                        "República Democrática Popular de Corea",
+                        "República Dominicana",
+                        "República Popular Democrática de Lao",
+                        "República Unida de Tanzania",
+                        "Rumania",
+                        "Rwanda",
+                        "Saint Kitts y Nevis",
+                        "Samoa",
+                        "San Marino",
+                        "San Vicente y las Granadinas",
+                        "Santa Lucia",
+                        "Santo Tomé y Príncipe",
+                        "Senegal",
+                        "Serbia ",
+                        "Seychelles",
+                        "Sierra Leona",
+                        "Singapur",
+                        "Somalia",
+                        "Sri Lanka",
+                        "Sudáfrica",
+                        "Sudán",
+                        "Suecia",
+                        "Suiza",
+                        "Suriname",
+                        "Swazilandia",
+                        "Tailandia",
+                        "Tayikistán",
+                        "Timor Leste",
+                        "Togo",
+                        "Tonga",
+                        "Trinidad y Tobago",
+                        "Túnez",
+                        "Turkmenistán",
+                        "Turquía",
+                        "Tuvalú",
+                        "Ucrania",
+                        "Uganda",
+                        "Uruguay",
+                        "Uzbekistán",
+                        "Vanuatu",
+                        "Venezuela",
+                        "Viet Nam",
+                        "Yemen",
+                        "Zambia",
+                        "Zimbabwe"];
+              llenacombo('usuario_ubicacion_micro',datos);
+            }
+        }
+
+    }
+    function llenacombo(nombre, datos)
+    {
+        var ubicacion_micro_select = document.getElementById(nombre);
+        contador = 0;
+        while (contador < datos.length)
+        {
+          var elOptNew = document.createElement('option');
+          elOptNew.text = datos[contador];
+          elOptNew.value = datos[contador];
+          try
+          {
+            ubicacion_micro_select.add(elOptNew, null); // standards compliant; doesn't work in IE
+          }
+          catch(ex)
+          {
+            ubicacion_micro_select.add(elOptNew); // IE only
+          }
+          contador = contador + 1;
+        }
+    }
+
+
+// slides
+
+    function slider_universidad()
+    {
+      var element = new Fx.Slide('div_universidad');
+      if (document.getElementById("usuario_consulta_universidad").checked)
+      {
+          element.show();
+          document.getElementById("div_universidad").style.visibility = "visible";
+      }
+      else
+      { 
+          element.hide();
+          document.getElementById("div_universidad").style.visibility = "hidden";
+      }
+      cambiar_validacion();
+    }
+
+    function slider_egresado()
+    {
+    var element = new Fx.Slide('div_egresado');
+    if (document.getElementById("usuario_consulta_egresado").checked)
+      {
+        element.show();
+        document.getElementById("div_egresado").style.visibility = "visible";
+      }
+      else
+        {
+          element.hide();
+          document.getElementById("div_egresado").style.visibility = "hidden";
+        }
+
+     slider_universidad();
+     }
+     
+
+    function slider_especialidad()
+    {
+      var element = new Fx.Slide('div_especialidad');
+      combo = document.getElementById("usuario_carrera_id")
+
+      if (combo.options[combo.selectedIndex].text == "Psicología")
+      {
+        element.show();
+        document.getElementById("div_especialidad").style.visibility = "visible";
+      }
+      else
+      {
+          element.hide();
+          document.getElementById("div_especialidad").style.visibility = "hidden";
+      }
+      slider_egresado()
+    }
+
+     
+
+    window.onload = function()
+    {
+      document.getElementById("usuario_ubicacion_macro").onchange = cambio_ubicacion_micro;
+      document.getElementById("usuario_carrera_id").onchange = slider_especialidad;
+      document.getElementById("usuario_consulta_universidad").onclick = slider_universidad;
+      document.getElementById("usuario_consulta_egresado").onclick = slider_egresado;
+      
+      new DatePicker('.nacimiento', {
+		pickerClass: 'datepicker_dashboard',
+                inputOutputFormat: 'Y/m/d',
+		allowEmpty: true });
+
+      
+    }
+
+    cambio_ubicacion_micro();
+
+    slider_universidad();     
+    slider_egresado();
+    slider_especialidad();
+    
+
+    <% if ((flash[:notice]) && (flash[:notice] == '-1000')) %>
+      alert('El usuario ingresado ya existe. Por favor ingresa otro usuario.');
+    <% end %>
+    <% if ((flash[:notice]) && (flash[:notice] == '-3500')) %>
+      alert("El año de egreso se encuentra fuera del rango de años permitidos");
+    <% end %>
+    <% if ((flash[:notice]) && (flash[:notice] == '-9000')) %>
+      alert('Por favor ingrese una fecha de nacimiento válida');
+    <% end %>
+  </script>
+
+
+
+<%else%>
+<%= render :partial => "main/unauthorized" %>
+<%end%>
