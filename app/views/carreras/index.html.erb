@@ -2,6 +2,8 @@
 
 <h1 align="center">Carreras Registradas</h1>
 <br />
+
+<% if @carreras.length != 0 %>
 <table align="center">
   <tr>
     <th>Nombre</th>
@@ -14,7 +16,10 @@
   </tr>
 <% end %>
 </table>
-
+<% else %>
+    <center>La lista de carreras está vacía.</center>
+    <br />
+<% end %>
 <br />
 
 <center>

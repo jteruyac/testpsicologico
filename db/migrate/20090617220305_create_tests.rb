@@ -15,6 +15,6 @@ class CreateTests < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :tests
+    drop_table :pruebas
   end
 end
