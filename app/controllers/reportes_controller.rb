@@ -142,9 +142,9 @@ class ReportesController < ApplicationController
         end
         # Finally: No admin
         if (condiciones == "")
-           condiciones = "where administrador = 0"
+           condiciones = "where administrador = false"
         else
-           condiciones = condiciones + " and administrador = 0"
+           condiciones = condiciones + " and administrador = false"
         end
 
 
@@ -491,9 +491,9 @@ class ReportesController < ApplicationController
         end
         # Finally: No admin
         if (condiciones == "")
-           condiciones = "where administrador = 0"
+           condiciones = "where administrador = false"
         else
-           condiciones = condiciones + " and administrador = 0"
+           condiciones = condiciones + " and administrador = false"
         end
 
 
