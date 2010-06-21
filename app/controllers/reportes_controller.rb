@@ -33,10 +33,17 @@ class ReportesController < ApplicationController
 
 
   def panel
-    if ((session["usuario"])&&(session["usuario"].administrador == true))
-      @pruebas = Prueba.find_all_by_publicar(true)
-      @instituciones = Institucion.all
-      @carreras = Carrera.all
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      if ((session["usuario"])&&(session["usuario"].administrador == true))
+        @pruebas = Prueba.find_all_by_publicar(true)
+        @instituciones = Institucion.all
+        @carreras = Carrera.all
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 

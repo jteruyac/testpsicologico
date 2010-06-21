@@ -2,6 +2,8 @@
 
 <h1 align="center">Lista de usuarios</h1>
 <br />
+
+<% if @usuarios.length != 0 %>
 <table align="center">
   <tr>
     <th>Nombre</th>
@@ -35,6 +37,10 @@
   </tr>
 <% end %>
 </table>
+<% else %>
+    <center>La lista de usuarios está vacía.</center>
+    <br />
+<% end %>
 
 <br />
 

@@ -8,7 +8,10 @@
   
   <p>
     <%= f.hidden_field :usuario_id, :value => session['usuario'].id %>
+    <% a = session["usuario"] %>
+    <% a.decrypt_nombre %>
     Usuario: <%= session["usuario"].nombre %>
+    <% a.crypt_nombre %>
     <%= f.hidden_field :prueba_id, :value => @numero_prueba %>
   </p>
   <p>

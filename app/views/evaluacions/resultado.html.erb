@@ -8,8 +8,10 @@
 <h1 align="center">Perfil de la dominancia cerebral de Herrmann</h1>
 <br />
 <h3 align="center"> Test Psicológico: <%= @prueba.nombre %> </h3>
+<% a = session["usuario"] %>
+<% a.decrypt_nombre %>
 <h4 align="center"> Para: <%= session["usuario"].nombre %></h4>
-
+<% a.crypt_nombre %>
 <center>
 <%= @graph %>
 </center>

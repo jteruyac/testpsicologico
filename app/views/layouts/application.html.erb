@@ -53,7 +53,10 @@ Released   : 20081103
                                     </ul>
                                     <% else %>
                                         <% if (session["usuario"].administrador) %>
+                                          <% a = session["usuario"] %>
+                                          <% a.decrypt_nombre %>
                                           <h2>Bienvenido, <%= session["usuario"].nombre %></h2>
+                                          <% a.crypt_nombre %>
                                           <br />
                                           <ul>
                                             <li> <%= link_to "Usuarios Registrados", :controller => 'usuarios', :action => 'index'%> </li>
@@ -65,7 +68,10 @@ Released   : 20081103
                                           </ul>
                                         <% end %>
                                         <% if (!session["usuario"].administrador) %>
-                                          <h2>Bienvenido, <%= session["usuario"].nombre %></h2>
+                                          <% a = session["usuario"] %>
+                                          <% a.decrypt_nombre %>
+                                          <h2>Bienvenido, <%= a.nombre %></h2>
+                                          <% a.crypt_nombre %>
                                           <br />
                                           <ul>
                                             <li> <%= link_to "Tests", :controller => 'main', :action => 'principal'%> </li>

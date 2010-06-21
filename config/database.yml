@@ -18,7 +18,7 @@ development:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: TestPsicologico_development
+  database: TestPsicologico_last
   # database: TestPsicologico
   pool: 5
   username: root

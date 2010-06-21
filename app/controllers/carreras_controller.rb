@@ -2,40 +2,68 @@ class CarrerasController < ApplicationController
   # GET /carreras
   # GET /carreras.xml
   def index
-    @carreras = Carrera.all
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @carreras = Carrera.all
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @carreras }
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @carreras }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /carreras/1
   # GET /carreras/1.xml
   def show
-    @carrera = Carrera.find(params[:id])
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @carrera = Carrera.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @carrera }
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @carrera }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /carreras/new
   # GET /carreras/new.xml
   def new
-    @carrera = Carrera.new
-    @carreras = Carrera.all
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @carrera = Carrera.new
+      @carreras = Carrera.all
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @carrera }
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @carrera }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /carreras/1/edit
   def edit
-    @carrera = Carrera.find(params[:id])
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @carrera = Carrera.find(params[:id])
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
+    end
   end
 
   # POST /carreras

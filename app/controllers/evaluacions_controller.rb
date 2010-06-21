@@ -18,6 +18,11 @@ class EvaluacionsController < ApplicationController
       @diagnostico_par = session[:diagnostico_par]
       @recomendacion_diagnostico_par = session[:recomendacion_diagnostico_par]
 
+      a = session["usuario"]
+      a.decrypt_nombre
+      @indiv = a.nombre
+      a.crypt_nombre
+
       respond_to do |format|
         #format.html # index.html.erb
         format.xls
@@ -49,13 +54,20 @@ class EvaluacionsController < ApplicationController
   # GET /evaluacions/new
   # GET /evaluacions/new.xml
   def new
-    @evaluacion = Evaluacion.new
-    @numero_prueba = params[:prueba].to_i
-    @preguntas = Pregunta.find(:all, :include => "alternativas", :conditions => "prueba_id = "+ @numero_prueba.to_s)
-    @prueba = Prueba.find(@numero_prueba)
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @evaluacion }
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @evaluacion = Evaluacion.new
+      @numero_prueba = params[:prueba].to_i
+      @preguntas = Pregunta.find(:all, :include => "alternativas", :conditions => "prueba_id = "+ @numero_prueba.to_s)
+      @prueba = Prueba.find(@numero_prueba)
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @evaluacion }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
@@ -274,60 +286,66 @@ class EvaluacionsController < ApplicationController
   end
 
   def resultado
-    evaluacion = Evaluacion.find(params[:evaluacion])
-    @usrid = evaluacion.usuario_id
-    @prueba = Prueba.find(evaluacion.prueba_id)
-    ############
-    # Puntajes #
-    ############
-    @puntaje_logico = evaluacion.puntaje_logico
-    @puntaje_formal = evaluacion.puntaje_formal
-    @puntaje_emotivo = evaluacion.puntaje_emotivo
-    @puntaje_intuitivo = evaluacion.puntaje_intuitivo
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      evaluacion = Evaluacion.find(params[:evaluacion])
+      @usrid = evaluacion.usuario_id
+      @prueba = Prueba.find(evaluacion.prueba_id)
+      ############
+      # Puntajes #
+      ############
+      @puntaje_logico = evaluacion.puntaje_logico
+      @puntaje_formal = evaluacion.puntaje_formal
+      @puntaje_emotivo = evaluacion.puntaje_emotivo
+      @puntaje_intuitivo = evaluacion.puntaje_intuitivo
 
-    @puntaje_realista = evaluacion.puntaje_realista
-    @puntaje_idealista = evaluacion.puntaje_idealista
-    @puntaje_cognitivo = evaluacion.puntaje_cognitivo
-    @puntaje_instintivo = evaluacion.puntaje_instintivo
+      @puntaje_realista = evaluacion.puntaje_realista
+      @puntaje_idealista = evaluacion.puntaje_idealista
+      @puntaje_cognitivo = evaluacion.puntaje_cognitivo
+      @puntaje_instintivo = evaluacion.puntaje_instintivo
 
-    session[:prueba_nombre] = @prueba.nombre
-    session[:puntos_logico] = @puntaje_logico
-    session[:puntos_formal] = @puntaje_formal
-    session[:puntos_emotivo] = @puntaje_emotivo
-    session[:puntos_intuitivo] = @puntaje_intuitivo
-    session[:puntos_realista] = @puntaje_realista
-    session[:puntos_idealista] = @puntaje_idealista
-    session[:puntos_cognitivo] = @puntaje_cognitivo
-    session[:puntos_instintivo] = @puntaje_instintivo
+      session[:prueba_nombre] = @prueba.nombre
+      session[:puntos_logico] = @puntaje_logico
+      session[:puntos_formal] = @puntaje_formal
+      session[:puntos_emotivo] = @puntaje_emotivo
+      session[:puntos_intuitivo] = @puntaje_intuitivo
+      session[:puntos_realista] = @puntaje_realista
+      session[:puntos_idealista] = @puntaje_idealista
+      session[:puntos_cognitivo] = @puntaje_cognitivo
+      session[:puntos_instintivo] = @puntaje_instintivo
 
-    ##########
+      ##########
 
-    @p1 = calcularx(@puntaje_logico, @puntaje_intuitivo)
-    @p3 = calcularx(@puntaje_intuitivo, @puntaje_emotivo)
-    @p5 = calcularx(@puntaje_emotivo, @puntaje_formal)
-    @p7 = calcularx(@puntaje_formal, @puntaje_logico)
+      @p1 = calcularx(@puntaje_logico, @puntaje_intuitivo)
+      @p3 = calcularx(@puntaje_intuitivo, @puntaje_emotivo)
+      @p5 = calcularx(@puntaje_emotivo, @puntaje_formal)
+      @p7 = calcularx(@puntaje_formal, @puntaje_logico)
 
-    ##########
+      ##########
 
-    @diagnostico = evaluacion.tipo_dominante
-    @diagnostico_par = evaluacion.par_dominante
-    @recomendacion_diagnostico = find_recomendacion(@diagnostico)
-    @recomendacion_diagnostico_par = find_recomendacion_par(@diagnostico_par)
+      @diagnostico = evaluacion.tipo_dominante
+      @diagnostico_par = evaluacion.par_dominante
+      @recomendacion_diagnostico = find_recomendacion(@diagnostico)
+      @recomendacion_diagnostico_par = find_recomendacion_par(@diagnostico_par)
 
-    session[:diagnostico] = @diagnostico
-    session[:recomendacion_diagnostico] = @recomendacion_diagnostico
-    session[:diagnostico_par] = @diagnostico_par
-    session[:recomendacion_diagnostico_par] = @recomendacion_diagnostico_par
+      session[:diagnostico] = @diagnostico
+      session[:recomendacion_diagnostico] = @recomendacion_diagnostico
+      session[:diagnostico_par] = @diagnostico_par
+      session[:recomendacion_diagnostico_par] = @recomendacion_diagnostico_par
 
-    session[:rpt_tipo] = "resultado"
-    @code = rand(4321)
-    session[:rpt_codigo] = @code
+      session[:rpt_tipo] = "resultado"
+      @code = rand(4321)
+      session[:rpt_codigo] = @code
 
-    ##########
-    @graph = open_flash_chart_object(600,300,"/evaluacions/graph_code_radar")
-    # Despliegue:
-    #@graph = open_flash_chart_object(600,300,"/TestPsicologico/evaluacions/graph_code_radar", true, "/TestPsicologico/")
-
+      ##########
+      @graph = open_flash_chart_object(600,300,"/evaluacions/graph_code_radar")
+      # Despliegue:
+      #@graph = open_flash_chart_object(600,300,"/TestPsicologico/evaluacions/graph_code_radar", true, "/TestPsicologico/")
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
+    end
   end
 
 
@@ -358,7 +376,10 @@ class EvaluacionsController < ApplicationController
     line_2.set_dot_size( 0 )
     line_2.set_colour( '#8000FF' )
     line_2.set_tooltip( "Puntaje<br>#val#" )
-    line_2.set_key( session['usuario'].nombre, 10 )
+    a = session['usuario']
+    a.decrypt_nombre
+    line_2.set_key( a.nombre, 10 )
+    a.crypt_nombre
     line_2.loop() # to close the loop
     chart.add_element( line_2 )
 

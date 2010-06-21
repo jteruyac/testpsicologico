@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100323183934) do
+ActiveRecord::Schema.define(:version => 20100609074723) do
 
   create_table "alternativas", :force => true do |t|
     t.integer  "rasgo_id"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20100323183934) do
   end
 
   create_table "evaluacions", :force => true do |t|
+    t.integer  "usuario_id"
     t.integer  "prueba_id"
     t.datetime "fecha"
     t.integer  "puntaje_logico"
@@ -33,16 +34,15 @@ ActiveRecord::Schema.define(:version => 20100323183934) do
     t.integer  "puntaje_emotivo"
     t.integer  "puntaje_intuitivo"
     t.string   "tipo_dominante"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "usuario_id"
     t.integer  "edad"
+    t.string   "tag_codigo"
     t.integer  "puntaje_realista"
     t.integer  "puntaje_idealista"
     t.integer  "puntaje_cognitivo"
     t.integer  "puntaje_instintivo"
     t.string   "par_dominante"
-    t.string   "tag_codigo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "institucions", :force => true do |t|
@@ -85,11 +85,11 @@ ActiveRecord::Schema.define(:version => 20100323183934) do
   create_table "respuestas", :force => true do |t|
     t.integer  "evaluacion_id"
     t.integer  "pregunta_id"
+    t.integer  "alternativa_id"
     t.integer  "puntaje"
+    t.integer  "rasgo_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "alternativa_id"
-    t.integer  "rasgo_id"
   end
 
   create_table "sessions", :force => true do |t|
@@ -112,25 +112,25 @@ ActiveRecord::Schema.define(:version => 20100323183934) do
 
   create_table "usuarios", :force => true do |t|
     t.string   "nombre"
+    t.string   "usuario"
     t.string   "password"
     t.datetime "fecha_nacimiento"
     t.string   "sexo"
     t.boolean  "administrador"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "usuario"
     t.string   "ubicacion_macro"
     t.string   "ubicacion_micro"
     t.string   "tipo_colegio"
     t.string   "nombre_colegio"
     t.boolean  "consulta_universidad"
     t.string   "nombre_universidad"
+    t.integer  "carrera_id"
     t.string   "nombre_especialidad"
     t.boolean  "consulta_egresado"
-    t.integer  "anio_ingreso_universidad"
-    t.integer  "anio_egreso_universidad"
+    t.string   "anio_ingreso_universidad"
+    t.string   "anio_egreso_universidad"
     t.integer  "institucion_id"
-    t.integer  "carrera_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

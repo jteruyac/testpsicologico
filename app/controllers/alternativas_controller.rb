@@ -80,26 +80,31 @@ class AlternativasController < ApplicationController
   end
 
   def update_edit
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      alternativa = Alternativa.new(params[:alternativa])#el identificador_pregunta esta en Rasgo.pregunta_id
+      prueba_data = session[:prueba_preguntas]
 
-    alternativa = Alternativa.new(params[:alternativa])#el identificador_pregunta esta en Rasgo.pregunta_id
-    prueba_data = session[:prueba_preguntas]
+      if (prueba_data.modificacion == true)
+          identidad = params[:identidad][:id] #brinda el dato: identificador_alternativa
+          prueba_data.update_alternativa(alternativa, identidad.to_i)
 
-    if (prueba_data.modificacion == true)
-        identidad = params[:identidad][:id] #brinda el dato: identificador_alternativa
-        prueba_data.update_alternativa(alternativa, identidad.to_i)
+          session[:prueba_preguntas] = prueba_data
+          session[:origen] = "edit_upd_alternativa"
+          flash[:alternat_updt_altid] = 4.to_s  #identidad.to_s
+          flash[:alternat_updt_preid] = alternativa.pregunta_id.to_s
+          redirect_to :controller => :pruebas, :action => :edit, :id => params[:prueba_psico][:ide]
 
-        session[:prueba_preguntas] = prueba_data
-        session[:origen] = "edit_upd_alternativa"
-        flash[:alternat_updt_altid] = 4.to_s  #identidad.to_s
-        flash[:alternat_updt_preid] = alternativa.pregunta_id.to_s
-        redirect_to :controller => :pruebas, :action => :edit, :id => params[:prueba_psico][:ide]
+      elsif (prueba_data.modificacion == false)
 
-    elsif (prueba_data.modificacion == false)
-        
-        redirect_to :back
+          redirect_to :back
 
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
-
   end
 
 

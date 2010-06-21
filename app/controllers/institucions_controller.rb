@@ -2,40 +2,69 @@ class InstitucionsController < ApplicationController
   # GET /institucions
   # GET /institucions.xml
   def index
-    @institucions = Institucion.all
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @institucions }
+      @institucions = Institucion.all
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @institucions }
+      end
+      
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /institucions/1
   # GET /institucions/1.xml
   def show
-    @institucion = Institucion.find(params[:id])
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @institucion = Institucion.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @institucion }
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @institucion }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /institucions/new
   # GET /institucions/new.xml
   def new
-    @institucion = Institucion.new
-    @institucions = Institucion.all
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @institucion = Institucion.new
+      @institucions = Institucion.all
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @institucion }
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @institucion }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /institucions/1/edit
   def edit
-    @institucion = Institucion.find(params[:id])
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @institucion = Institucion.find(params[:id])
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => :main, :action => :login
+    end
   end
 
   # POST /institucions

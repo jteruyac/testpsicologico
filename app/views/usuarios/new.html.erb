@@ -101,17 +101,20 @@
         frmvalidator.clearAllValidations();
         
         frmvalidator.addValidation("usuario[nombre]","req","Por favor ingrese su nombre completo");
+        frmvalidator.addValidation("usuario[nombre]","maxlen=40","La longitud máxima del nombre es de 40 caracteres");
         frmvalidator.addValidation("usuario[nombre]","alphabetic_space","El nombre solo permite valores alfabéticos");
         frmvalidator.addValidation("usuario[usuario]","req","Por favor ingrese un usuario");
+        frmvalidator.addValidation("usuario[usuario]","maxlen=40","La longitud máxima del usuario es de 40 caracteres");
         frmvalidator.addValidation("usuario[usuario]","alphanumeric","El usuario solo permite valores alfanuméricos");
         frmvalidator.addValidation("usuario[password]","req","Por favor ingrese un password");
+        frmvalidator.addValidation("usuario[password]","maxlen=20","La longitud máxima del password es de 20 caracteres");
         frmvalidator.addValidation("usuario[sexo]","req","Por favor elija su sexo");
         frmvalidator.addValidation("usuario[ubicacion_macro]","req","Por favor elija su ubicación");
         frmvalidator.addValidation("usuario[ubicacion_micro]","req","Por favor elija su ubicación específica");
         frmvalidator.addValidation("usuario[tipo_colegio]","req","Por favor indique el tipo de colegio en el que culminó sus estudios escolares");
         frmvalidator.addValidation("usuario[nombre_colegio]","req","Por favor ingrese el nombre del colegio en el que culminó sus estudios escolares");
         frmvalidator.addValidation("usuario[nombre_colegio]","alphanumeric_space","El nombre del colegio solo permite valores alfanuméricos");
-        
+        frmvalidator.addValidation("usuario[nombre_colegio]","maxlen=40","La longitud máxima del password es de 40 caracteres");
 
         if (document.getElementById("usuario_consulta_universidad").checked)
         {
