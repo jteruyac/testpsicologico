@@ -1,4 +1,4 @@
-﻿class InsertPuebaTest < ActiveRecord::Migration
+class InsertPuebaTest < ActiveRecord::Migration
   def self.up
     execute "INSERT INTO preguntas (`id`,`prueba_id`,`texto`,`orden`,`invalidar`,`created_at`,`updated_at`) VALUES
  (1,1,'Cuando voy a viajar:',1,0,'2010-06-07 00:22:24','2010-06-07 00:22:24'),

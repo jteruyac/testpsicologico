@@ -1,4 +1,4 @@
-﻿class InsertRasgosTest < ActiveRecord::Migration
+class InsertRasgosTest < ActiveRecord::Migration
   def self.up
     execute "INSERT INTO rasgos (`id`,`prueba_id`,`nombre`,`descripcion`,`created_at`,`updated_at`) VALUES
  (1,1,'Lógico','Comportamientos: Frío, distante; pocos gestos; voz elaborada; intelectualmente brillante; evalúa, critica; irónico; le gustan las citas; competitivo; individualista.\nProcesos: Análisis; razonamiento; lógica; rigor, claridad; le gustan los modelos y las teorías; colecciona hechos; procede por hipótesis; le gusta la palabra precisa.\nCompetencias: Abstracción; matemático; cuantitativo; finanzas; técnico; resolución de problemas','2010-06-07 00:22:24','2010-06-07 00:22:24'),

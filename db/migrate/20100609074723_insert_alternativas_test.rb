@@ -1,4 +1,4 @@
-﻿class InsertAlternativasTest < ActiveRecord::Migration
+class InsertAlternativasTest < ActiveRecord::Migration
   def self.up
     execute "INSERT INTO alternativas (`id`,`rasgo_id`,`pregunta_id`,`texto`,`created_at`,`updated_at`) VALUES
  (1,2,1,'Me gusta hacer planes y llevarlos a cabo tal como se han pensado','2010-06-07 00:22:24','2010-06-07 00:22:24'),
