@@ -1,6 +1,6 @@
 class InsertAlternativasTest < ActiveRecord::Migration
   def self.up
-    execute "INSERT INTO alternativas (`id`,`rasgo_id`,`pregunta_id`,`texto`,`created_at`,`updated_at`) VALUES
+    execute "INSERT INTO alternativas ('id','rasgo_id','pregunta_id','texto','created_at','updated_at') VALUES
  (1,2,1,'Me gusta hacer planes y llevarlos a cabo tal como se han pensado','2010-06-07 00:22:24','2010-06-07 00:22:24'),
  (2,3,1,'Hago planes con la gente','2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (3,4,1,'Lo hago sin restricciones y con total apertura a las nuevas experiencias','2010-06-07 00:22:25','2010-06-07 00:22:25'),
