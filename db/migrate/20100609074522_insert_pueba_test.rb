@@ -1,6 +1,6 @@
-class InsertPuebaTest < ActiveRecord::Migration
+﻿class InsertPuebaTest < ActiveRecord::Migration
   def self.up
-    execute "INSERT INTO `preguntas` (`id`,`prueba_id`,`texto`,`orden`,`invalidar`,`created_at`,`updated_at`) VALUES
+    execute "INSERT INTO preguntas (`id`,`prueba_id`,`texto`,`orden`,`invalidar`,`created_at`,`updated_at`) VALUES
  (1,1,'Cuando voy a viajar:',1,0,'2010-06-07 00:22:24','2010-06-07 00:22:24'),
  (2,1,'Cuando estoy terminando un trabajo:',2,0,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (3,1,'Cuando me muestran un objeto novedoso, lo primero que pienso es:',3,0,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
