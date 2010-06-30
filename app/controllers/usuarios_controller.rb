@@ -51,7 +51,7 @@ class UsuariosController < ApplicationController
     mayor = true
     coincidente = Usuario.find_by_usuario(@usuario.usuario)
 
-    if ((@usuario.consulta_egresado) && (@usuario.anio_egreso_universidad) && (@usuario.anio_ingreso_universidad > @usuario.anio_egreso_universidad))
+    if ((@usuario.consulta_egresado) && (@usuario.anio_egreso_universidad) && ((@usuario.anio_ingreso_universidad.to_i+3) >= @usuario.anio_egreso_universidad.to_i))
       mayor = false
     end
 
