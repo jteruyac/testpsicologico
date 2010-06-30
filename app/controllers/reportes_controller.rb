@@ -108,15 +108,15 @@ class ReportesController < ApplicationController
           @filtros << {:campo => 'Universidad', :valor => valores["consulta_universidad"]}
           if (condiciones == "")
             if (valores["consulta_universidad"] == "Si")
-              condiciones = "where consulta_universidad = 1"
+              condiciones = "where consulta_universidad = true"
             else
-              condiciones = "where consulta_universidad = 0"
+              condiciones = "where consulta_universidad = false"
             end
           else
             if (valores["consulta_universidad"] == "Si")
-              condiciones = condiciones + " and consulta_universidad = 1"
+              condiciones = condiciones + " and consulta_universidad = true"
             else
-              condiciones = condiciones + " and consulta_universidad = 0"
+              condiciones = condiciones + " and consulta_universidad = false"
             end
           end
           if (valores["consulta_universidad"] == "Si")
@@ -136,9 +136,9 @@ class ReportesController < ApplicationController
             if (valores["consulta_egresado"] != "No especificar")
                 @filtros << {:campo => 'Egresado', :valor => valores["consulta_egresado"] }
                 if (valores["consulta_egresado"] == "Si")
-                  condiciones = condiciones + " and consulta_egresado = 1"
+                  condiciones = condiciones + " and consulta_egresado = true"
                 else
-                  condiciones = condiciones + " and consulta_egresado = 0"
+                  condiciones = condiciones + " and consulta_egresado = false"
                 end
                 if (valores["consulta_egresado"] == "Si") && (valores["universidad_egreso"] != "")
                   @filtros << {:campo => 'Año de egreso de la universidad', :valor => valores["universidad_egreso"] }
@@ -457,15 +457,15 @@ class ReportesController < ApplicationController
           @filtros << {:campo => 'Universidad', :valor => valores["consulta_universidad"]}
           if (condiciones == "")
             if (valores["consulta_universidad"] == "Si")
-              condiciones = "where consulta_universidad = 1"
+              condiciones = "where consulta_universidad = true"
             else
-              condiciones = "where consulta_universidad = 0"
+              condiciones = "where consulta_universidad = false"
             end
           else
             if (valores["consulta_universidad"] == "Si")
-              condiciones = condiciones + " and consulta_universidad = 1"
+              condiciones = condiciones + " and consulta_universidad = true"
             else
-              condiciones = condiciones + " and consulta_universidad = 0"
+              condiciones = condiciones + " and consulta_universidad = false"
             end
           end
           if (valores["consulta_universidad"] == "Si")
@@ -485,9 +485,9 @@ class ReportesController < ApplicationController
             if (valores["consulta_egresado"] != "No especificar")
                 @filtros << {:campo => 'Egresado', :valor => valores["consulta_egresado"] }
                 if (valores["consulta_egresado"] == "Si")
-                  condiciones = condiciones + " and consulta_egresado = 1"
+                  condiciones = condiciones + " and consulta_egresado = true"
                 else
-                  condiciones = condiciones + " and consulta_egresado = 0"
+                  condiciones = condiciones + " and consulta_egresado = false"
                 end
                 if (valores["consulta_egresado"] == "Si") && (valores["universidad_egreso"] != "")
                   @filtros << {:campo => 'Año de egreso de la universidad', :valor => valores["universidad_egreso"] }
