@@ -15,19 +15,19 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label 'Nombre completo:' %><br />
+    <%= f.label 'Ingresa tu nombre completo:' %><br />
     <%= f.text_field :nombre %>
   </p>
   <p>
-    <%= f.label :usuario %><br />
+    <%= f.label 'Ingresa el usuario que utilizarás' %><br />
     <%= f.text_field :usuario %>
   </p>
   <p>
-    <%= f.label :password %><br />
+    <%= f.label 'Ingresa tu password' %><br />
     <%= f.password_field :password %>
   </p>
   <p>
-    <%= f.label :fecha_nacimiento %><br />
+    <%= f.label 'Fecha de Nacimiento (Se registran usuarios a partir de 10 años)' %><br />
     <%= f.text_field :fecha_nacimiento, :class => 'date nacimiento' %>
   </p>
   <p>
@@ -35,7 +35,7 @@
     <%= f.select(:sexo, [ "Masculino", "Femenino" ]) %>
   </p>
   <p>
-    <%= f.label 'Lugar al que pertenece:' %><br />
+    <%= f.label 'Lugar donde vives:' %><br />
     <%= f.select(:ubicacion_macro, [ "Lima", "Departamento", "Extranjero"]) %>
   </p>
   <p>
@@ -47,11 +47,11 @@
     <%= f.select(:tipo_colegio, [ "Estatal", "Privado" ]) %>
   </p>
   <p>
-    <%= f.label 'Nombre de tu colegio:' %><br />
+    <%= f.label 'Indica el nombre de tu último colegio:' %><br />
     <%= f.text_field :nombre_colegio %>
   </p>
   <p>
-    <%= f.label 'Selecciona la institución que más te identifique:' %><br />
+    <%= f.label 'Si eres parte de una evaluación grupal, elige la institución indicada por el instructor. Caso contrario escoje la opción "Ninguna":' %><br />
     <%= f.collection_select(:institucion_id ,@institucions, :id, :nombre, options = {:prompt => "Ninguna"}, :class =>"institucion") %>
   </p>
   <p>
@@ -76,11 +76,11 @@
     <%= f.text_field :anio_egreso_universidad %>
   </p>
   <p>
-    <%= f.label 'Carrera:' %><br />
+    <%= f.label 'Escoje la carrera que estudias y si tu carrera no está en la lista selecciona la alternativa "Otra opción":' %><br />
     <%= f.collection_select(:carrera_id ,@carreras, :id, :nombre, options = {:prompt => "Otra opción"}, :class =>"carrera") %>
   </p>
   <p id ="div_especialidad">
-    <%= f.label 'Especialidad:' %><br />
+    <%= f.label 'Si estudias Psicología, escoge tu especialidad:' %><br />
     <%= f.select(:nombre_especialidad, ["Otra opción", "Organizacional", "Clínica", "Educacional" ]) %>
     <br />
   </p>
@@ -88,7 +88,7 @@
   </div>
 
   <p>
-    <%= f.submit 'Crear' %>
+    <%= f.submit 'Crear Cuenta' %>
   </p>
 <% end %>
 <br />

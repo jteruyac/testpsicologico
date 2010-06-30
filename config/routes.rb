@@ -19,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :usuarios
   
-  map.resources :main, :collection => {:login => :get, :principal => :get, :tablero => :get, :logout => :get}
+  map.resources :main, :collection => {:login => :get, :principal => :get, :tablero => :get, :logout => :get, :about => :get}
 
   map.resources :reportes, :collection => {:panel => :get, :promedio => :post, :dominancia => :post, :promediosxls => :get, :dominanciaxls => :get, :graph_code_radar => :get }
 

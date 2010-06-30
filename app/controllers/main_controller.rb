@@ -16,6 +16,9 @@ class MainController < ApplicationController
     redirect_to :action => :login
   end
 
+  def about
+  end
+
   def autenticar
     @user = params[:datos]
     if ((session["HttpContextId"].nil?) or ((!session["HttpContextId"].nil?) and (session["HttpContextId"] == session[:session_id].hash)))
