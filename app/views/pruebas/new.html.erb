@@ -35,7 +35,8 @@
 
 <h2>Nuevo Test Psicológico</h2>
 <%= button_to 'Crear Test',:controller => :pruebas, :action => 'orquestar_create' %>
-
+<br />
+<div>Instrucciones: Para crear el test psicológico debes llenar los datos básicos e ingresar las preguntas. Si deseas desplegar o contraer la información de las secciones puedes hacer clic en los temas. Cuando termines de ingresar la información del test, haz clic en la opción "Crear Test".</div>
 <br />
 <h3><label onclick="var bloque = new Fx.Slide('informacion_basica');bloque.toggle();return false;">Datos Básicos >> </label></h3>
 <div id="informacion_basica">
