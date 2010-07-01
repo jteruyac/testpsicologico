@@ -538,7 +538,14 @@
           alert("Ingrese el intervalo de fechas");
         else
           {
-            submit();
+            if ((document.getElementById("formulario_consulta_fechas").checked) && (document.getElementById("formulario_fecha_inicio").value > document.getElementById("formulario_fecha_fin").value))
+            {
+              alert("El rango de fechas ingresado es incorrecto");
+            }
+            else
+            {
+              submit();
+            }
           }
         return false;
   };

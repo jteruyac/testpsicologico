@@ -5,11 +5,11 @@
 <div align="center">
 <% form_for :datos, :url => { :action => "autenticar" } do |f| %>
   <p>
-    <%= f.label :usuario %><br />
+    <%= f.label :usuario %>  (Ej: 'jperez')<br />
     <%= f.text_field :usuario %>
   </p>
   <p>
-    <%= f.label :password %><br />
+    <%= f.label :password %>  (Ej: 'secret')<br />
     <%= f.password_field :password %>
   </p>
   <p>
