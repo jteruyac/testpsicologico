@@ -1,9 +1,12 @@
 class CarrerasController < ApplicationController
+  include ApplicationHelper
   # GET /carreras
   # GET /carreras.xml
   def index
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @carreras = Carrera.all
+      session[:time] = Time.now
 
       respond_to do |format|
         format.html # index.html.erb
@@ -12,7 +15,7 @@ class CarrerasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
@@ -20,9 +23,11 @@ class CarrerasController < ApplicationController
   # GET /carreras/1
   # GET /carreras/1.xml
   def show
+    check_timeout
+
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @carrera = Carrera.find(params[:id])
-
+      session[:time] = Time.now
       respond_to do |format|
         format.html # show.html.erb
         format.xml  { render :xml => @carrera }
@@ -30,7 +35,7 @@ class CarrerasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
@@ -38,10 +43,12 @@ class CarrerasController < ApplicationController
   # GET /carreras/new
   # GET /carreras/new.xml
   def new
+    check_timeout
+
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @carrera = Carrera.new
       @carreras = Carrera.all
-
+      session[:time] = Time.now
       respond_to do |format|
         format.html # new.html.erb
         format.xml  { render :xml => @carrera }
@@ -49,19 +56,21 @@ class CarrerasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /carreras/1/edit
   def edit
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @carrera = Carrera.find(params[:id])
+      session[:time] = Time.now
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end

@@ -1,5 +1,6 @@
 class ReportesController < ApplicationController
-
+  include ApplicationHelper
+  
   def dominanciaxls
     if ((session[:rpt_tipo] == "dominancia") && (params['clv'].to_s == session[:rpt_codigo].to_s))
       @prueba = session[:rpt_prueba]
@@ -33,16 +34,18 @@ class ReportesController < ApplicationController
 
 
   def panel
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       if ((session["usuario"])&&(session["usuario"].administrador == true))
         @pruebas = Prueba.find_all_by_publicar(true)
         @instituciones = Institucion.all
         @carreras = Carrera.all
+        session[:time] = Time.now
       end
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end

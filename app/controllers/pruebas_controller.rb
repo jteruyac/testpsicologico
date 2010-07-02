@@ -1,16 +1,17 @@
 class PruebasController < ApplicationController
   # GET /pruebas
   # GET /pruebas.xml
-  
+  include ApplicationHelper
   # GET /pruebas/1
   # GET /pruebas/1.xml
   def show
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       if ((!session["usuario"].nil?) && (session["usuario"].administrador) && (params["id"]))
           @prueba = Prueba.find(params["id"])
           @alternativas = Alternativa.find_by_sql("select * from alternativas, rasgos where rasgos.prueba_id = "+@prueba.id.to_s)
           @preguntas = Pregunta.find(:all, :include => @alternativas , :conditions => "prueba_id = "+ @prueba.id.to_s)
-
+          session[:time] = Time.now
           respond_to do |format|
             format.html # show.html.erb
             format.xml  { render :xml => @prueba }
@@ -19,7 +20,7 @@ class PruebasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
@@ -27,7 +28,9 @@ class PruebasController < ApplicationController
   # GET /pruebas/new
   # GET /pruebas/new.xml
   def new
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      session[:time] = Time.now
       prueba_data = find_prueba_preguntas
       if (session[:origen].nil?)
           session[:prueba_preguntas] = nil
@@ -59,16 +62,17 @@ class PruebasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /pruebas/1/edit
   def edit
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       prueba_data = find_prueba_preguntas
-
+      session[:time] = Time.now
       if ((!session[:origen]) || (prueba_data.modificacion == false))
           session[:prueba_preguntas] = nil
           prueba_data = find_prueba_preguntas
@@ -111,7 +115,7 @@ class PruebasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
     #redirect_to edit_prueba_path(@prueba)
@@ -120,6 +124,7 @@ class PruebasController < ApplicationController
   # POST /pruebas
   # POST /pruebas.xml
   def create
+    session[:time] = Time.now
     prueba_data = session[:prueba_preguntas]
     @prueba = Prueba.new(params[:prueba])
     prueba_data.set_prueba(@prueba)
@@ -128,7 +133,9 @@ class PruebasController < ApplicationController
   end
 
   def update_basics
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      session[:time] = Time.now
       prueba_data = session[:prueba_preguntas]
       @prueba = prueba_data.get_prueba
       auxiliar = Prueba.new(params[:prueba])
@@ -142,7 +149,7 @@ class PruebasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
@@ -151,10 +158,10 @@ class PruebasController < ApplicationController
   # PUT /pruebas/1.xml
   def update
     @prueba = Prueba.find(params[:id])
-
+    session[:time] = Time.now
     respond_to do |format|
       if @prueba.update_attributes(params[:prueba])
-        flash[:notice] = 'prueba was successfully updated.'
+        flash[:notice] = 'El test fue modificado correctamente.'
         format.html { redirect_to(@prueba) }
         format.xml  { head :ok }
       else
@@ -195,9 +202,10 @@ class PruebasController < ApplicationController
   end
 
   def orquestar_create
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       prueba_data = session[:prueba_preguntas]
-
+      session[:time] = Time.now
       # Validación de datos
       error = false
       error_index = -99 #no errors
@@ -311,16 +319,17 @@ class PruebasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
 
   public
   def orquestar_update
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       prueba_data = session[:prueba_preguntas]
-
+      session[:time] = Time.now
   # region Validaciones
       error = false
       error_index = -99 #no errors
@@ -514,7 +523,7 @@ class PruebasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
     
@@ -522,9 +531,10 @@ class PruebasController < ApplicationController
 
 
   def index
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @pruebas = Prueba.all
-
+      session[:time] = Time.now
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @pruebas }
@@ -532,7 +542,7 @@ class PruebasController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end

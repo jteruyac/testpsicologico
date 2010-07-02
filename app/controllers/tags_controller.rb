@@ -1,48 +1,84 @@
 class TagsController < ApplicationController
+  include ApplicationHelper
   # GET /tags
   # GET /tags.xml
   def index
-    if params[:institucion]
-      @institucion = Institucion.find(params[:institucion])
-      @tags = Tag.find_all_by_institucion_id(params[:institucion], :include => :institucion)
+    check_timeout
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      if params[:institucion]
+        session[:time] = Time.now
+        @institucion = Institucion.find(params[:institucion])
+        @tags = Tag.find_all_by_institucion_id(params[:institucion], :include => :institucion)
 
-      respond_to do |format|
-        format.html # index.html.erb
-        format.xml  { render :xml => @tags }
+        respond_to do |format|
+          format.html # index.html.erb
+          format.xml  { render :xml => @tags }
+        end
       end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /tags/1
   # GET /tags/1.xml
   def show
-    @tag = Tag.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @tag }
+    check_timeout
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @tag = Tag.find(params[:id])
+      session[:time] = Time.now
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @tag }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /tags/new
   # GET /tags/new.xml
   def new
-    if params[:institucion]
-        @tag = Tag.new
-        @institucions = Institucion.all
-        @tag.institucion_id = params[:institucion]
+    check_timeout
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      if params[:institucion]
+          session[:time] = Time.now
+          @tag = Tag.new
+          @institucions = Institucion.all
+          @tag.institucion_id = params[:institucion]
 
-        respond_to do |format|
-          format.html # new.html.erb
-          format.xml  { render :xml => @tag }
-        end
+          respond_to do |format|
+            format.html # new.html.erb
+            format.xml  { render :xml => @tag }
+          end
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /tags/1/edit
   def edit
-    @tag = Tag.find(params[:id])
-    @institucions = Institucion.all
+    check_timeout
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @tag = Tag.find(params[:id])
+      @institucions = Institucion.all
+      session[:time] = Time.now
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
+      redirect_to :controller => :main, :action => :login
+    end
   end
 
   # POST /tags

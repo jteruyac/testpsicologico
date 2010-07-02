@@ -1,23 +1,42 @@
 class UsuariosController < ApplicationController
+  include ApplicationHelper
   # GET /usuarios
   # GET /usuarios.xml
   def index
-    @usuarios = Usuario.find(:all, :conditions => 'administrador = false', :include => [:carrera, :institucion])
+    check_timeout
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @usuarios }
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @usuarios = Usuario.find(:all, :conditions => 'administrador = false', :include => [:carrera, :institucion])
+      session[:time] = Time.now
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @usuarios }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /usuarios/1
   # GET /usuarios/1.xml
   def show
-    @usuario = Usuario.find(params[:id])
+    check_timeout
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @usuario }
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+      @usuario = Usuario.find(params[:id])
+
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @usuario }
+      end
+    else
+      session["usuario"] = nil
+      session["HttpContextId"] = nil
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
+      redirect_to :controller => :main, :action => :login
     end
   end
 

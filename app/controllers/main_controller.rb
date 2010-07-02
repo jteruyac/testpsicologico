@@ -1,4 +1,5 @@
 class MainController < ApplicationController
+  include ApplicationHelper
 
   def login
     if ((session["usuario"]) and (session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
@@ -7,8 +8,7 @@ class MainController < ApplicationController
       else
         redirect_to :controller => :main, :action => :principal
       end
-    end
-    
+    end   
   end
 
   def logout
@@ -23,6 +23,9 @@ class MainController < ApplicationController
     @user = params[:datos]
     if ((session["HttpContextId"].nil?) or ((!session["HttpContextId"].nil?) and (session["HttpContextId"] == session[:session_id].hash)))
       if  (valores = Usuario.authenticate(@user['usuario'], @user['password']))
+        
+        session[:time] = Time.now
+
         valores.crypt_nombre
         session["usuario"] = valores
         #identificador = session["usuario"].id
@@ -50,24 +53,30 @@ class MainController < ApplicationController
   end
 
   def principal
+    check_timeout
+
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @pruebas = Prueba.find_all_by_publicar(true)
       @evals = Evaluacion.find(:all, :joins => [:prueba], :conditions => 'evaluacions.usuario_id = '+session["usuario"].id.to_s )
+      session[:time] = Time.now
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
 
   def tablero
+    check_timeout
+
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @pruebas = Prueba.find_all_by_publicar(true)
+      session[:time] = Time.now
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end

@@ -1,4 +1,5 @@
 class EvaluacionsController < ApplicationController
+  include ApplicationHelper
   # GET /evaluacions
   # GET /evaluacions.xml
   def resultadoxls
@@ -54,11 +55,13 @@ class EvaluacionsController < ApplicationController
   # GET /evaluacions/new
   # GET /evaluacions/new.xml
   def new
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @evaluacion = Evaluacion.new
       @numero_prueba = params[:prueba].to_i
       @preguntas = Pregunta.find(:all, :include => "alternativas", :conditions => "prueba_id = "+ @numero_prueba.to_s)
       @prueba = Prueba.find(@numero_prueba)
+      session[:time] = Time.now
       respond_to do |format|
         format.html # new.html.erb
         format.xml  { render :xml => @evaluacion }
@@ -66,7 +69,7 @@ class EvaluacionsController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
@@ -286,10 +289,12 @@ class EvaluacionsController < ApplicationController
   end
 
   def resultado
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       evaluacion = Evaluacion.find(params[:evaluacion])
       @usrid = evaluacion.usuario_id
       @prueba = Prueba.find(evaluacion.prueba_id)
+      session[:time] = Time.now
       ############
       # Puntajes #
       ############
@@ -343,7 +348,7 @@ class EvaluacionsController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end

@@ -1,9 +1,11 @@
 class InstitucionsController < ApplicationController
+  include ApplicationHelper
   # GET /institucions
   # GET /institucions.xml
   def index
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
-
+      session[:time] = Time.now
       @institucions = Institucion.all
       respond_to do |format|
         format.html # index.html.erb
@@ -13,7 +15,7 @@ class InstitucionsController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
@@ -21,9 +23,11 @@ class InstitucionsController < ApplicationController
   # GET /institucions/1
   # GET /institucions/1.xml
   def show
+    check_timeout
+
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @institucion = Institucion.find(params[:id])
-
+      session[:time] = Time.now
       respond_to do |format|
         format.html # show.html.erb
         format.xml  { render :xml => @institucion }
@@ -31,7 +35,7 @@ class InstitucionsController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
@@ -39,10 +43,12 @@ class InstitucionsController < ApplicationController
   # GET /institucions/new
   # GET /institucions/new.xml
   def new
+    check_timeout
+
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @institucion = Institucion.new
       @institucions = Institucion.all
-
+      session[:time] = Time.now
       respond_to do |format|
         format.html # new.html.erb
         format.xml  { render :xml => @institucion }
@@ -50,19 +56,21 @@ class InstitucionsController < ApplicationController
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
 
   # GET /institucions/1/edit
   def edit
+    check_timeout
     if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
       @institucion = Institucion.find(params[:id])
+      session[:time] = Time.now
     else
       session["usuario"] = nil
       session["HttpContextId"] = nil
-      flash[:notice] = "Acceso no autorizado"
+      flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
       redirect_to :controller => :main, :action => :login
     end
   end
