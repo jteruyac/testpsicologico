@@ -7,7 +7,6 @@ module ApplicationHelper
       end
     else
       reset_session
-    end
-    
+    end   
   end
 end
