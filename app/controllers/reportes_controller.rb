@@ -41,6 +41,11 @@ class ReportesController < ApplicationController
         @instituciones = Institucion.all
         @carreras = Carrera.all
         session[:time] = Time.now
+      else
+        session["usuario"] = nil
+        session["HttpContextId"] = nil
+        flash[:notice] = "Acceso no autorizado o tiempo de conección expirado"
+        redirect_to :controller => :main, :action => :login
       end
     else
       session["usuario"] = nil

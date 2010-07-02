@@ -55,7 +55,7 @@ class MainController < ApplicationController
   def principal
     check_timeout
 
-    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash) and (session["usuario"]))
       @pruebas = Prueba.find_all_by_publicar(true)
       @evals = Evaluacion.find(:all, :joins => [:prueba], :conditions => 'evaluacions.usuario_id = '+session["usuario"].id.to_s )
       session[:time] = Time.now
@@ -70,7 +70,7 @@ class MainController < ApplicationController
   def tablero
     check_timeout
 
-    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash))
+    if ((session["HttpContextId"]) and (session["HttpContextId"] == session[:session_id].hash) and (session["usuario"]))
       @pruebas = Prueba.find_all_by_publicar(true)
       session[:time] = Time.now
     else
