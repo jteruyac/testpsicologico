@@ -81,6 +81,7 @@ class InsertAlternativasTest < ActiveRecord::Migration
  (78,2,20,'La precisión y la calidad','2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (79,4,20,'Las propuestas innovadoras','2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (80,3,20,'El compromiso con el trabajo','2010-06-07 00:22:25','2010-06-07 00:22:25')"
+    execute "ALTER SEQUENCE alternativas_id_seq RESTART WITH 81;"
   end
 
   def self.down

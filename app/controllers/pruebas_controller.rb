@@ -284,7 +284,8 @@ class PruebasController < ApplicationController
             # Guardando Rasgos
             prueba_data.rasgos.each do |rasgoItem|
               rasgoItem.rasgo.prueba_id = @prueba.id
-              rasgoItem.rasgo.save
+              hijo = rasgoItem.rasgo
+              hijo.save
             end
             # Guardando preguntas
             indice = 1

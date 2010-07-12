@@ -21,6 +21,7 @@ class InsertPuebaTest < ActiveRecord::Migration
  (18,1,'Las personas aprenden más cuando:',18,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (19,1,'Cuando expongo una idea, me gusta ser:',19,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (20,1,'En un trabajo valoro:',20,false,'2010-06-07 00:22:25','2010-06-07 00:22:25')"
+    execute "ALTER SEQUENCE preguntas_id_seq RESTART WITH 21;"
   end
 
   def self.down
