@@ -30,7 +30,7 @@ Released   : 20081103
 			<li class="first"><%= link_to 'Principal', :controller => :main, :action => :login %></li>
                         <li><%= link_to 'Acerca de', :controller => :main, :action => :about %></li>
                         <% if (!session["usuario"].nil?) %>
-                        <li><%= link_to "Salir", :controller => 'main', :action => 'logout'%></li>
+                        <li><%= link_to "Salir", {:controller => 'main', :action => 'logout'}, :confirm => '¿Desea cerrar su cuenta?', :method => 'logout' %></li>
                         <% end %>
 		</ul>
 	</div>
@@ -65,7 +65,7 @@ Released   : 20081103
                                             <li> <%= link_to "Carreras Registradas", :controller => 'carreras', :action => 'index'%> </li>
                                             <li> <%= link_to "Test Psicológicos", :controller => 'main', :action => 'tablero'%> </li>
                                             <li> <%= link_to "Reportes", :controller => 'reportes', :action => 'panel' %> </li>
-                                            <li> <%= link_to "Salir", :controller => 'main', :action => 'logout'%> </li>
+                                            <li> <%= link_to "Salir", {:controller => 'main', :action => 'logout'}, :confirm => '¿Desea cerrar su cuenta?', :method => 'logout' %> </li>
                                           </ul>
                                         <% end %>
                                         <% if (!session["usuario"].administrador) %>
@@ -77,7 +77,7 @@ Released   : 20081103
                                           <ul>
                                             <li> <%= link_to "Tests", :controller => 'main', :action => 'principal'%> </li>
 
-                                            <li> <%= link_to "Salir", :controller => 'main', :action => 'logout'%> </li>
+                                            <li> <%= link_to "Salir", {:controller => 'main', :action => 'logout'}, :confirm => '¿Desea cerrar su cuenta?', :method => 'logout' %> </li>
                                           </ul>
 
                                         <% end %>
@@ -97,3 +97,5 @@ Released   : 20081103
 	<!-- end #footer -->
 </body>
 </html>
+
+    
