@@ -42,7 +42,8 @@ Released   : 20081103
 	<!-- end #header -->
 	<div id="menu">
 		<ul>
-			<li class="first"><%= link_to 'Principal', :controller => :main, :action => :login %></li>
+                        <!-- <li class="first"> -->
+			<li><%= link_to 'Principal', :controller => :main, :action => :login %></li>
                         <li><%= link_to 'Acerca de', :controller => :main, :action => :about %></li>
                         <% if (!session["usuario"].nil?) %>
                         <li><%= link_to "Salir", {:controller => 'main', :action => 'logout'}, :confirm => '¿Desea cerrar su cuenta?', :method => 'logout' %></li>

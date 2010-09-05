@@ -1,7 +1,10 @@
 <% if ((session["usuario"])&&(session["usuario"].administrador)) %>
 
 <h1 align="center">Test Psicológicos Disponibles </h1>
-
+<br />
+En la lista inferior se encuentran los test psicológicos publicados en el site.
+Si deseas realizar otra acción la podrás encontrar en el menú lateral.
+<br />
 <br />
 <% contador = 0 %>
 
@@ -10,8 +13,8 @@
     <% contador += 1 %>
 
     <p>
-        <%=contador.to_s %>. <%= prueba.nombre %>
-        <%= link_to "Mostrar", :controller => :pruebas, :action => :show, :id => prueba.id %> <%= link_to "Eliminar", prueba, :method => :delete, :confirm => '¿Esta seguro de eliminar definitivamente el test psicológico seleccionado?' %> <%= link_to "Modificar", :controller => :pruebas, :action => :edit, :id => prueba.id  %>
+        <%=contador.to_s %>. <%= prueba.nombre %>&nbsp;
+        [&nbsp;<%= link_to "Mostrar", :controller => :pruebas, :action => :show, :id => prueba.id %>&nbsp;|&nbsp;<%= link_to "Eliminar", prueba, :method => :delete, :confirm => '¿Esta seguro de eliminar definitivamente el test psicológico seleccionado?' %>&nbsp;|&nbsp;<%= link_to "Modificar", :controller => :pruebas, :action => :edit, :id => prueba.id  %>&nbsp;]
     </p>
   <% end %>
 
