@@ -8,7 +8,8 @@
 <h1 align="center"> Tests Psicológicos Disponibles: <%=@pruebas.nitems %> </h1>
 <br />
 <% contador = 0 %>
-Seleccione un test psicológico para ver su historial de resultados.
+En la lista inferior se encuentran los test psicológicos que podrás rendir.
+Para ver tu historial de resultados, selecciona la prueba aplicada.
 <br />
   <% @pruebas.each do |prueba| %>
   <% contador += 1 %>
@@ -21,7 +22,8 @@ Seleccione un test psicológico para ver su historial de resultados.
           evaluaciones = prueba.evaluacions.find(:all, :conditions => 'usuario_id ='+ session['usuario'].id.to_s)
         %>
           <% if evaluaciones == [] %>
-            Este test no ha sido rendido aún.
+            <br />
+            El test psicológico no ha sido usado anteriormente.
           <% else %>
             <ul>
               <% evaluaciones.each do |evl| %>

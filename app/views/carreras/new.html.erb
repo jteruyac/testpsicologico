@@ -2,7 +2,7 @@
 
 <%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
 
-<h1 align="center">Registro de carreras universitarias</h1>
+<h1>Registro de Carreras Universitarias</h1>
 <br />
 <% form_for(@carrera, :html => {:id => "new_carrera_form" }) do |f| %>
 
@@ -28,7 +28,7 @@
         alert('El nombre ingresado ya está siendo utilizado');
       <% end %>
     }
-    
+    document.getElementById('carrera_nombre').focus();
   </script>
 
 <%= link_to 'Listado de carreras', carreras_path %>

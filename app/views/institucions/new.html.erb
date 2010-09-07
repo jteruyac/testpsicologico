@@ -2,7 +2,7 @@
 
 <%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
 
-<h1>Registro de instituciones</h1>
+<h1>Registro de Instituciones</h1>
 <br />
 <% form_for(@institucion, :html => {:id => "new_institucion_form" }) do |f| %>
   <%= f.error_messages %>
@@ -35,6 +35,7 @@
         alert('El nombre ingresado ya está siendo utilizado');
       <% end %>
     }
+    document.getElementById('institucion_nombre').focus();
   </script>
 
 

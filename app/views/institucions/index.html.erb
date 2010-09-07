@@ -16,7 +16,7 @@
     <td><%=h institucion.tipo %></td>
     <td><%= link_to 'Tags', :controller => :tags, :action => :index, :institucion => institucion.id.to_s %></td>
     <td><%= link_to 'Editar', edit_institucion_path(institucion) %></td>
-    <td><%= link_to 'Eliminar', institucion, :confirm => '¿Está seguro?', :method => :delete %></td>
+    <td><%= link_to 'Eliminar', institucion, :confirm => '¿Está seguro de eliminar la institución?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

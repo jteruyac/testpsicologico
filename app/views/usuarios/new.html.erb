@@ -15,15 +15,15 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label 'Ingresa tu nombre completo:' %><br />
+    <%= f.label 'Tu nombre completo:' %><br />
     <%= f.text_field :nombre %>
   </p>
   <p>
-    <%= f.label 'Ingresa el usuario que utilizarás' %><br />
+    <%= f.label 'El usuario que usarás para logearte' %><br />
     <%= f.text_field :usuario %>
   </p>
   <p>
-    <%= f.label 'Ingresa tu password' %><br />
+    <%= f.label 'El password que usarás' %><br />
     <%= f.password_field :password %>
   </p>
   <p>
@@ -533,6 +533,9 @@
     <% if ((flash[:notice]) && (flash[:notice] == '-9000')) %>
       alert('Por favor ingrese una fecha de nacimiento válida');
     <% end %>
+
+    document.getElementById('usuario_nombre').focus();
+
   </script>
 
 

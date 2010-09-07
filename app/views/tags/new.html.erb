@@ -2,7 +2,7 @@
 
 <%= javascript_include_tag 'validacion/gen_validatorv31.js' %>
 
-<h1 align="center">Registro de tags</h1>
+<h1>Registro de Tags (Etiquetas de grupo)</h1>
 <br />
 <% form_for(@tag, :html => {:id => "new_tag_form" }) do |f| %>
   
@@ -44,7 +44,7 @@
         alert('El código ingresado ya está siendo utilizado');
       <% end %>
     }
-
+    document.getElementById('tag_nombre').focus();
   </script>
 
 

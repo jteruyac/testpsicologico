@@ -122,7 +122,7 @@
     <p>
       <% bloques_indice = bloques_indice + 1 %>
       <%= bloques_indice %>. <a href="#" id="link_pregunta<%= pregunta.identificador_pregunta.to_s %>" onclick="var bloque = new Fx.Slide('alternativas_pregunta<%= pregunta.identificador_pregunta.to_s %>');bloque.toggle();return false;"><b><%= pregunta.pregunta.texto %></b></a>&nbsp;
-      (<%= link_to 'Eliminar', :controller => "preguntas", :action => "eliminar", :id => pregunta.identificador_pregunta %>)
+      (<%= link_to 'Eliminar', {:controller => "preguntas", :action => "eliminar", :id => pregunta.identificador_pregunta}, :confirm => "La acción tomada eliminará la pregunta y sus alternativas. ¿Desea continuar?", :method => 'eliminar' %>)
     </p>
     <%
     if (flash[:notice] == pregunta.identificador_pregunta.to_s)

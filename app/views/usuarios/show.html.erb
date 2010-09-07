@@ -1,7 +1,8 @@
 <% if ((session["usuario"])&&(session["usuario"].administrador)) %>
 <p>
-  <h1><%=h @usuario.nombre %></h1>
+<h2><%=h @usuario.nombre %></h2>
 </p>
+<br />
 <p>
   <b>Usuario:</b>
   <%=h @usuario.usuario %>
