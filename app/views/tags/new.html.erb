@@ -24,11 +24,12 @@
 
   <script type="text/javascript">
     var frmvalidator  = new Validator("new_tag_form");
+    frmvalidator.EnableMsgsTogether();
 
-    frmvalidator.addValidation("tag[nombre]","req","Por favor ingrese el nombre de la institución");
+    frmvalidator.addValidation("tag[nombre]","req","Ingrese el nombre de la institución");
     frmvalidator.addValidation("tag[nombre]","alphanumeric_space","El nombre solo permite valores alfabéticos");
     frmvalidator.addValidation("tag[nombre]","maxlen=50","El nombre tiene una longitud máxima de 50 caracteres");
-    frmvalidator.addValidation("tag[codigo]","req","Por ingrese el código de la institución");
+    frmvalidator.addValidation("tag[codigo]","req","Ingrese el código de la institución");
     frmvalidator.addValidation("tag[codigo]","alphanumeric","El código solo permite valores alfanuméricos");
     frmvalidator.addValidation("tag[codigo]","maxlen=12","El código tiene una longitud máxima de 12 caracteres");
 

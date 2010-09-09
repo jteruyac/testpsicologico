@@ -22,10 +22,11 @@
 
   <script type="text/javascript">
     var frmvalidator  = new Validator("edit_institucion_form");
+    frmvalidator.EnableMsgsTogether();
 
-    frmvalidator.addValidation("institucion[nombre]","req","Por favor ingrese el nombre de la institución");
+    frmvalidator.addValidation("institucion[nombre]","req","Ingrese el nombre de la institución");
     frmvalidator.addValidation("institucion[nombre]","alphanumeric_space","El nombre solo permite valores alfanuméricos");
-    frmvalidator.addValidation("institucion[tipo]","req","Por favor seleccione el tipo de institución");
+    frmvalidator.addValidation("institucion[tipo]","req","Seleccione el tipo de institución");
 
   </script>
 

@@ -9,8 +9,10 @@
 
 <h1 align="center">Registro de usuarios</h1>
 <br />
-<h4>Bienvenido. Por favor ingresa tus datos:</h4>
-
+Para registrarte debes llenar el siguiente formulario.
+<br /><br />
+<b>Nota: Todos los campos mostrados son obligatorios.</b>
+<br /><br />
 <% form_for(@usuario, :html => {:id => "new_usuario_form" }) do |f| %>
   <%= f.error_messages %>
 
@@ -95,24 +97,26 @@
 
   <script type="text/javascript">
     var frmvalidator  = new Validator("new_usuario_form");
+    frmvalidator.EnableMsgsTogether();
 
     function cambiar_validacion()
     {
         frmvalidator.clearAllValidations();
         
-        frmvalidator.addValidation("usuario[nombre]","req","Por favor ingrese su nombre completo");
+        frmvalidator.addValidation("usuario[nombre]","req","Ingrese su nombre completo");
         frmvalidator.addValidation("usuario[nombre]","maxlen=40","La longitud máxima del nombre es de 40 caracteres");
         frmvalidator.addValidation("usuario[nombre]","alphabetic_space","El nombre solo permite valores alfabéticos");
-        frmvalidator.addValidation("usuario[usuario]","req","Por favor ingrese un usuario");
+        frmvalidator.addValidation("usuario[usuario]","req","Ingrese un usuario");
         frmvalidator.addValidation("usuario[usuario]","maxlen=40","La longitud máxima del usuario es de 40 caracteres");
         frmvalidator.addValidation("usuario[usuario]","alphanumeric","El usuario solo permite valores alfanuméricos");
-        frmvalidator.addValidation("usuario[password]","req","Por favor ingrese un password");
+        frmvalidator.addValidation("usuario[password]","req","Ingrese un password");
         frmvalidator.addValidation("usuario[password]","maxlen=20","La longitud máxima del password es de 20 caracteres");
-        frmvalidator.addValidation("usuario[sexo]","req","Por favor elija su sexo");
-        frmvalidator.addValidation("usuario[ubicacion_macro]","req","Por favor elija su ubicación");
-        frmvalidator.addValidation("usuario[ubicacion_micro]","req","Por favor elija su ubicación específica");
-        frmvalidator.addValidation("usuario[tipo_colegio]","req","Por favor indique el tipo de colegio en el que culminó sus estudios escolares");
-        frmvalidator.addValidation("usuario[nombre_colegio]","req","Por favor ingrese el nombre del colegio en el que culminó sus estudios escolares");
+        frmvalidator.addValidation("usuario[fecha_nacimiento]","req","Seleccione su fecha de nacimiento");
+        frmvalidator.addValidation("usuario[sexo]","req","Elija su sexo");
+        frmvalidator.addValidation("usuario[ubicacion_macro]","req","Elija su ubicación");
+        frmvalidator.addValidation("usuario[ubicacion_micro]","req","Elija su ubicación específica");
+        frmvalidator.addValidation("usuario[tipo_colegio]","req","Seleccione el tipo de colegio en el que culminó sus estudios escolares");
+        frmvalidator.addValidation("usuario[nombre_colegio]","req","Ingrese el nombre del colegio en el que culminó sus estudios escolares");
         frmvalidator.addValidation("usuario[nombre_colegio]","alphanumeric_space","El nombre del colegio solo permite valores alfanuméricos");
         frmvalidator.addValidation("usuario[nombre_colegio]","maxlen=40","La longitud máxima del password es de 40 caracteres");
 
@@ -122,8 +126,8 @@
             var year = currentTime.getFullYear()+1;
             year = year + '';
 
-            frmvalidator.addValidation("usuario[nombre_universidad]","req","Por favor ingrese el nombre de la universidad en la que estudia/estudió");
-            frmvalidator.addValidation("usuario[anio_ingreso_universidad]","req","Por favor ingrese su año de ingreso a la universidad");
+            frmvalidator.addValidation("usuario[nombre_universidad]","req","Ingrese el nombre de la universidad en la que estudia/estudió");
+            frmvalidator.addValidation("usuario[anio_ingreso_universidad]","req","Ingrese su año de ingreso a la universidad");
             frmvalidator.addValidation("usuario[anio_ingreso_universidad]","num","El año de ingreso solo permite valores numéricos");
             frmvalidator.addValidation("usuario[anio_ingreso_universidad]","greaterthan=1900","El año de ingreso se encuentra fuera del rango de años permitidos");
             frmvalidator.addValidation("usuario[anio_ingreso_universidad]","lessthan="+year,"El año de ingreso se encuentra fuera del rango de años permitidos");
@@ -131,7 +135,7 @@
 
             if (document.getElementById("usuario_consulta_egresado").checked)
             {
-                frmvalidator.addValidation("usuario[anio_egreso_universidad]","req","Por favor ingrese su año de egreso de la universidad");
+                frmvalidator.addValidation("usuario[anio_egreso_universidad]","req","Ingrese su año de egreso de la universidad");
                 frmvalidator.addValidation("usuario[anio_egreso_universidad]","num","El año de egreso solo permite valores numéricos");
                 frmvalidator.addValidation("usuario[anio_egreso_universidad]","greaterthan=1950","El año de egreso se encuentra fuera del rango de años permitidos");
                 frmvalidator.addValidation("usuario[anio_egreso_universidad]","lessthan="+year,"El año de egreso se encuentra fuera del rango de años permitidos");

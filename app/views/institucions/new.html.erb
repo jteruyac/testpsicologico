@@ -23,11 +23,12 @@
   <%= link_to 'Listado de Instituciones', institucions_path %>
   <script type="text/javascript">
     var frmvalidator  = new Validator("new_institucion_form");
+    frmvalidator.EnableMsgsTogether();
 
-    frmvalidator.addValidation("institucion[nombre]","req","Por favor ingrese el nombre de la institución");
+    frmvalidator.addValidation("institucion[nombre]","req","Ingrese el nombre de la institución");
     frmvalidator.addValidation("institucion[nombre]","alphanumeric_space","El nombre solo permite valores alfanuméricos");
     frmvalidator.addValidation("institucion[nombre]","maxlen=50","El nombre tiene una longitud máxima de 50 caracteres");
-    frmvalidator.addValidation("institucion[tipo]","req","Por favor seleccione el tipo de institución");
+    frmvalidator.addValidation("institucion[tipo]","req","Seleccione el tipo de institución");
 
     window.onload = function()
     {

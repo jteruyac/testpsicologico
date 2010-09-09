@@ -15,7 +15,9 @@ Para ver tu historial de resultados, selecciona la prueba aplicada.
   <% contador += 1 %>
     
       <p>
-             <h3> <%= contador.to_s %>. <a href="#" onclick="var bloque = new Fx.Slide('div_prueba_<%= prueba.id.to_s %>');bloque.toggle();return false;"><%= prueba.nombre %></a> (<%= link_to  "Rendir", :controller => "evaluacions", :action => "new", :prueba => prueba.id %>) </h3>
+         <h3>
+            <%= contador.to_s %>. <a href="#" onclick="var bloque = new Fx.Slide('div_prueba_<%= prueba.id.to_s %>');bloque.toggle();return false;"><%= prueba.nombre %></a> [<%= link_to  "Rendir", :controller => "evaluacions", :action => "new", :prueba => prueba.id %>]
+         </h3>
       </p>
       <div id='div_prueba_<%= prueba.id.to_s %>' >
         <%

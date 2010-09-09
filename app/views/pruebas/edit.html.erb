@@ -57,12 +57,32 @@
         <%= f.text_field :autor %>
       </p>
       <p>
-        <%= f.label 'Descripción' %><br />
-        <%= f.text_area :descripcion , :rows => 4, :cols => 50 %>
+        <%= f.label 'Descripción (máximo 800 caracteres)' %><br />
+        <%= f.text_area :descripcion , :rows => 4, :cols => 50, :onchange => "cont1upd();" %><br />
+        <input id="cont1" type="text" size="4" value="0"> caracteres
+        <script type="text/javascript">
+          function cont1upd()
+          {
+            var area1 = document.getElementById("prueba_descripcion");
+            var contador1 = document.getElementById("cont1");
+            contador1.value = area1.value.length;
+          }
+          cont1upd();
+        </script>
       </p>
       <p>
-        <%= f.label :instrucciones %><br />
-        <%= f.text_area :instrucciones , :rows => 4, :cols => 50 %>
+        <%= f.label 'Instrucciones (máximo 800 caracteres)' %><br />
+        <%= f.text_area :instrucciones , :rows => 4, :cols => 50, :onchange => "cont2upd();"  %><br />
+        <input id="cont2" type="text" size="4" value="0">  caracteres
+        <script type="text/javascript">
+          function cont2upd()
+          {
+            var area2 = document.getElementById("prueba_instrucciones");
+            var contador2 = document.getElementById("cont2");
+            contador2.value = area2.value.length;
+          }
+          cont2upd();
+        </script>
       </p>
       <p>
         <%= f.submit 'Guardar Datos Básicos' %>

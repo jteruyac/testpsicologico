@@ -17,8 +17,9 @@
 
   <script type="text/javascript">
     var frmvalidator  = new Validator("new_carrera_form");
+    frmvalidator.EnableMsgsTogether();
 
-    frmvalidator.addValidation("carrera[nombre]","req","Por favor ingrese el nombre de la carrera");
+    frmvalidator.addValidation("carrera[nombre]","req","Ingrese el nombre de la carrera");
     frmvalidator.addValidation("carrera[nombre]","alphabetic_space","El nombre solo permite valores alfabéticos");
     frmvalidator.addValidation("carrera[nombre]","maxlen=50","El nombre tiene una longitud máxima de 50 caracteres");
 

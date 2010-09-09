@@ -18,8 +18,6 @@
     Instrucciones: <%= @prueba.instrucciones %>
   </p>
 
-  <br />
-
   <h1>Preguntas </h1>
 
   <% @preguntas.each do |pregunta| %>
@@ -36,8 +34,11 @@
       </tr>
       <% end %>
     </table>
+    <p>&nbsp;</p>
   <% end %>
+  <br />
   <p>
+    &nbsp;<br />
     Si se le proporcionó un código tag, ingréselo aqui:
     <%= f.text_field :tag_codigo %>
   </p>
