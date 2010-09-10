@@ -95,6 +95,9 @@
         var bandera = false;
         var sumav = 0;
         var cerosv = 0;
+        var cualpregunta = 1;
+        var nroerrores = 0;//para saber en que pregunta estoy
+        var arrayerrores = new Array();//para guardar las preguntas donde hay error
         <% @preguntas.each do |pregunta| %>
             sumav = 0;
             cerosv = 0;
@@ -103,13 +106,26 @@
                 if (document.getElementById('pregunta<%= pregunta.id.to_s %>_alternativa<%= alternativa.id.to_s %>').value == '0')
                   cerosv = cerosv + 1;
             <% end %>
-            if (sumav != 5)
+            if ((sumav != 5) || (cerosv < 2))
+            {
+              alert(cualpregunta);
               bandera = true;
-            if (cerosv < 2)
-              bandera = true;
+              arrayerrores[nroerrores] = cualpregunta;
+              nroerrores = nroerrores + 1;
+            }
+            cualpregunta = cualpregunta + 1;
         <% end %>
           if (bandera)
-            alert("Error: Para cada pregunta se deben distribuir cinco puntos entre un máximo de dos alternativas.");
+          {
+            var cualestexto = "";
+            var i;
+            for(i=0;i<=(nroerrores-1);i++)
+              if (i==(nroerrores-1))
+                cualestexto = cualestexto + arrayerrores[i];
+              else
+                cualestexto = cualestexto + arrayerrores[i] + ", ";
+            alert("Error: En cada pregunta se deben distribuir cinco puntos entre una o dos alternativas.\n La(s) pregunta(s) "+cualestexto+ " no cumplen con esta condición.");
+          }
           else
             document.forms[0].submit();
 

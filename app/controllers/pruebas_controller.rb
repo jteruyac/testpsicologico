@@ -209,6 +209,10 @@ class PruebasController < ApplicationController
       # Validación de datos
       error = false
       error_index = -99 #no errors
+
+      lista_malas = []
+      basico_malas = [0,0]
+
       elementos_rasgo = [] #ids temporales de rasgo
       rasgos_prueba = prueba_data.rasgos
       rasgos_prueba.each do |rasgo_prueba|
@@ -233,14 +237,20 @@ class PruebasController < ApplicationController
         error_index = -1
       end
 
-      if ((!error)&&(prueba_data.preguntas.length < 1))
+      if (error_index == -1)
+        basico_malas[0] = 1
+      end
+
+      if (prueba_data.preguntas.length == 0)
         error = true
         error_index = -2 # cero preguntas
+        basico_malas[1] = 1
       end
 
       bandera_rasgo = []
       prueba_data.preguntas.each do |pregunta_prueba|
-        break if error
+        #break if error
+        local = false #inicializo un flag por pregunta ya que error es grupal (todas las preguntas)
         bandera_rasgo = []
         4.times do
           bandera_rasgo << 0
@@ -248,6 +258,7 @@ class PruebasController < ApplicationController
         pregunta_prueba.alternativas.each do |alternativa|
           if ((!alternativa.alternativa.texto) || (alternativa.alternativa.texto == ''))
             error = true
+            local = true
             error_index = pregunta_prueba.identificador_pregunta
           end
           if alternativa.alternativa.rasgo_id
@@ -256,19 +267,24 @@ class PruebasController < ApplicationController
               bandera_rasgo[arrayItem] = 1 # si encuentra el rasgo
             else
               error = true
+              local = true
               error_index = pregunta_prueba.identificador_pregunta
             end
           else
             error = true
+            local = true
             error_index = pregunta_prueba.identificador_pregunta
           end
         end
-        suma = 0
         bandera_rasgo.each do |pre|
           if pre == 0
             error = true
+            local = true
             error_index = pregunta_prueba.identificador_pregunta
           end
+        end
+        if local
+          lista_malas << pregunta_prueba.identificador_pregunta
         end
       end
       # Fin validación de datos
@@ -315,6 +331,8 @@ class PruebasController < ApplicationController
         # mensaje de error
         session[:origen] = "new_envio_incompleto"
         flash[:notice] = error_index.to_s
+        flash[:lista_negra] = lista_malas
+        flash[:basico_negra] = basico_malas
         redirect_to :controller => :pruebas, :action => :new
       end
     else

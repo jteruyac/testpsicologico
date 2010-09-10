@@ -24,7 +24,7 @@
       //Validación para la creación de las preguntas
       
       var frmvalidator0  = new Validator("new_pregunta_form");
-      frmvalidator0.addValidation("pregunta[texto]","req","Por favor ingrese una pregunta");
+      frmvalidator0.addValidation("pregunta[texto]","req","Ingrese una pregunta");
       frmvalidator0.addValidation("pregunta[texto]","extended_alphabetic_space","Error: Se han ingresado caracteres restringidos");
       frmvalidator0.addValidation("pregunta[texto]","maxlen=70","El texto solo admite un máximo de 70 caracteres");
     };
@@ -55,7 +55,7 @@
       <p>
         <%= f.label 'Descripción (máximo 800 caracteres)' %><br />
         <%= f.text_area :descripcion , :rows => 4, :cols => 50, :onchange => "cont1upd();" %><br />
-        <input id="cont1" type="text" size="4" value="0"> caracteres
+        <input id="cont1" type="text" size="4" value="0" readonly> caracteres
         <script type="text/javascript">
           function cont1upd()
           {
@@ -69,7 +69,7 @@
       <p>
         <%= f.label 'Instrucciones (máximo 800 caracteres)' %><br />
         <%= f.text_area :instrucciones , :rows => 4, :cols => 50, :onchange => "cont2upd();"  %><br />
-        <input id="cont2" type="text" size="4" value="0">  caracteres
+        <input id="cont2" type="text" size="4" value="0" readonly>  caracteres
         <script type="text/javascript">
           function cont2upd()
           {
@@ -89,18 +89,19 @@
 <br />
 <script type="text/javascript">
     var frmvalidator  = new Validator("new_prueba_form");
-    frmvalidator.addValidation("prueba[nombre]","req","Por favor ingrese el nombre del test psicológico");
+    frmvalidator.EnableMsgsTogether();
+    frmvalidator.addValidation("prueba[nombre]","req","Ingrese el nombre del test psicológico");
     frmvalidator.addValidation("prueba[nombre]","alphabetic_space","El nombre solo permite valores alfabéticos");
     frmvalidator.addValidation("prueba[nombre]","maxlen=50","El nombre solo admite un máximo de 50 caracteres");
-    frmvalidator.addValidation("prueba[autor]","req","Por favor ingrese el nombre del autor del test psicológico");
+    frmvalidator.addValidation("prueba[autor]","req","Ingrese el nombre del autor del test psicológico");
     frmvalidator.addValidation("prueba[autor]","alphabetic_space","El nombre del autor solo permite valores alfabéticos");
     frmvalidator.addValidation("prueba[autor]","maxlen=50","El autor solo admite un máximo de 50 caracteres");
-    frmvalidator.addValidation("prueba[descripcion]","req","Por favor ingrese una descripción para el test psicológico");
+    frmvalidator.addValidation("prueba[descripcion]","req","Ingrese una descripción para el test psicológico");
     frmvalidator.addValidation("prueba[descripcion]","alphanumeric_space","La descripción solo permite valores alfanuméricos");
-    frmvalidator.addValidation("prueba[descripcion]","maxlen=500","La descripción solo admite un máximo de 500 caracteres");
-    frmvalidator.addValidation("prueba[instrucciones]","req","Por favor ingrese instrucciones para rendir el test");
+    frmvalidator.addValidation("prueba[descripcion]","maxlen=800","La descripción solo admite un máximo de 800 caracteres");
+    frmvalidator.addValidation("prueba[instrucciones]","req","Ingrese instrucciones para rendir el test");
     frmvalidator.addValidation("prueba[instrucciones]","alphanumeric_space","Las instrucciones solo permiten valores alfanuméricos");
-    frmvalidator.addValidation("prueba[instrucciones]","maxlen=500","Las instrucciones solo admiten un máximo de 500 caracteres");
+    frmvalidator.addValidation("prueba[instrucciones]","maxlen=800","Las instrucciones solo admiten un máximo de 800 caracteres");
 
     var myDiv = new Fx.Slide('informacion_basica');
     myDiv.hide();
@@ -137,6 +138,8 @@
 
   <h3>Preguntas >> </h3>
   <% bloques_indice = 0 %>
+  <% lista_negra_index = 0 %>
+  <% lista_malas = [] %>
   <% @preguntas.each do |pregunta| %>
     <br />
     <p>
@@ -144,9 +147,11 @@
       <%= bloques_indice %>. <a href="#" id="link_pregunta<%= pregunta.identificador_pregunta.to_s %>" onclick="var bloque = new Fx.Slide('alternativas_pregunta<%= pregunta.identificador_pregunta.to_s %>');bloque.toggle();return false;"><b><%= pregunta.pregunta.texto %></b></a>&nbsp;
       (<%= link_to 'Eliminar', {:controller => "preguntas", :action => "eliminar", :id => pregunta.identificador_pregunta}, :confirm => "La acción tomada eliminará la pregunta y sus alternativas. ¿Desea continuar?", :method => 'eliminar' %>)
     </p>
-    <%
-    if (flash[:notice] == pregunta.identificador_pregunta.to_s)
+    <% #solo se ejecuta cuando he tratado de orquestar create o update y hubo un error en una(s) pregunta(s)
+    if (flash[:lista_negra] && (flash[:lista_negra][lista_negra_index]) && (flash[:lista_negra][lista_negra_index].to_s == pregunta.identificador_pregunta.to_s))
       num_pregunta_falla = bloques_indice
+      lista_malas << bloques_indice #lista con numeros de pregunta que fallan
+      lista_negra_index = lista_negra_index + 1
     end
     %>
     <table id="alternativas_pregunta<%= pregunta.identificador_pregunta.to_s %>" >
@@ -203,18 +208,28 @@
         <% end %>
     <% end %>
 
-    <% if flash[:notice] == '-1' %>
-      alert('Error en los datos básicos del test.');
-    <% else %>
-      <% if flash[:notice] == '-2' %>
-        alert('El test no tiene preguntas.');
-      <% else %>
-        <% if ((not flash[:notice] == '-99') && (num_pregunta_falla.to_s != '0') && (flash[:notice])) %>
-          alert('Error en la pregunta '+<%= num_pregunta_falla.to_s %>+'.');
-        <% end %>
-      <% end %>
-    <% end %>
+    <%
+    emensaje = ""
+    if (flash[:notice] && (flash[:notice] != "-99") && (flash[:basico_negra][0]) && ((flash[:basico_negra][0] == 1) || (flash[:basico_negra][1] == 1) || (flash[:lista_negra].length > 0)))
+      emensaje = "Se ha encontrado los siguientes errores:\\n"
+      if (flash[:basico_negra][0] == 1)
+        emensaje = emensaje + '- Datos básicos \\n'
+      end
+      if (flash[:basico_negra][1] == 1)
+        emensaje = emensaje + '- No existen preguntas \\n'
+      else
+        lista_malas.each do |sa|
+          emensaje = emensaje + '- Pregunta '+sa.to_s+' \\n'
+        end
+      end
 
+    end
+  %>
+
+  <% if (emensaje != "") %>
+      var alerta_texto = "<%= emensaje %>";
+      alert(alerta_texto);
+  <% end %>
     
   <% if flash[:pregunta_creada] == 'si' %>
     document.getElementById('linkNP').focus();
