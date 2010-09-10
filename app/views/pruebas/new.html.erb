@@ -28,6 +28,9 @@
       frmvalidator0.addValidation("pregunta[texto]","extended_alphabetic_space","Error: Se han ingresado caracteres restringidos");
       frmvalidator0.addValidation("pregunta[texto]","maxlen=70","El texto solo admite un máximo de 70 caracteres");
     };
+
+    if (alerta_texto)
+      alert(alerta_texto);
   };
 </script>
 
@@ -210,7 +213,7 @@
 
     <%
     emensaje = ""
-    if (flash[:notice] && (flash[:notice] != "-99") && (flash[:basico_negra][0]) && ((flash[:basico_negra][0] == 1) || (flash[:basico_negra][1] == 1) || (flash[:lista_negra].length > 0)))
+    if (flash[:notice2] && (flash[:notice2].to_s != "-99") && (flash[:basico_negra]) && ((flash[:basico_negra][0] == 1) || (flash[:basico_negra][1] == 1) || (flash[:lista_negra].length > 0)))
       emensaje = "Se ha encontrado los siguientes errores:\\n"
       if (flash[:basico_negra][0] == 1)
         emensaje = emensaje + '- Datos básicos \\n'
@@ -228,7 +231,6 @@
 
   <% if (emensaje != "") %>
       var alerta_texto = "<%= emensaje %>";
-      alert(alerta_texto);
   <% end %>
     
   <% if flash[:pregunta_creada] == 'si' %>
