@@ -386,7 +386,7 @@ class PruebasController < ApplicationController
         basico_malas[0] = 1
       end
 
-      if (prueba_data.preguntas.length == 0)
+      if (prueba_data.numero_preguntas?)
         error = true
         error_index = -2 # cero preguntas
         basico_malas[1] = 1

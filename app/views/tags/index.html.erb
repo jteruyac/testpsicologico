@@ -1,12 +1,11 @@
 <% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
 
 <h1 align="center">
-  <%= @institucion.nombre %>
+  <%= @institucion.nombre %>: Lista de Tags
 </h1>
-<h2 align="center">
-  Lista de Tags
-</h2>
 <br />
+La siguiente lista muestra los Tags (Etiquetas de grupo) disponibles para el registro de usuarios.
+<br /><br />
 <% if @tags.length != 0 %>
     <table align="center">
       <tr>
