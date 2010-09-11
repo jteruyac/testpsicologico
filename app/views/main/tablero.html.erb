@@ -1,6 +1,7 @@
 <% if ((session["usuario"])&&(session["usuario"].administrador)) %>
-
 <h1 align="center">Test Psicológicos Disponibles </h1>
+<%= javascript_include_tag 'prototype' %>
+<%= javascript_include_tag 'effects' %>
 <br />
 En la lista inferior se encuentran los test psicológicos publicados en el site.
 Si deseas realizar otra acción la podrás encontrar en el menú lateral.
@@ -18,10 +19,18 @@ Si deseas realizar otra acción la podrás encontrar en el menú lateral.
     </p>
   <% end %>
 
-
-<%= link_to 'Crear un Test psicológico', new_prueba_path %>
 <br />
-
+<%= button_to 'Crear un Test psicológico', new_prueba_path %>
+<br /><br />
+  <p id="notes" align="center">
+    <b><%= flash[:anuncio] %></b>
+  </p>
+<br />
+<script type="text/javascript">
+  <% if (flash[:anuncio]) %>
+    <%= visual_effect :fade, 'notes', { :duration => 2.0, :from => 2, :to => 0, :delay => 4 } %>
+  <% end %>
+</script>
 <%else%>
 <%= render :partial => "unauthorized" %>
 <%end%>

@@ -1,5 +1,8 @@
 <% if (!session["usuario"]) %>
 
+<%= javascript_include_tag 'prototype' %>
+<%= javascript_include_tag 'effects' %>
+
 <h1 align="center">Ingreso</h1>
 
 <div align="center">
@@ -15,8 +18,8 @@
   <p>
     <%= f.submit "Ingresar" %>
   </p>
-  <p>
-    <%=flash[:notice] %>
+  <p id="notice">
+    <%= flash[:notice] %>
   </p>
 <% end %>
 
@@ -24,6 +27,9 @@
 
 <script type="text/javascript">
 document.getElementById('datos_usuario').focus();
+<% if flash[:notice] %>
+  <%= visual_effect :fade, 'notice', { :duration => 2.0, :from => 2, :to => 0, :delay => 4 } %>
+<% end %>
 </script>
 
 <%else%>

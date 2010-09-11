@@ -196,6 +196,7 @@ class PruebasController < ApplicationController
     @prueba.destroy
 
     respond_to do |format|
+      flash[:anuncio] = "El test psicológico fue eliminado con éxito."
       format.html { redirect_to(:controller => :main, :action => :tablero) }
       format.xml  { head :ok }
     end
@@ -328,6 +329,7 @@ class PruebasController < ApplicationController
         flash[:notice2] = nil
         flash[:lista_negra] = nil
         flash[:basico_negra] = nil
+        flash[:anuncio] = "El test psicológico fue registrado con éxito."
         redirect_to :controller => :main, :action => :tablero
       else
         # mensaje de error
@@ -386,7 +388,7 @@ class PruebasController < ApplicationController
         basico_malas[0] = 1
       end
 
-      if (prueba_data.numero_preguntas?)
+      if (prueba_data.numero_preguntas? == 0)
         error = true
         error_index = -2 # cero preguntas
         basico_malas[1] = 1
@@ -503,6 +505,7 @@ class PruebasController < ApplicationController
             flash[:notice3] = nil
             flash[:lista_negra] = nil
             flash[:basico_negra] = nil
+            flash[:anuncio] = "El test psicológico fue modificado con éxito."
             redirect_to :controller => :main, :action => :tablero
 
         else # mensaje de error
@@ -554,6 +557,7 @@ class PruebasController < ApplicationController
             flash[:notice3] = nil
             flash[:lista_negra] = nil
             flash[:basico_negra] = nil
+            flash[:anuncio] = "El test psicológico fue modificado con éxito."
             redirect_to :controller => :main, :action => :tablero
 
         else # mensaje de error
@@ -562,7 +566,7 @@ class PruebasController < ApplicationController
             flash[:notice3] = error_index.to_s
             flash[:lista_negra] = lista_malas
             flash[:basico_negra] = basico_malas
-            redirect_to :controller => :pruebas, :action => :edit, :id => @prueba.id
+            redirect_to :controller => :pruebas, :action => :edit, :id => prueba_data.get_prueba.id #@prueba.id
         end
 
       end

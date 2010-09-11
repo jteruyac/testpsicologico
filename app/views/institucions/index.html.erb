@@ -1,4 +1,6 @@
 <% if ((session["usuario"])&&(session["usuario"].administrador == true)) %>
+<%= javascript_include_tag 'prototype' %>
+<%= javascript_include_tag 'effects' %>
 
 <h1 align="center">Instituciones Registradas</h1>
 <br />
@@ -33,8 +35,14 @@ La siguiente lista muestra las instituciones disponibles para el registro de usu
 </center>
 
 <br />
-
-
+<p id="notes" align="center">
+    <b><%= flash[:anuncio0] %></b>
+</p>
+<script type="text/javascript">
+  <% if (flash[:anuncio0]) %>
+    <%= visual_effect :fade, 'notes', { :duration => 2.0, :from => 2, :to => 0, :delay => 4 } %>
+  <% end %>
+</script>
 <%else%>
 <%= render :partial => "main/unauthorized" %>
 <%end%>

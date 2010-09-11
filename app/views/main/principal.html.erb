@@ -43,8 +43,28 @@ Para ver tu historial de resultados, selecciona la prueba aplicada.
       </script>
     
   <% end %>
+  <br /><br /><br />
+  <p id="notes" align="center">
+    <b><%= flash[:anuncio] %></b>
+  </p>
+<script type="text/javascript">
+  <% if (flash[:anuncio]) %> //Efecto fade con mootools
+    (function()
+    {
+      var elem = $("notes");
+      var fx = new Fx.Tween(elem,{
+          duration: 1000,
+          onComplete: function()
+          {
+                  m.fade('in');
+          }
+      });
+      fx.start('opacity',1,0);
+    }).delay(4000);
 
-  <br />
+    //(function(){ alert('one second later...'); }).delay(10000);
+  <% end %>
+</script>
 <%else%>
 <%= render :partial => "unauthorized" %>
 <%end%>
