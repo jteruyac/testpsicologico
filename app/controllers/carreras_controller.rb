@@ -90,6 +90,7 @@ class CarrerasController < ApplicationController
 
     if !repetido_c
       if @carrera.save
+        flash[:anuncio0] = "Carrera creada correctamente."
         redirect_to carreras_path
       else
         format.html { render :action => "new" }
@@ -109,7 +110,7 @@ class CarrerasController < ApplicationController
 
     respond_to do |format|
       if @carrera.update_attributes(params[:carrera])
-        flash[:notice] = 'Carrera was successfully updated.'
+        flash[:anuncio0] = "Carrera modificada correctamente."
         redirect_to carrera_path
       else
         format.html { render :action => "edit" }
@@ -132,6 +133,7 @@ class CarrerasController < ApplicationController
     end
 
     respond_to do |format|
+      flash[:anuncio0] = "Carrera eliminada correctamente."
       format.html { redirect_to(carreras_url) }
       format.xml  { head :ok }
     end

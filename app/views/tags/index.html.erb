@@ -31,7 +31,7 @@ La siguiente lista muestra los Tags (Etiquetas de grupo) disponibles para el reg
 
 <br />
 <center>
-  <%= link_to 'Nuevo tag', :controller => :tags, :action => :new, :institucion => @institucion.id  %> |
+  <%= button_to 'Ingresar un Tag', :controller => :tags, :action => :new, :institucion => @institucion.id  %><br />
   <%= link_to 'Lista de Instituciones', :controller => :institucions, :action => :index  %>
 </center>
 

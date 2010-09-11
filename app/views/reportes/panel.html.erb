@@ -9,7 +9,10 @@
 
 <h1>Generar un reporte</h1>
 <br />
-
+Aquí puedes generar reportes usando la información recolectada. Los reportes son de dos tipos: Dominancia y Promedios.
+<br /><br />
+<b>Nota: Para generar un reporte se debe indicar el nombre del test psicológico y el tipo de reporte. Los campos de filtro son opcionales.</b>
+<br /><br />
 <% form_for :formulario, :html => {:id => "forma_datos" }, :url => { :action => "" } do |f| %>
   <%= f.error_messages %>
   <p>
@@ -19,6 +22,11 @@
   <p>
     <%= f.label :reporte %><br />
     <%= f.select(:reporte, ['Promedios','Dominancia']) %>
+  </p>
+  <p>
+    <br />
+    <h3>Filtros</h3>
+    <br />
   </p>
   <p>
     <%= f.label :sexo %><br />

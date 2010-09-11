@@ -101,7 +101,7 @@ class TagsController < ApplicationController
     if !repetido_n
       if !repetido_c
         if @tag.save
-          flash[:notice] = 'Tag creado correctamente'
+          flash[:anuncio0] = 'Tag creado correctamente'
           redirect_to :controller => :tags, :action => :index, :institucion => @tag.institucion_id
         else
           flash[:notice] = 'Error 0'
@@ -124,7 +124,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if @tag.update_attributes(params[:tag])
-        flash[:notice] = 'Tag was successfully updated.'
+        flash[:anuncio0] = 'Tag modificado correctamente'
         format.html { redirect_to :controller => :tags, :action => :index, :institucion => @tag.institucion_id }
         
       else
@@ -149,6 +149,7 @@ class TagsController < ApplicationController
     end
 
     respond_to do |format|
+      flash[:anuncio0] = 'Tag eliminado correctamente'
       format.html { redirect_to :controller => :tags, :action => :index, :institucion => identidad_i }
       format.xml  { head :ok }
     end

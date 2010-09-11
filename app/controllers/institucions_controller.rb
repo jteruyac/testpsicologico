@@ -90,6 +90,7 @@ class InstitucionsController < ApplicationController
 
     if !repetido_c
       if @institucion.save
+        flash[:anuncio0] = "Institución creada correctamente."
         redirect_to institucions_path
       else
         format.html { render :action => "new" }
@@ -107,6 +108,7 @@ class InstitucionsController < ApplicationController
     @institucion = Institucion.find(params[:id])
 
     if @institucion.update_attributes(params[:institucion])
+      flash[:anuncio0] = "Institución modificada correctamente."
       redirect_to institucions_path
     else
       redirect_to :back
@@ -135,6 +137,7 @@ class InstitucionsController < ApplicationController
     end
 
     respond_to do |format|
+      flash[:anuncio0] = "Institución eliminada correctamente."
       format.html { redirect_to(institucions_url) }
       format.xml  { head :ok }
     end

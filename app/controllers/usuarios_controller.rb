@@ -102,7 +102,7 @@ class UsuariosController < ApplicationController
 
     respond_to do |format|
       if @usuario.update_attributes(params[:usuario])
-        flash[:notice] = 'Usuario was successfully updated.'
+        flash[:anuncio0] = "Usuario modificado correctamente."
         format.html { redirect_to(:controller => :usuarios, :action => :index) }
         format.xml  { head :ok }
       else
@@ -132,6 +132,7 @@ class UsuariosController < ApplicationController
     @usuario.destroy
 
     respond_to do |format|
+      flash[:anuncio0] = "Carrera eliminada correctamente."
       format.html { redirect_to(usuarios_url) }
       format.xml  { head :ok }
     end

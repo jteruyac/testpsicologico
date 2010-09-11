@@ -1,8 +1,11 @@
 <% if ((session["usuario"])&&(session["usuario"].administrador)) %>
+<%= javascript_include_tag 'prototype' %>
+<%= javascript_include_tag 'effects' %>
 
 <h1 align="center">Lista de usuarios</h1>
 <br />
-
+La siguiente lista muestra los usuarios registrados en el sistema.
+<br /><br />
 <% if @usuarios.length != 0 %>
 <table align="center">
   <tr>
@@ -41,7 +44,14 @@
     <center>La lista de usuarios está vacía.</center>
     <br />
 <% end %>
-
+<p id="notes" align="center">
+    <b><%= flash[:anuncio0] %></b>
+</p>
+<script type="text/javascript">
+  <% if (flash[:anuncio0]) %>
+    <%= visual_effect :fade, 'notes', { :duration => 2.0, :from => 2, :to => 0, :delay => 4 } %>
+  <% end %>
+</script>
 <br />
 
 <%else%>
