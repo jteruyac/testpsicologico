@@ -57,12 +57,16 @@
   </tbody>
 </table>
 <br />
-
-  El tipo dominante es el estilo: <%= @diagnostico %>
-
-<p>
-  <%= @recomendacion_diagnostico %>
-</p>
+<table>
+  <tr>
+    <td>Estilo Dominante</td>
+    <td><b><%= @diagnostico %></b></td>
+  </tr>
+  <tr>
+    <td>Diagnóstico</td>
+    <td><%= @recomendacion_diagnostico %></td>
+  </tr>
+</table>
 <br />
 <h3 align="center"> Análisis de Pares:</h3>
 <table id="parStyles" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
@@ -106,7 +110,7 @@
   El par dominante es el estilo: <%= @diagnostico_par %>
 
 <p>
-  <%= @recomendacion_diagnostico_par %>
+  <%#= @recomendacion_diagnostico_par %>
 </p>
 <br />
 <center>

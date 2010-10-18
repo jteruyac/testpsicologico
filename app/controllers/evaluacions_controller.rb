@@ -17,7 +17,7 @@ class EvaluacionsController < ApplicationController
       @diagnostico = session[:diagnostico]
       @recomendacion_diagnostico = session[:recomendacion_diagnostico]
       @diagnostico_par = session[:diagnostico_par]
-      @recomendacion_diagnostico_par = session[:recomendacion_diagnostico_par]
+      #@recomendacion_diagnostico_par = session[:recomendacion_diagnostico_par]
 
       a = session["usuario"]
       a.decrypt_nombre
@@ -336,7 +336,7 @@ class EvaluacionsController < ApplicationController
       session[:recomendacion_diagnostico] = @recomendacion_diagnostico
       session[:diagnostico_par] = @diagnostico_par
       session[:recomendacion_diagnostico_par] = @recomendacion_diagnostico_par
-
+      
       session[:rpt_tipo] = "resultado"
       @code = rand(4321)
       session[:rpt_codigo] = @code
@@ -435,49 +435,49 @@ class EvaluacionsController < ApplicationController
 
   def find_recomendacion(data)
     if (data == "Lógico")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Busca evidencias y hechos que le permitan explicar las causas o el origen de un evento específico.  Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."
     end
     if (data == "Formal")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y la ordena según ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Le gusta buscar información paso a paso o sea de manera secuencial. Le gusta categorizar, clasificar, coleccionar y archivar.  Por su mente minuciosa puede identificar hasta los errores imperceptibles."
     end
     if (data == "Emotivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."
     end
     if (data == "Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."
     end
     if (data == "Lógico - Formal")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Busca la lógica de las decisiones, para lo cual necesita contar con evidencias, hechos y detalles que confirmen lo esperado. Dedica tiempo a precisar y definir procesos para lograr resultados. Aprecia el conocimiento técnico, los indicadores y la posibilidad de medir y evaluar. Plantea metas claras y espera resultados concretos.  Aprecia los reportes que describan la marcha de los hechos y los resultados de la gestión. Aprecia los fundamentos y las teorías que están detrás de las decisiones. Posee fluidez verbal. Busca el dominio del método y contar con algún tipo de conocimiento técnico."
     end
     if (data == "Lógico - Emotivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Busca el balance entre la emoción y la razón. Recoge evidencias tanto del proceso como del resultado. La decisión es correcta porque responde a sus sentimientos y a una lógica determinada.  Toma tiempo para tomar decisiones por lo que quiere ser justo. No se conforma con plantear netas desafiantes, sino que busca que las personas se involucren y comprometan con ellas."
     end
     if (data == "Lógico - Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Es un intelectual que gusta de conceptualizar y comprender el funcionamiento de las organizaciones y sistemas. Construye explicaciones sobre lo que ocurre, lanza hipótesis y explora las causas. Investiga y contrasta modelos. Busca oportunidades de desarrollo. Construye una visión y plantea metas claras que inspiren a las personas involucradas. Se inspira a través de los hechos y de las personas. Contextualiza y analiza el impacto de un hecho en el TODO, en el SISTEMA."
     end
     if (data == "Formal - Emotivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Destaca por implementar y ejecutar los proyectos cuando tiene las metas claras. Cumple con los plazos. Identifica todos los procesos necesarios para desarrollar cada meta. Aprecia el trabajo en equipo cuando los roles están claramente definidos. Le gusta trabajar con personas organizadas que gustan sostener las relaciones humanas. Le da gran importancia a las formas, a las costumbres y a los rituales. Se adapta a diferentes escenarios siempre y cuando de por medio haya acción y emoción."
     end
     if (data == "Formal - Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Realiza propuestas innovadoras y las define con el máximo de detalle y precisión. Organiza actividades que convergen con la idea matriz. Se concentra en lo que hace de modo que no se detiene hasta finalizarlo. Le gusta hacer un seguimiento de todas las tareas durante el proceso de ejecución. El control de la calidad es parte de sus prioridades. Se concentra en lo que hace de modo que no se detiene hasta finalizar las tareas programadas. Posee un espíritu perfeccionista. La forma le preocupa tanto como el fondo."
     end
     if (data == "Emotivo - Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Es idealista en la forma de configurar el mundo. Cuando descubre una oportunidad de desarrollo la comparte y la socializa. A medida que la comunica va completando su idea con lo que recoge y escucha de los demás. Le gusta aprender de las relaciones interpersonales. Es intuitivo y metafórico en cada una de sus explicaciones y elaboraciones sobre los hechos. Puede trabajar en equipo y construir las propuestas en forma colaborativa. Es informal y confía en la iniciativa del equipo para completar las tareas y conseguir los resultados. Posee sensibilidad artística. Busca espacios para establecer una comunicación directa."
     end
     if (data == "Lógico – Formal - Emotivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Disfruta aterrizando las propuestas e ideas. Aplica de manera muy práctica los modelos o enfoques teóricos. Invierte mucho tiempo en sistematizar lo que hay. Analiza los incidentes hasta encontrar las causas que los han originado. Motiva al equipo a ejecutar todas las tareas y llegar a buen término. No se detiene ante los obstáculos, por el contrario es proactivo y busca soluciones alternativas. Se anticipa y en caso aparezcan situaciones inesperadas puede crear planes de contingencia."
     end
     if (data == "Lógico – Formal - Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Es capaz de diseñar un programa o una propuesta a partir de una visión inspiradora.  Puede precisar las metas, indicadores y procesos definidos. Pero le cuesta socializar la propuesta. Posee dificultades para establecer la red social. Solo el 30% de la población se encuentra en este segmento."
     end
     if (data == "Lógico - Emotivo - Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Es capaz de motivar a otros para trabajar en equipo y complementar las habilidades. Cada vez que diseña una propuesta, lo hace de manera intuitiva y holística. No sólo ve el árbol sino el bosque. Una vez que crea un proyecto le gusta socializarlo y escuchar con gran apertura las críticas y sugerencias. No tiene claridad de los procedimientos a seguir pero tiene claro el norte y la dirección. Se le escapan los detalles y puede comenzar por cualquier parte. Necesita de una estructura y de un orden."
     end
     if (data == "Formal - Emotivo - Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Propone ideas innovadoras. No se detiene a analizar o a sustentar sus decisiones. Necesita precisar metas e indicadores de medición. Se entusiasma con las propuestas y motiva a otros a participar. Establece modelos de trabajo.  Trabaja en equipo con empatía y conciencia del proceso. Busca retroalimentar a sus compañeros de grupo y establece un cronograma detallado a seguir para mantener todo con orden y claridad."
     end
     if (data == "Lógico - Formal - Emotivo - Intuitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento dominante."
+      text = "Es un traductor. Puede comunicarse con cualquiera de los estilos de pensamiento. Se adapta a los diferentes modelos y formas de percibir y de interpretar. Es flexible y ejerce su autoridad para desarrollar todo su potencial. Es empático y tiende a desarrollar todos sus talentos al máximo.  Posee la habilidad para desarrollar tanto un análisis cuantitativo como cualitativo. Es capaz de argumentar, diseñar, negociar o socializar."
     end
 
     text

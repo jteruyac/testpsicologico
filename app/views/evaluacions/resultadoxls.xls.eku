@@ -31,7 +31,7 @@
   sheet1.row(10).concat ["Estilo Intuitivo", "D", "Izquierdo Superior", @puntaje_intuitivo ]
 
   sheet1[12,0] = "El tipo dominante es el estilo:" + @diagnostico
-  sheet1[13,0] = "Recomendaciones:" + @recomendacion_diagnostico
+  sheet1[13,0] = "Diagnóstico: " + @recomendacion_diagnostico
 
 
   sheet1[15, 0] = "Análisis de Pares"
@@ -42,6 +42,3 @@
   sheet1.row(19).concat ["Estilo Idealista", "C+D", "Derecho Inferior", @puntaje_formal ]
   sheet1.row(20).concat ["Estilo Cognitivo", "A+D", "Derecho Superior", @puntaje_emotivo ]
   sheet1.row(21).concat ["Estilo Instintivo", "B+C", "Izquierdo Superior", @puntaje_intuitivo ]
-
-  sheet1[23,0] = "El par dominante es el estilo: " + @diagnostico_par
-  sheet1[24,0] = "Recomendaciones:" + @recomendacion_diagnostico
