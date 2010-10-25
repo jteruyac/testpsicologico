@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100609074723) do
+ActiveRecord::Schema.define(:version => 20101023224726) do
 
   create_table "alternativas", :force => true do |t|
     t.integer  "rasgo_id"
@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(:version => 20100609074723) do
     t.string   "par_dominante"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "puntaje_balanceado"
+    t.integer  "puntaje_inventor"
+    t.integer  "puntaje_planificado"
+    t.integer  "puntaje_colaborativo"
+    t.integer  "puntaje_implementador"
+    t.integer  "puntaje_ejecutivo"
+    t.integer  "puntaje_traductor"
   end
 
   create_table "institucions", :force => true do |t|

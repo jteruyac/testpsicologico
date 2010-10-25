@@ -24,6 +24,8 @@ class ReportesController < ApplicationController
       @filtros = session[:rpt_filtros]
       @totales = session[:rpt_totales]
       @lista_hashes = session[:rpt_lista_hashes]
+      @conteo_diagnosticos = session[:conteo_diagnosticos]
+      @conteo_diagnosticos_par = session[:conteo_diagnosticos_par]
 
       respond_to do |format|
         #format.html # index.html.erb
@@ -213,7 +215,7 @@ class ReportesController < ApplicationController
 
         #Orden del array L, F, E, I, LF, LE, LI, FE, FI, EI, LFE, LFI, LEI, FEI, LFEI
         @conteo_diagnosticos = Array.new(15, 0)
-        @conteo_diagnosticos_par = Array.new(15, 0)
+        @conteo_diagnosticos_par = Array.new(11, 0)
 
         totalL = 0
         totalF = 0
@@ -257,8 +259,6 @@ class ReportesController < ApplicationController
               @conteo_diagnosticos[13] += 1
             when "Lógico - Formal - Emotivo - Intuitivo"
               @conteo_diagnosticos[14] += 1
-            else
-              @conteo_diagnosticos[0] = -10
             end
 
             case valores.par_dominante
@@ -270,32 +270,21 @@ class ReportesController < ApplicationController
               @conteo_diagnosticos_par[2] += 1
             when "Instintivo"
               @conteo_diagnosticos_par[3] += 1
-            when "Realista - Idealista"
+            when "Balanceado"
               @conteo_diagnosticos_par[4] += 1
-            when "Realista - Cognitivo"
+            when "Inventor"
               @conteo_diagnosticos_par[5] += 1
-            when "Realista - Instintivo"
+            when "Plsnificado"
               @conteo_diagnosticos_par[6] += 1
-            when "Idealista - Cognitivo"
+            when "Colaborativo"
               @conteo_diagnosticos_par[7] += 1
-            when "Idealista - Instintivo"
+            when "Implementador"
               @conteo_diagnosticos_par[8] += 1
-            when "Cognitivo - Instintivo"
+            when "Ejecutivo"
               @conteo_diagnosticos_par[9] += 1
-            when "Realista - Idealista - Cognitivo"
+            when "Traductor"
               @conteo_diagnosticos_par[10] += 1
-            when "Realista - Idealista - Instintivo"
-              @conteo_diagnosticos_par[11] += 1
-            when "Realista - Cognitivo - Instintivo"
-              @conteo_diagnosticos_par[12] += 1
-            when "Idealista - Cognitivo - Instintivo"
-              @conteo_diagnosticos_par[13] += 1
-            when "Realista - Idealista - Cognitivo - Instintivo"
-              @conteo_diagnosticos_par[14] += 1
-            else
-              @conteo_diagnosticos_par[0] = -10
             end
-
         end
 
         if (@cant_usuarios != 0)

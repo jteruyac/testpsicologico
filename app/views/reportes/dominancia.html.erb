@@ -38,10 +38,6 @@
       <th>Formal</th>
       <th>Emotivo</th>
       <th>Intuitivo</th>
-      <th>Realista</th>
-      <th>Idealista</th>
-      <th>Cognitivo</th>
-      <th>Instintivo</th>
     </tr>
   </thead>
   <tbody>
@@ -52,18 +48,49 @@
       <td><%= item[:evaluacion].puntaje_formal %> </td>
       <td><%= item[:evaluacion].puntaje_emotivo %> </td>
       <td><%= item[:evaluacion].puntaje_intuitivo %> </td>
-      <td><%= item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_formal %> </td>
-      <td><%= item[:evaluacion].puntaje_emotivo + item[:evaluacion].puntaje_intuitivo %> </td>
-      <td><%= item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_intuitivo %> </td>
-      <td><%= item[:evaluacion].puntaje_formal + item[:evaluacion].puntaje_emotivo %> </td>
     </tr>
     <% end %>
   </tbody>
 </table>
 
+<br />
+<table id="myTableComp" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Realist</th>
+      <th>Idealist</th>
+      <th>Cognit</th>
+      <th>Instin</th>
+      <th>Balanc</th>
+      <th>Invent</th>
+      <th>Planif</th>
+      <th>Colab</th>
+      <th>Implem</th>
+      <th>Ejecut</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @lista_hashes.each do |item| %>
+    <tr>
+      <td><%= item[:nombre] %></td>
+      <td><%= item[:evaluacion].puntaje_realista %> </td>
+      <td><%= item[:evaluacion].puntaje_idealista %> </td>
+      <td><%= item[:evaluacion].puntaje_cognitivo %> </td>
+      <td><%= item[:evaluacion].puntaje_instintivo %> </td>
+      <td><%= item[:evaluacion].puntaje_balanceado %> </td>
+      <td><%= item[:evaluacion].puntaje_inventor %> </td>
+      <td><%= item[:evaluacion].puntaje_planificado %> </td>
+      <td><%= item[:evaluacion].puntaje_colaborativo %> </td>
+      <td><%= item[:evaluacion].puntaje_implementador %> </td>
+      <td><%= item[:evaluacion].puntaje_ejecutivo %> </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <script type="text/javascript">
-  $(document).ready(function()     {         $("#myTable").tablesorter();     } );
+  $(document).ready(function()     {         $("#myTable").tablesorter();  $("#myTableComp").tablesorter();     } );
 </script>
 
 <% else %>

@@ -41,15 +41,21 @@
 
   # Aqui recien va el reporte
   if (@cant_usuarios > 0)
-    sheet1.row(row_indx).concat ['Nombre', 'Lógico', 'Formal', 'Emotivo', 'Intuitivo', 'Realista', 'Idealista', 'Cognitivo', 'Instintivo']
+    sheet1.row(row_indx).concat ['Nombre', 'Lógico', 'Formal', 'Emotivo', 'Intuitivo', 'Realista', 'Idealista', 'Cognitivo', 'Instintivo', 'Balanceado', 'Inventor', 'Planificado', 'Colaborativo', 'Implementador', 'Ejecutivo']
     row_indx = row_indx + 1
     @lista_hashes.each do |item|
-        pt_realista = item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_formal
-        pt_idealista = item[:evaluacion].puntaje_emotivo + item[:evaluacion].puntaje_intuitivo
-        pt_cognitivo = item[:evaluacion].puntaje_logico + item[:evaluacion].puntaje_intuitivo
-        pt_instintivo = item[:evaluacion].puntaje_formal + item[:evaluacion].puntaje_emotivo
+        pt_realista = item[:evaluacion].puntaje_realista
+        pt_idealista = item[:evaluacion].puntaje_idealista
+        pt_cognitivo = item[:evaluacion].puntaje_cognitivo
+        pt_instintivo = item[:evaluacion].puntaje_instintivo
+        pt_balanceado = item[:evaluacion].puntaje_balanceado
+        pt_inventor = item[:evaluacion].puntaje_inventor
+        pt_planificado = item[:evaluacion].puntaje_planificado
+        pt_colaborativo = item[:evaluacion].puntaje_colaborativo
+        pt_implementador = item[:evaluacion].puntaje_implementador
+        pt_ejecutivo = item[:evaluacion].puntaje_ejecutivo
 
-        sheet1.row(row_indx).concat [item[:nombre], item[:evaluacion].puntaje_logico, item[:evaluacion].puntaje_formal, item[:evaluacion].puntaje_emotivo, item[:evaluacion].puntaje_intuitivo, pt_realista, pt_idealista, pt_cognitivo, pt_instintivo]
+        sheet1.row(row_indx).concat [item[:nombre], item[:evaluacion].puntaje_logico, item[:evaluacion].puntaje_formal, item[:evaluacion].puntaje_emotivo, item[:evaluacion].puntaje_intuitivo, pt_realista, pt_idealista, pt_cognitivo, pt_instintivo, pt_balanceado, pt_inventor, pt_planificado, pt_colaborativo, pt_implementador, pt_ejecutivo]
         row_indx = row_indx + 1
     end
   end

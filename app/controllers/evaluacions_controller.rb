@@ -13,11 +13,18 @@ class EvaluacionsController < ApplicationController
       @puntaje_idealista = session[:puntos_idealista]
       @puntaje_cognitivo = session[:puntos_cognitivo]
       @puntaje_instintivo = session[:puntos_instintivo]
+      @puntaje_balanceado = session[:puntos_balanceado]
+      @puntaje_inventor = session[:puntos_inventor]
+      @puntaje_planificado = session[:puntos_planificado]
+      @puntaje_colaborativo = session[:puntos_colaborativo]
+      @puntaje_implementador = session[:puntos_implementador]
+      @puntaje_ejecutivo = session[:puntos_ejecutivo]
+      @puntaje_traductor = session[:puntos_traductor]
 
       @diagnostico = session[:diagnostico]
       @recomendacion_diagnostico = session[:recomendacion_diagnostico]
       @diagnostico_par = session[:diagnostico_par]
-      #@recomendacion_diagnostico_par = session[:recomendacion_diagnostico_par]
+      @recomendacion_diagnostico_par = session[:recomendacion_diagnostico_par]
 
       a = session["usuario"]
       a.decrypt_nombre
@@ -163,22 +170,46 @@ class EvaluacionsController < ApplicationController
       @puntaje_idealista = @puntaje_emotivo + @puntaje_intuitivo
       @puntaje_cognitivo = @puntaje_logico + @puntaje_intuitivo
       @puntaje_instintivo = @puntaje_formal + @puntaje_emotivo
+      @puntaje_balanceado = @puntaje_logico + @puntaje_emotivo
+      @puntaje_inventor = @puntaje_formal + @puntaje_intuitivo
+
+      @puntaje_planificado = @puntaje_logico + @puntaje_formal + @puntaje_intuitivo
+      @puntaje_colaborativo = @puntaje_logico + @puntaje_emotivo + @puntaje_intuitivo
+      @puntaje_implementador = @puntaje_formal + @puntaje_emotivo + @puntaje_intuitivo
+      @puntaje_ejecutivo = @puntaje_logico + @puntaje_formal + @puntaje_emotivo
+
+      @puntaje_traductor = @puntaje_logico + @puntaje_formal + @puntaje_emotivo + @puntaje_intuitivo
+
       @evaluacion.update_attribute("puntaje_realista", @puntaje_realista)
       @evaluacion.update_attribute("puntaje_idealista", @puntaje_idealista)
       @evaluacion.update_attribute("puntaje_cognitivo", @puntaje_cognitivo)
       @evaluacion.update_attribute("puntaje_instintivo", @puntaje_instintivo)
+      @evaluacion.update_attribute("puntaje_balanceado", @puntaje_balanceado)
+      @evaluacion.update_attribute("puntaje_inventor", @puntaje_inventor)
+      @evaluacion.update_attribute("puntaje_planificado", @puntaje_planificado)
+      @evaluacion.update_attribute("puntaje_colaborativo", @puntaje_colaborativo)
+      @evaluacion.update_attribute("puntaje_implementador", @puntaje_implementador)
+      @evaluacion.update_attribute("puntaje_ejecutivo", @puntaje_ejecutivo)
+      @evaluacion.update_attribute("puntaje_traductor", @puntaje_traductor)
 
       # el mas alto puntaje da el diagnostico
       arreglo = [@puntaje_logico, @puntaje_formal, @puntaje_emotivo, @puntaje_intuitivo]
-      arreglo_par = [@puntaje_realista, @puntaje_idealista, @puntaje_cognitivo, @puntaje_instintivo]
+      arreglo_par = [@puntaje_realista, @puntaje_idealista, @puntaje_cognitivo, @puntaje_instintivo, @puntaje_balanceado, @puntaje_inventor]
+      arreglo_trio = [@puntaje_planificado, @puntaje_colaborativo, @puntaje_implementador, @puntaje_ejecutivo]
+
       diagnostico = []
       diagnostico_par = []
+      diagnostico_trio = []
+
       maximo_valor = arreglo.max
       maximo_valor_par = arreglo_par.max
+      maximo_valor_trio = arreglo_trio.max
+
 
       i=0
       while (i<4)
-        if (arreglo[i]==maximo_valor)
+        #if (arreglo[i]==maximo_valor)
+        if (arreglo[i]>=(maximo_valor-1))
           diagnostico << 1
         else
           diagnostico << 0
@@ -187,8 +218,9 @@ class EvaluacionsController < ApplicationController
       end
 
       ipar=0
-      while (ipar<4)
-        if (arreglo_par[ipar]==maximo_valor_par)
+      while (ipar<6)
+        #if (arreglo_par[ipar]==maximo_valor_par)
+        if (arreglo_par[ipar]>=(maximo_valor_par-1))
           diagnostico_par << 1
         else
           diagnostico_par << 0
@@ -224,33 +256,63 @@ class EvaluacionsController < ApplicationController
 
       @evaluacion.update_attribute("tipo_dominante", @diagnostico)
 
-
+      # Hasta aqui el diagnostico simple
+      # Ahora debo modificar el diagnostico par cuando hay empates y agregar los cruzados
+      
       @diagnostico_par = ""
-      if (diagnostico_par[0] == 1)
-        @diagnostico_par = "Realista"
-      end
-      if (diagnostico_par[1] == 1)
-        if (@diagnostico_par == "")
-          @diagnostico_par = "Idealista"
-        else
-          @diagnostico_par = @diagnostico_par + " - Idealista"
-        end
-      end
-      if (diagnostico_par[2] == 1)
-        if (@diagnostico_par == "")
-          @diagnostico_par = "Cognitivo"
-        else
-          @diagnostico_par = @diagnostico_par + " - Cognitivo"
-        end
-      end
-      if (diagnostico_par[3] == 1)
-        if (@diagnostico_par == "")
-          @diagnostico_par = "Instintivo"
-        else
-          @diagnostico_par = @diagnostico_par + " - Instintivo"
-        end
+
+      if ((diagnostico_par[0] + diagnostico_par[1] + diagnostico_par[2] + diagnostico_par[3] + diagnostico_par[4] + diagnostico_par[5]) == 1)
+          if (diagnostico_par[0] == 1)
+            @diagnostico_par = "Realista"
+          end
+          if (diagnostico_par[1] == 1)
+              @diagnostico_par = "Idealista"
+          end
+          if (diagnostico_par[2] == 1)
+              @diagnostico_par = "Cognitivo"
+          end
+          if (diagnostico_par[3] == 1)
+              @diagnostico_par = "Instintivo"
+          end
+          if (diagnostico_par[4] == 1)
+              @diagnostico_par = "Balanceado"
+          end
+          if (diagnostico_par[5] == 1)
+              @diagnostico_par = "Inventor"
+          end
+      else
+          itrio=0
+          while (itrio<4)
+            #if (arreglo_par[ipar]==maximo_valor_par)
+            if (arreglo_trio[itrio]>=(maximo_valor_trio-1))
+              diagnostico_trio << 1
+            else
+              diagnostico_trio << 0
+            end
+            itrio = itrio + 1
+          end
+
+          if ((diagnostico_trio[0] + diagnostico_trio[1] + diagnostico_trio[2] + diagnostico_trio[3]) == 1)
+              if (diagnostico_trio[0] == 1)
+                @diagnostico_par = "Planificado"
+              end
+              if (diagnostico_trio[1] == 1)
+                @diagnostico_par = "Colaborativo"
+              end
+              if (diagnostico_trio[2] == 1)
+                @diagnostico_par = "Implementador"
+              end
+              if (diagnostico_trio[3] == 1)
+                @diagnostico_par = "Ejecutivo"
+              end
+          else
+              @diagnostico_par = "Traductor"
+          end
       end
 
+
+      # Si hay empate al siguiente nivel
+      
       @evaluacion.update_attribute("par_dominante", @diagnostico_par)
 
       # calculador    
@@ -307,6 +369,13 @@ class EvaluacionsController < ApplicationController
       @puntaje_idealista = evaluacion.puntaje_idealista
       @puntaje_cognitivo = evaluacion.puntaje_cognitivo
       @puntaje_instintivo = evaluacion.puntaje_instintivo
+      @puntaje_balanceado = evaluacion.puntaje_balanceado
+      @puntaje_inventor = evaluacion.puntaje_inventor
+      @puntaje_planificado = evaluacion.puntaje_planificado
+      @puntaje_colaborativo = evaluacion.puntaje_colaborativo
+      @puntaje_implementador = evaluacion.puntaje_implementador
+      @puntaje_ejecutivo = evaluacion.puntaje_ejecutivo
+      @puntaje_traductor = evaluacion.puntaje_traductor
 
       session[:prueba_nombre] = @prueba.nombre
       session[:puntos_logico] = @puntaje_logico
@@ -317,6 +386,13 @@ class EvaluacionsController < ApplicationController
       session[:puntos_idealista] = @puntaje_idealista
       session[:puntos_cognitivo] = @puntaje_cognitivo
       session[:puntos_instintivo] = @puntaje_instintivo
+      session[:puntos_balanceado] = @puntaje_balanceado
+      session[:puntos_inventor] = @puntaje_inventor
+      session[:puntos_planificado] = @puntaje_planificado
+      session[:puntos_colaborativo] = @puntaje_colaborativo
+      session[:puntos_implementador] = @puntaje_implementador
+      session[:puntos_ejecutivo] = @puntaje_ejecutivo
+      session[:puntos_traductor] = @puntaje_traductor
 
       ##########
 
@@ -434,101 +510,108 @@ class EvaluacionsController < ApplicationController
   end
 
   def find_recomendacion(data)
+    text = []
     if (data == "Lógico")
-      text = "Busca evidencias y hechos que le permitan explicar las causas o el origen de un evento específico.  Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
     end
     if (data == "Formal")
-      text = "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y la ordena según ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Le gusta buscar información paso a paso o sea de manera secuencial. Le gusta categorizar, clasificar, coleccionar y archivar.  Por su mente minuciosa puede identificar hasta los errores imperceptibles."
+      text[0] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
     end
     if (data == "Emotivo")
-      text = "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."
+      text[0] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
     end
     if (data == "Intuitivo")
-      text = "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."
+      text[0] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
+
+    # Debo usar array de hash
     if (data == "Lógico - Formal")
-      text = "Busca la lógica de las decisiones, para lo cual necesita contar con evidencias, hechos y detalles que confirmen lo esperado. Dedica tiempo a precisar y definir procesos para lograr resultados. Aprecia el conocimiento técnico, los indicadores y la posibilidad de medir y evaluar. Plantea metas claras y espera resultados concretos.  Aprecia los reportes que describan la marcha de los hechos y los resultados de la gestión. Aprecia los fundamentos y las teorías que están detrás de las decisiones. Posee fluidez verbal. Busca el dominio del método y contar con algún tipo de conocimiento técnico."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
+      text[1] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
     end
     if (data == "Lógico - Emotivo")
-      text = "Busca el balance entre la emoción y la razón. Recoge evidencias tanto del proceso como del resultado. La decisión es correcta porque responde a sus sentimientos y a una lógica determinada.  Toma tiempo para tomar decisiones por lo que quiere ser justo. No se conforma con plantear netas desafiantes, sino que busca que las personas se involucren y comprometan con ellas."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
+      text[1] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
     end
     if (data == "Lógico - Intuitivo")
-      text = "Es un intelectual que gusta de conceptualizar y comprender el funcionamiento de las organizaciones y sistemas. Construye explicaciones sobre lo que ocurre, lanza hipótesis y explora las causas. Investiga y contrasta modelos. Busca oportunidades de desarrollo. Construye una visión y plantea metas claras que inspiren a las personas involucradas. Se inspira a través de los hechos y de las personas. Contextualiza y analiza el impacto de un hecho en el TODO, en el SISTEMA."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
+      text[1] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
     if (data == "Formal - Emotivo")
-      text = "Destaca por implementar y ejecutar los proyectos cuando tiene las metas claras. Cumple con los plazos. Identifica todos los procesos necesarios para desarrollar cada meta. Aprecia el trabajo en equipo cuando los roles están claramente definidos. Le gusta trabajar con personas organizadas que gustan sostener las relaciones humanas. Le da gran importancia a las formas, a las costumbres y a los rituales. Se adapta a diferentes escenarios siempre y cuando de por medio haya acción y emoción."
+      text[0] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
+      text[1] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
     end
     if (data == "Formal - Intuitivo")
-      text = "Realiza propuestas innovadoras y las define con el máximo de detalle y precisión. Organiza actividades que convergen con la idea matriz. Se concentra en lo que hace de modo que no se detiene hasta finalizarlo. Le gusta hacer un seguimiento de todas las tareas durante el proceso de ejecución. El control de la calidad es parte de sus prioridades. Se concentra en lo que hace de modo que no se detiene hasta finalizar las tareas programadas. Posee un espíritu perfeccionista. La forma le preocupa tanto como el fondo."
+      text[0] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
+      text[1] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
     if (data == "Emotivo - Intuitivo")
-      text = "Es idealista en la forma de configurar el mundo. Cuando descubre una oportunidad de desarrollo la comparte y la socializa. A medida que la comunica va completando su idea con lo que recoge y escucha de los demás. Le gusta aprender de las relaciones interpersonales. Es intuitivo y metafórico en cada una de sus explicaciones y elaboraciones sobre los hechos. Puede trabajar en equipo y construir las propuestas en forma colaborativa. Es informal y confía en la iniciativa del equipo para completar las tareas y conseguir los resultados. Posee sensibilidad artística. Busca espacios para establecer una comunicación directa."
+      text[0] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
+      text[1] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
     if (data == "Lógico – Formal - Emotivo")
-      text = "Disfruta aterrizando las propuestas e ideas. Aplica de manera muy práctica los modelos o enfoques teóricos. Invierte mucho tiempo en sistematizar lo que hay. Analiza los incidentes hasta encontrar las causas que los han originado. Motiva al equipo a ejecutar todas las tareas y llegar a buen término. No se detiene ante los obstáculos, por el contrario es proactivo y busca soluciones alternativas. Se anticipa y en caso aparezcan situaciones inesperadas puede crear planes de contingencia."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
+      text[1] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
+      text[2] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
     end
     if (data == "Lógico – Formal - Intuitivo")
-      text = "Es capaz de diseñar un programa o una propuesta a partir de una visión inspiradora.  Puede precisar las metas, indicadores y procesos definidos. Pero le cuesta socializar la propuesta. Posee dificultades para establecer la red social. Solo el 30% de la población se encuentra en este segmento."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
+      text[1] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
+      text[2] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
     if (data == "Lógico - Emotivo - Intuitivo")
-      text = "Es capaz de motivar a otros para trabajar en equipo y complementar las habilidades. Cada vez que diseña una propuesta, lo hace de manera intuitiva y holística. No sólo ve el árbol sino el bosque. Una vez que crea un proyecto le gusta socializarlo y escuchar con gran apertura las críticas y sugerencias. No tiene claridad de los procedimientos a seguir pero tiene claro el norte y la dirección. Se le escapan los detalles y puede comenzar por cualquier parte. Necesita de una estructura y de un orden."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
+      text[1] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
+      text[2] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
     if (data == "Formal - Emotivo - Intuitivo")
-      text = "Propone ideas innovadoras. No se detiene a analizar o a sustentar sus decisiones. Necesita precisar metas e indicadores de medición. Se entusiasma con las propuestas y motiva a otros a participar. Establece modelos de trabajo.  Trabaja en equipo con empatía y conciencia del proceso. Busca retroalimentar a sus compañeros de grupo y establece un cronograma detallado a seguir para mantener todo con orden y claridad."
+      text[0] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
+      text[1] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
+      text[2] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
     if (data == "Lógico - Formal - Emotivo - Intuitivo")
-      text = "Es un traductor. Puede comunicarse con cualquiera de los estilos de pensamiento. Se adapta a los diferentes modelos y formas de percibir y de interpretar. Es flexible y ejerce su autoridad para desarrollar todo su potencial. Es empático y tiende a desarrollar todos sus talentos al máximo.  Posee la habilidad para desarrollar tanto un análisis cuantitativo como cualitativo. Es capaz de argumentar, diseñar, negociar o socializar."
+      text[0] = {"nombre" => "Lógico", "texto" => "Busca evidencias y hechos que le permite explicar las causas o el origen de un evento específico. Contrasta la información que recoge e identifica aquello que es esencial. Valora los hechos, las medidas, los indicadores de logro. Aplica el análisis y la lógica para evaluar un problema determinado. Le gusta formular hipótesis sobre las dinámicas que ocurren entre las personas, grupos u organizaciones. Predice lo que va a pasar mañana basándose en lo que sabe hoy."}
+      text[1] = {"nombre" => "Formal", "texto" => "Es organizado y planificado. Busca la estructura de cada situación, proceso, o contenidos y los ordena de acuerdo a ella. Le interesa conocer el relato cronológico de los hechos y los detalles de cada evento. Le gusta administrar y organizar la información de manera ordenada y que sea accesible para todos. Toma en cuenta el manejo del tiempo y busca que éste sea utilizado de manera efectiva. Recopila información paso a paso, de manera secuencial. Tiene preferencia por categorizar, clasificar, coleccionar y archivar.  Debido ala minuciosidad de su mente puede identificar hasta los errores más imperceptibles."}
+      text[2] = {"nombre" => "Emotivo", "texto" => "Se interesa por las relaciones humanas y la interacción social permanente.  Busca establecer lazos duraderos y afectivos.  Escucha a los demás con atención y con espíritu de servicio. Se interesa por los proyectos que repercuten en las relaciones humanas. Aprende de las experiencias y las integra a su historia personal. Escucha y comparte ideas. En una situación crítica se involucra emocionalmente."}
+      text[3] = {"nombre" => "Intuitivo", "texto" => "Posee apertura hacia lo desconocido y hace caso a su intuición. Se interesa por lo realmente novedoso, por la creación de nuevas ideas, estructuras, estrategias, con alta capacidad de riesgo. Posee una gran necesidad de búsqueda y experimentación. Le gusta conceptualizar y simbolizar. Busca formas gráficas para expresar sus ideas o pensamientos. Utiliza su imaginación para visualizar escenarios y aprovechar de las oportunidades. Posee una visión holística. El todo es más que la suma de las partes. Posee sensibilidad artística."}
     end
 
     text
   end
 
   def find_recomendacion_par(data)
-
     if (data == "Realista")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+      text = "Busca la lógica de las decisiones, para lo cual necesita contar con evidencias, hechos y detalles que confirmen lo esperado. Dedica tiempo a precisar y definir procesos para lograr resultados. Aprecia el conocimiento técnico, los indicadores y la posibilidad de medir y evaluar. Plantea metas claras y espera resultados concretos.  Aprecia los reportes que describan la marcha de los hechos y los resultados de la gestión. Aprecia los fundamentos y las teorías que están detrás de las decisiones. Posee fluidez verbal. Busca el dominio del método y contar con algún tipo de conocimiento técnico."
     end
-    if (data == "Idealista")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Balanceado")
+      text = "Busca el balance entre la emoción y la razón. Recoge evidencias tanto del proceso como del resultado. La decisión es correcta porque responde a sus sentimientos y a una lógica determinada.  Toma tiempo para tomar decisiones por lo que quiere ser justo. No se conforma con plantear netas desafiantes, sino que busca que las personas se involucren y comprometan con ellas."
     end
     if (data == "Cognitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+      text = "Es un intelectual que gusta de conceptualizar y comprender el funcionamiento de las organizaciones y sistemas. Construye explicaciones sobre lo que ocurre, lanza hipótesis y explora las causas. Investiga y contrasta modelos. Busca oportunidades de desarrollo. Construye una visión y plantea metas claras que inspiren a las personas involucradas. Se inspira a través de los hechos y de las personas. Contextualiza y analiza el impacto de un hecho en el TODO, en el SISTEMA."
     end
     if (data == "Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+      text = "Destaca por implementar y ejecutar los proyectos cuando tiene las metas claras. Cumple con los plazos. Identifica todos los procesos necesarios para desarrollar cada meta. Aprecia el trabajo en equipo cuando los roles están claramente definidos. Le gusta trabajar con personas organizadas que gustan sostener las relaciones humanas. Le da gran importancia a las formas, a las costumbres y a los rituales. Se adapta a diferentes escenarios siempre y cuando de por medio haya acción y emoción."
     end
-    if (data == "Realista - Idealista")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Inventor")
+      text = "Realiza propuestas innovadoras y las define con el máximo de detalle y precisión. Organiza actividades que convergen con la idea matriz. Se concentra en lo que hace de modo que no se detiene hasta finalizarlo. Le gusta hacer un seguimiento de todas las tareas durante el proceso de ejecución. El control de la calidad es parte de sus prioridades. Se concentra en lo que hace de modo que no se detiene hasta finalizar las tareas programadas. Posee un espíritu perfeccionista. La forma le preocupa tanto como el fondo."
     end
-    if (data == "Realista - Cognitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Idealista")
+      text = "Es idealista en la forma de configurar el mundo. Cuando descubre una oportunidad de desarrollo la comparte y la socializa. A medida que la comunica va completando su idea con lo que recoge y escucha de los demás. Le gusta aprender de las relaciones interpersonales. Es intuitivo y metafórico en cada una de sus explicaciones y elaboraciones sobre los hechos. Puede trabajar en equipo y construir las propuestas en forma colaborativa. Es informal y confía en la iniciativa del equipo para completar las tareas y conseguir los resultados. Posee sensibilidad artística. Busca espacios para establecer una comunicación directa."
     end
-    if (data == "Realista - Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Ejecutivo")
+      text = "Disfruta aterrizando las propuestas e ideas. Aplica de manera muy práctica los modelos o enfoques teóricos. Invierte mucho tiempo en sistematizar lo que hay. Analiza los incidentes hasta encontrar las causas que los han originado. Motiva al equipo a ejecutar todas las tareas y llegar a buen término. No se detiene ante los obstáculos, por el contrario es proactivo y busca soluciones alternativas. Se anticipa y en caso aparezcan situaciones inesperadas puede crear planes de contingencia."
     end
-    if (data == "Idealista - Cognitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Planificado")
+      text = "Es capaz de diseñar un programa o una propuesta a partir de una visión inspiradora.  Puede precisar las metas, indicadores y procesos definidos. Pero le cuesta socializar la propuesta. Posee dificultades para establecer la red social. Solo el 30% de la población se encuentra en este segmento."
     end
-    if (data == "Idealista - Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Colaborativo")
+      text = "Es capaz de motivar a otros para trabajar en equipo y complementar las habilidades. Cada vez que diseña una propuesta, lo hace de manera intuitiva y holística. No sólo ve el árbol sino el bosque. Una vez que crea un proyecto le gusta socializarlo y escuchar con gran apertura las críticas y sugerencias. No tiene claridad de los procedimientos a seguir pero tiene claro el norte y la dirección. Se le escapan los detalles y puede comenzar por cualquier parte. Necesita de una estructura y de un orden."
     end
-    if (data == "Cognitivo - Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Implementador")
+      text = "Propone ideas innovadoras. No se detiene a analizar o a sustentar sus decisiones. Necesita precisar metas e indicadores de medición. Se entusiasma con las propuestas y motiva a otros a participar. Establece modelos de trabajo.  Trabaja en equipo con empatía y conciencia del proceso. Busca retroalimentar a sus compañeros de grupo y establece un cronograma detallado a seguir para mantener todo con orden y claridad."
     end
-    if (data == "Realista – Idealista - Cognitivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
-    end
-    if (data == "Realista – Idealista - Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
-    end
-    if (data == "Realista - Cognitivo - Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
-    end
-    if (data == "Idealista - Cognitivo - Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
-    end
-    if (data == "Realista - Idealista - Cognitivo - Instintivo")
-      text = "En esta sección se colocará la descripción del estilo del pensamiento par dominante."
+    if (data == "Traductor")
+      text = "Es un traductor. Puede comunicarse con cualquiera de los estilos de pensamiento. Se adapta a los diferentes modelos y formas de percibir y de interpretar. Es flexible y ejerce su autoridad para desarrollar todo su potencial. Es empático y tiende a desarrollar todos sus talentos al máximo.  Posee la habilidad para desarrollar tanto un análisis cuantitativo como cualitativo. Es capaz de argumentar, diseñar, negociar o socializar."
     end
 
     text

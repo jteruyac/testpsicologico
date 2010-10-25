@@ -59,7 +59,7 @@
   row_indx = row_indx + 1
   sheet1.row(row_indx).concat ['Lógico', 'Formal', 'Emotivo', 'Intuitivo', 'Lógico - Formal', 'Lógico - Emotivo', 'Lógico - Intuitivo', 'Formal - Emotivo', 'Formal - Intuitivo', 'Emotivo - Intuitivo', 'Lógico - Formal - Emotivo', 'Lógico - Formal - Intuitivo', 'Lógico - Emotivo - Intuitivo',  'Formal - Emotivo - Intuitivo', 'Lógico - Formal - Emotivo - Intuitivo' ]
   row_indx = row_indx + 1
-  sheet1.row(row_indx).concat [@totales[:logico], @totales[:formal], @totales[:emotivo], @totales[:intuitivo]]
+  sheet1.row(row_indx).concat @conteo_diagnosticos
   row_indx = row_indx + 1
 
   row_indx = row_indx + 1
@@ -68,9 +68,9 @@
   sheet1[row_indx, 0] = "Número de Personas por Par Dominante"
   sheet1.row(row_indx).default_format = bold
   row_indx = row_indx + 1
-  sheet1.row(row_indx).concat ['Realista', 'Idealista', 'Cognitivo', 'Instintivo', 'Realista - Idealista', 'Realista - Cognitivo', 'Realista - Instintivo', 'Idealista - Cognitivo', 'Idealista - Instintivo', 'Cognitivo - Instintivo', 'Realista - Idealista - Cognitivo', 'Realista - Idealista - Instintivo', 'Realista - Cognitivo - Instintivo',  'Idealista - Cognitivo - Instintivo', 'Realista - Idealista - Cognitivo - Instintivo' ]
+  sheet1.row(row_indx).concat ['Realista', 'Idealista', 'Cognitivo', 'Instintivo', 'Balanceado', 'Inventor', 'Planificado', 'Colaborativo', 'Implementador', 'Ejecutivo', 'Traductor' ]
   row_indx = row_indx + 1
-  sheet1.row(row_indx).concat [@totales[:logico], @totales[:formal], @totales[:emotivo], @totales[:intuitivo]]
+  sheet1.row(row_indx).concat @conteo_diagnosticos_par
   row_indx = row_indx + 1
 
   row_indx = row_indx + 1

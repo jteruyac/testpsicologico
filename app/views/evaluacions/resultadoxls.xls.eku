@@ -30,15 +30,42 @@
   sheet1.row(9).concat ["Estilo Emotivo", "C", "Derecho Superior", @puntaje_emotivo ]
   sheet1.row(10).concat ["Estilo Intuitivo", "D", "Izquierdo Superior", @puntaje_intuitivo ]
 
-  sheet1[12,0] = "El tipo dominante es el estilo:" + @diagnostico
-  sheet1[13,0] = "Diagnóstico: " + @recomendacion_diagnostico
+  sheet1[12,0] = "Estilo Dominante: " + @diagnostico
 
+  fila = 13
+  @recomendacion_diagnostico.each do |item|
+    sheet1[fila,0] = "Diagnóstico " + item["nombre"] + ": " + item["texto"]
+    fila = fila + 1
+  end
+  fila = fila + 1
 
-  sheet1[15, 0] = "Análisis de Pares"
-  sheet1.row(15).default_format = bold
+  sheet1[fila, 0] = "Análisis Compuesto"
+  sheet1.row(fila).default_format = bold
+  fila = fila + 2
 
-  sheet1.row(17).concat ["Nombre", "Fórmula", "Descripción", "Puntaje"]
-  sheet1.row(18).concat ["Estilo Realista", "A+B", "Izquierdo Inferior", @puntaje_logico ]
-  sheet1.row(19).concat ["Estilo Idealista", "C+D", "Derecho Inferior", @puntaje_formal ]
-  sheet1.row(20).concat ["Estilo Cognitivo", "A+D", "Derecho Superior", @puntaje_emotivo ]
-  sheet1.row(21).concat ["Estilo Instintivo", "B+C", "Izquierdo Superior", @puntaje_intuitivo ]
+  sheet1.row(fila).concat ["Nombre", "Fórmula", "Descripción", "Puntaje"]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Realista", "A+B", "Izquierdo Inferior", @puntaje_logico ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Idealista", "C+D", "Derecho Inferior", @puntaje_formal ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Cognitivo", "A+D", "Derecho Superior", @puntaje_emotivo ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Instintivo", "B+C", "Izquierdo Superior", @puntaje_intuitivo ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Balanceado", "A+C", "Cerebral/Límbico", @puntaje_balanceado ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Inventor", "B+D", "Cerebral/Límbico", @puntaje_inventor ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Planificado", "A+B+D", "Cerebral/Límbico", @puntaje_planificado ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Colaborativo", "A+C+D", "Cerebral/Límbico", @puntaje_colaborativo ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Implementador", "B+C+D", "Cerebral/Límbico", @puntaje_implementador ]
+  fila = fila + 1
+  sheet1.row(fila).concat ["Estilo Ejecutivo", "A+B+C", "Cerebral/Límbico", @puntaje_ejecutivo ]
+  fila = fila + 2
+
+  sheet1[fila,0] = "Combinación Dominante: " + sheet1[fila,2] = @diagnostico_par
+  fila = fila + 1
+  sheet1[fila,0] = "Diagnóstico " + @diagnostico_par + ": " + @recomendacion_diagnostico_par
