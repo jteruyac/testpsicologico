@@ -132,7 +132,7 @@ class UsuariosController < ApplicationController
     @usuario.destroy
 
     respond_to do |format|
-      flash[:anuncio0] = "Carrera eliminada correctamente."
+      flash[:anuncio0] = "Usuario eliminado correctamente."
       format.html { redirect_to(usuarios_url) }
       format.xml  { head :ok }
     end
