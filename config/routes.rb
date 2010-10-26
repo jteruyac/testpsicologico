@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :respuestas
 
-  map.resources :evaluacions, :collection => {:resultado => :get, :graph_code_radar => :get, :resultadoxls => :get }
+  map.resources :evaluacions, :collection => {:resultado => :get, :graph_code_radar => :get, :resultadoxls => :get, :resultadopdf => :get }
 
   map.resources :preguntas, :collection => {:eliminar_edit => :get }
 

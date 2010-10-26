@@ -161,7 +161,9 @@
 <br />
 <br />
 <center>
-    <%= link_to 'Exportar a Excel', :controller => :evaluacions, :action => :resultadoxls, :clv => @code %> <%= link_to 'Regresar', :controller => :main, :action => :principal %>
+<%= link_to 'Exportar a Excel', :controller => :evaluacions, :action => :resultadoxls, :clv => @code %>&nbsp;|&nbsp;
+<%= link_to 'Exportar a PDF', :controller => :evaluacions, :action => :resultadopdf, :clv => @code %>&nbsp;|&nbsp;
+<%= link_to 'Regresar', :controller => :main, :action => :principal %>
 </center>
 
 <script type="text/javascript">

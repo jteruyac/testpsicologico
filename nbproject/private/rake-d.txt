@@ -41,6 +41,7 @@ doc\:guides=Generate Rails guides
 doc\:plugins=Generate documentation for all installed plugins
 doc\:plugins\:ekuseru=Generate documentation for the ekuseru plugin
 doc\:plugins\:open_flash_chart=Generate documentation for the open_flash_chart plugin
+doc\:plugins\:prawnto=Generate documentation for the prawnto plugin
 doc\:rails=Build the RDOC HTML Files
 doc\:reapp=Force a rebuild of the RDOC files
 doc\:rerails=Force a rebuild of the RDOC files

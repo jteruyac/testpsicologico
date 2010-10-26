@@ -5,7 +5,7 @@ class InsertPuebaTest < ActiveRecord::Migration
  (2,1,'Cuando estoy terminando un trabajo:',2,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (3,1,'Cuando me muestran un objeto novedoso, lo primero que pienso es:',3,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (4,1,'Cuando me encuentro bloqueado por algún obstáculo:',4,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
- (5,1,'Si te ganaras la lotería:',5,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
+ (5,1,'Si me ganara la lotería:',5,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (6,1,'Prefiero ir a un evento social para disfrutar de:',6,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (7,1,'Antes de tomar una decisión:',7,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),
  (8,1,'Cuando un problema se presenta:',8,false,'2010-06-07 00:22:25','2010-06-07 00:22:25'),

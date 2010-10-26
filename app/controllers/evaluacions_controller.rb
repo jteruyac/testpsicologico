@@ -1,7 +1,81 @@
+require "prawn"
+require "open-uri"
+
 class EvaluacionsController < ApplicationController
   include ApplicationHelper
   # GET /evaluacions
   # GET /evaluacions.xml
+  def resultadopdf
+    if ((session[:rpt_tipo] == "resultado") && (params['clv'].to_s == session[:rpt_codigo].to_s))
+      @prueba_nombre = session[:prueba_nombre]
+      @puntaje_logico = session[:puntos_logico]
+      @puntaje_formal = session[:puntos_formal]
+      @puntaje_emotivo = session[:puntos_emotivo]
+      @puntaje_intuitivo = session[:puntos_intuitivo]
+      @puntaje_realista = session[:puntos_realista]
+      @puntaje_idealista = session[:puntos_idealista]
+      @puntaje_cognitivo = session[:puntos_cognitivo]
+      @puntaje_instintivo = session[:puntos_instintivo]
+      @puntaje_balanceado = session[:puntos_balanceado]
+      @puntaje_inventor = session[:puntos_inventor]
+      @puntaje_planificado = session[:puntos_planificado]
+      @puntaje_colaborativo = session[:puntos_colaborativo]
+      @puntaje_implementador = session[:puntos_implementador]
+      @puntaje_ejecutivo = session[:puntos_ejecutivo]
+      @puntaje_traductor = session[:puntos_traductor]
+
+      @p1 = session[:p1]
+      @p3 = session[:p3]
+      @p5 = session[:p5]
+      @p7 = session[:p7]
+
+      @diagnostico = session[:diagnostico]
+      @recomendacion_diagnostico = session[:recomendacion_diagnostico]
+      @diagnostico_par = session[:diagnostico_par]
+      @recomendacion_diagnostico_par = session[:recomendacion_diagnostico_par]
+
+      a = session["usuario"]
+      a.decrypt_nombre
+      @indiv = a.nombre
+      a.crypt_nombre
+
+      @urii = URI.escape("http://chart.apis.google.com/chart?chs=500x500&chxt=y,x&chxp=0,0,10,20,30,40,50,60,70,80,90,100&chd=t:"+@p1.to_s+","+@puntaje_intuitivo.to_s+","+@p3.to_s+","+@puntaje_emotivo.to_s+","+@p5.to_s+","+@puntaje_formal.to_s+","+@p7.to_s+","+@puntaje_logico.to_s+","+@p1.to_s+"&chtt=Perfil+de+Cerebro+Multidominante&chxs=0,000000,12,1|1,000000,12,1&chxr=0,0.0,100.0&chxl=1:||Intuitivo||Emotivo||Formal||Logico&cht=r&chm=f"+@puntaje_intuitivo.to_s+",CCCC00,0,1,10|f"+@puntaje_emotivo.to_s+",FF0000,0,3,10|f"+@puntaje_formal.to_s+",006600,0,5,10|f"+@puntaje_logico.to_s+",0000FF,0,7,10|r,D8D8D880,0,0.23,0|r,D7DF0180,0,0.46,0.23|r,FF800080,0,0.77,0.46|r,DF010180,0,1,0.77&chls=2&chdl=[0-23]: Rechazo (Gris)|]23-46]: Uso (Amarillo)|]46-77]: Preferencia (Naranja)|]77-100]: Visible Preferencia (Rojo)&chco=848484&chdlp=b")
+      @matriz_simple_head = ["Nombre", "Fórmula", "Descripción", "Puntaje"]
+      @matriz_simple = []
+      @matriz_simple << ["Estilo Lógico", "A", "Izquierdo Inferior", @puntaje_logico.to_s]
+      @matriz_simple << ["Estilo Formal", "B", "Derecho Inferior", @puntaje_logico.to_s]
+      @matriz_simple << ["Estilo Emotivo", "C", "Derecho Superior", @puntaje_logico.to_s]
+      @matriz_simple << ["Estilo Intuitivo", "D", "Izquierdo Superior", @puntaje_logico.to_s]
+
+      @matriz_compuesta_head = ["Nombre", "Fórmula", "Descripción", "Puntaje"]
+      @matriz_compuesta = []
+      @matriz_compuesta << ["Estilo Realista", "A+B", "Hemisferio Izquierdo", @puntaje_realista.to_s]
+      @matriz_compuesta << ["Estilo Idealista", "C+D", "Hemisferio Derecho", @puntaje_idealista.to_s]
+      @matriz_compuesta << ["Estilo Cognitivo", "A+D", "Cerebral", @puntaje_cognitivo.to_s]
+      @matriz_compuesta << ["Estilo Instintivo", "B+C", "Límbico", @puntaje_instintivo.to_s]
+      @matriz_compuesta << ["Estilo Balanceado", "A+C", "Cerebral/Límbico", @puntaje_balanceado.to_s]
+      @matriz_compuesta << ["Estilo Inventor", "B+D", "Cerebral/Límbico", @puntaje_inventor.to_s]
+      @matriz_compuesta << ["Estilo Planificado", "A+B+D", "Cerebral/Límbico", @puntaje_planificado.to_s]
+      @matriz_compuesta << ["Estilo Colaborativo", "A+C+D", "Cerebral/Límbico", @puntaje_colaborativo.to_s]
+      @matriz_compuesta << ["Estilo Implementador", "B+C+D", "Cerebral/Límbico", @puntaje_implementador.to_s]
+      @matriz_compuesta << ["Estilo Ejecutivo", "A+B+C", "Cerebral/Límbico", @puntaje_ejecutivo.to_s]
+
+
+      prawnto :prawn => {
+              :page_size => 'A4',
+              :left_margin=>30,
+              :right_margin=>30,
+              :top_margin=>25,
+              :bottom_margin=>25 }
+      prawnto :inline => false
+
+      respond_to do |format|
+        format.pdf
+      end
+
+    end
+  end
+
   def resultadoxls
     if ((session[:rpt_tipo] == "resultado") && (params['clv'].to_s == session[:rpt_codigo].to_s))
       @prueba_nombre = session[:prueba_nombre]
@@ -407,6 +481,11 @@ class EvaluacionsController < ApplicationController
       @diagnostico_par = evaluacion.par_dominante
       @recomendacion_diagnostico = find_recomendacion(@diagnostico)
       @recomendacion_diagnostico_par = find_recomendacion_par(@diagnostico_par)
+
+      session[:p1] = @p1
+      session[:p3] = @p3
+      session[:p5] = @p5
+      session[:p7] = @p7
 
       session[:diagnostico] = @diagnostico
       session[:recomendacion_diagnostico] = @recomendacion_diagnostico
