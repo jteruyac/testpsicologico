@@ -4,6 +4,7 @@ class InsertCarreras < ActiveRecord::Migration
     Carrera.create(:nombre => "Comunicaciones")
     Carrera.create(:nombre => "Derecho")
     Carrera.create(:nombre => "Economía")
+    Carrera.create(:nombre => "Hotelería y Turismo")
     Carrera.create(:nombre => "Ingeniería Civil")
     Carrera.create(:nombre => "Ingeniería Electrónica")
     Carrera.create(:nombre => "Ingeniería Industrial")
@@ -17,6 +18,7 @@ class InsertCarreras < ActiveRecord::Migration
     Carrera.create(:nombre => "Odontología")
     Carrera.create(:nombre => "Psicología")
     Carrera.create(:nombre => "Terapia Física")
+    Carrera.create(:nombre => "Traducción")
   end
 
   def self.down
